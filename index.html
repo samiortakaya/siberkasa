@@ -157,7 +157,10 @@
         <label>E-Posta Adresiniz:</label>
         <input type="email" id="regEmail" placeholder="ornek@mail.com">
         <label>Güçlü Bir Şifre Belirleyin:</label>
-        <input type="password" id="regPassword" placeholder="Kasanızı kilitleyecek şifre">
+        <input type="password" id="regPassword" placeholder="Kasanızı kilitleyecek şifre" onkeyup="checkPasswordStrength()">
+        <div style="height: 6px; background: rgba(255,255,255,0.5); border-radius: 5px; margin-top: -10px; margin-bottom: 10px; overflow: hidden;">
+            <div id="pwdStrengthBar" style="height: 100%; width: 0%; background: #ff4d4d; transition: width 0.3s ease, background 0.3s ease;"></div>
+        </div>
         <label>Şifre Tekrar:</label>
         <input type="password" id="regPasswordConf" placeholder="Aynı şifreyi tekrar girin">
         <button onclick="requestRegistration()" id="btnRequestReg">Devam Et 📩</button>
@@ -325,16 +328,35 @@
         document.getElementById('generatedPassword').value = "";
     }
 
+    function deleteVaultItem(index) {
+        if(confirm("Bu parolayı silmek istediğinize emin misiniz?")) {
+            vaultData.splice(index, 1);
+            saveVaultToStorage();
+        }
+    }
+    
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Parola kopyalandı! 📋");
+        });
+    }
+
     function renderVault() {
         const listDiv = document.getElementById('vaultList');
         listDiv.innerHTML = "";
         if(vaultData.length === 0) {
             listDiv.innerHTML = "<div class='empty-vault'>Kasanız şu an boş. Sol taraftan parola üretip kaydedebilirsiniz. 💖</div>"; return;
         }
-        vaultData.forEach((item) => {
+        vaultData.forEach((item, index) => {
             listDiv.innerHTML += `
                 <div class="vault-item">
-                    <span class="vault-platform">${item.platform}</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="vault-platform">${item.platform}</span>
+                        <div style="display:flex; gap: 5px;">
+                            <button style="width:auto; padding:5px 10px; margin:0; font-size:14px; border-radius:10px; box-shadow:none; backdrop-filter:blur(2px);" onclick="copyToClipboard('${item.password}')" title="Kopyala">📋</button>
+                            <button style="width:auto; padding:5px 10px; margin:0; font-size:14px; background:rgba(255,100,100,0.5); border-radius:10px; box-shadow:none; backdrop-filter:blur(2px);" onclick="deleteVaultItem(${index})" title="Sil">🗑️</button>
+                        </div>
+                    </div>
                     <span class="vault-password">${item.password}</span>
                 </div>
             `;
@@ -347,6 +369,35 @@
         document.getElementById('dashboardScreen').style.display = 'none';
         document.getElementById('authScreen').style.display = 'block';
     }
+
+    function checkPasswordStrength() {
+        let pwd = document.getElementById("regPassword").value;
+        let strength = 0;
+        if (pwd.length >= 6) strength += 25;
+        if (pwd.length >= 10) strength += 25;
+        if (/[A-Z]/.test(pwd)) strength += 25;
+        if (/[0-9!@#\$%\^&\*]/.test(pwd)) strength += 25;
+        
+        let bar = document.getElementById("pwdStrengthBar");
+        bar.style.width = strength + "%";
+        if (strength < 50) bar.style.background = "#ff4d4d";
+        else if (strength < 75) bar.style.background = "#ffd633";
+        else bar.style.background = "#5cd65c";
+    }
+
+    // Auto-Logout Feature (Güvenlik)
+    let inactivityTimer;
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+        if (currentUserEmail !== "") {
+            inactivityTimer = setTimeout(() => {
+                alert("🔒 Güvenliğiniz için 3 dakika boyunca işlem yapmadığınızdan oturumunuz otomatik olarak kapatıldı.");
+                logout();
+            }, 3 * 60 * 1000); // 3 dakika
+        }
+    }
+    window.addEventListener('mousemove', resetInactivityTimer);
+    window.addEventListener('keydown', resetInactivityTimer);
 
     function generateCustomPassword() {
         let platform = document.getElementById('platform').value.trim();
