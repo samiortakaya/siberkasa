@@ -36,73 +36,72 @@
         .empty-vault { text-align: center; color: #aaa; margin-top: 50px; font-size: 14px; font-weight: 600;}
         a { color: #d81b60; font-weight: bold; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        @media (max-width: 850px) {
+            .dashboard-container { flex-direction: column; width: 90%; padding: 20px;}
+            .dashboard-container > div { border-left: none !important; padding: 0 !important; }
+            .container { width: 90%; max-width: 420px; padding: 25px 20px; }
+        }
+        /* Modal Stili */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
+        .modal-content { background: linear-gradient(135deg, #fffafb 0%, #ffe4e8 100%); margin: 15% auto; padding: 30px; border: 1px solid #ff9a9e; border-radius: 20px; width: 90%; max-width: 450px; box-shadow: 0 10px 30px rgba(255, 154, 158, 0.5); }
+        .close-btn { color: #d81b60; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover { color: #ff758f; }
+        .info-btn { background: transparent; border: 2px dashed #ff9a9e; color: #d81b60; font-weight: 700; margin-bottom: 20px; box-shadow: none; }
     </style>
 </head>
 <body>
 
 <ul class="circles"><li></li><li></li><li></li><li></li><li></li></ul>
 
-<!-- 1. KULLANICI GİRİŞ/KAYIT EKRANI -->
-<div class="container" id="authScreen" style="width: 850px; display: flex; gap: 30px; align-items: stretch; padding: 0;">
-    
-    <!-- YENİ BİLGİLENDİRME (INFO) PANELİ -->
-    <div style="flex: 1.2; padding: 40px; background: linear-gradient(135deg, rgba(255, 154, 158, 0.2) 0%, rgba(254, 207, 239, 0.2) 100%); border-right: 2px dashed #ffe4e8; border-top-left-radius: 24px; border-bottom-left-radius: 24px; display: flex; flex-direction: column; justify-content: center;">
-        <h2 style="font-size: 26px; text-align: left; margin-bottom: 15px;">🛡️ Siber Kasa'ya Hoş Geldin!</h2>
+<!-- NASIL KULLANILIR MODALI -->
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeInfo()">&times;</span>
+        <h2 style="font-size: 24px; text-align: left; margin-bottom: 15px;">🛡️ Siber Kasa'ya Hoş Geldin!</h2>
         <p style="font-size: 14.5px; font-weight: 600; color: #555; line-height: 1.6; margin-bottom: 20px;">
-            Bu uygulama, seni siber saldırılardan ve hesap çalınmalarından korumak için özel olarak tasarlandı. "Acaba şifrem çalındı mı?" korkusuna son!
+            Bu uygulama, seni hesap çalınmalarından korumak için tasarlandı. "Acaba şifrem çalındı mı?" korkusuna son!
         </p>
-        
-        <h3 style="font-size: 16px; border: none; margin-bottom: 5px;">Nasıl Kullanılır?</h3>
-        <ul style="font-size: 14px; font-weight: 600; color: #666; line-height: 1.8; padding-left: 20px; margin-top: 5px;">
-            <li>🔐 <b>Kayıt Ol:</b> E-posta ve unutmayacağın tek bir <u style="color:#d81b60">Ana Şifre</u> belirle.</li>
-            <li>✨ <b>Üret:</b> İçeride kendi belirlediğin renk ve isimlerle <b>kırılması imkansız</b> parolalar üret (Leet Speak).</li>
+        <ul style="font-size: 14px; font-weight: 600; color: #666; line-height: 1.8; padding-left: 20px;">
+            <li>🔐 <b>Kayıt Ol:</b> Unutmayacağın tek bir <u style="color:#d81b60">Ana Şifre</u> belirle.</li>
+            <li>✨ <b>Üret:</b> Renk ve isimlerle <b>kırılması imkansız</b> (Leet Speak) parolalar üret.</li>
             <li>📥 <b>Stokla:</b> Instagram, E-Devlet, Banka şifrelerini kasanıza kaydedin.</li>
         </ul>
-
-        <div style="margin-top: 25px; padding: 15px; background: rgba(255, 255, 255, 0.6); border-radius: 12px; font-size: 13px; font-weight: 700; color: #d81b60; text-align: center;">
-            <span style="font-size: 18px;">🧠</span><br>
-            Sıfır Bilgi Mimarisi (Zero-Knowledge) ile parolalarınız AES-256 ile cihazınızda şifrelenir. Biz bile göremeyiz!
+        <div style="margin-top: 25px; padding: 15px; background: rgba(255, 255, 255, 0.7); border-radius: 12px; font-size: 13px; font-weight: 700; color: #d81b60; text-align: center;">
+            <span style="font-size: 18px;">🧠 Sıfır Bilgi Mimarisi</span><br>
+            Parolalarınız AES-256 ile cihazınızda şifrelenir. Biz bile göremeyiz!
         </div>
     </div>
+</div>
 
-    <!-- GİRİŞ FORMLARI -->
-    <div style="flex: 1; padding: 40px 40px 40px 10px; display: flex; flex-direction: column; justify-content: center;">
-        
-        <div id="loginForm">
-            <h2>💖 Giriş Yap</h2>
-            <label>E-Posta Adresiniz:</label>
-            <input type="email" id="loginEmail" placeholder="ornek@mail.com">
-            <label>Şifreniz (Ana Kilit):</label>
-            <input type="password" id="loginPassword" placeholder="Hesap şifrenizi girin">
-            <button onclick="login()">Giriş Yap 🔓</button>
-            <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
-                Hesabınız yok mu? <a href="#" onclick="toggleAuthMode('register')">Buradan Kayıt Olun</a>
-            </p>
-        </div>
+<!-- 1. KULLANICI GİRİŞ/KAYIT EKRANI -->
+<div class="container" id="authScreen" style="width: 90%; max-width: 420px;">
+    
+    <button class="info-btn" onclick="openInfo()">📖 Nasıl Kullanılır?</button>
 
-        <div id="registerForm" style="display:none;">
-            <h2>✨ Yeni Hesap Aç</h2>
-            <label>E-Posta Adresiniz:</label>
-            <input type="email" id="regEmail" placeholder="ornek@mail.com">
-            <label>Güçlü Bir Şifre Belirleyin:</label>
-            <input type="password" id="regPassword" placeholder="Kasanızı kilitleyecek şifre">
-            <label>Şifre Tekrar:</label>
-            <input type="password" id="regPasswordConf" placeholder="Aynı şifreyi tekrar girin">
-            <button onclick="requestRegistration()" id="btnRequestReg">Devam Et 📩</button>
-            <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
-                Zaten hesabınız var mı? <a href="#" onclick="toggleAuthMode('login')">Giriş Yapın</a>
-            </p>
-        </div>
+    <div id="loginForm">
+        <h2>💖 Giriş Yap</h2>
+        <label>E-Posta Adresiniz:</label>
+        <input type="email" id="loginEmail" placeholder="ornek@mail.com">
+        <label>Şifreniz (Ana Kilit):</label>
+        <input type="password" id="loginPassword" placeholder="Hesap şifrenizi girin">
+        <button onclick="login()">Giriş Yap 🔓</button>
+        <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
+            Hesabınız yok mu? <a href="#" onclick="toggleAuthMode('register')">Buradan Kayıt Olun</a>
+        </p>
+    </div>
 
-        <div id="otpForm" style="display:none;">
-            <h2>📧 Gerçek E-Posta Doğrulaması</h2>
-            <p style="text-align:center; font-size:13px; color:#888;">Mail adresinize 6 haneli BİR KOD GÖNDERİLDİ! Lütfen gelen kutunuzu (veya Spam'i) kontrol edip aşağıya girin.</p>
-            <label style="text-align:center; font-size: 15px;">Doğrulama Kodu:</label>
-            <input type="text" id="otpInput" placeholder="123456" maxlength="6" style="text-align: center; font-size: 24px; letter-spacing: 10px; font-weight: 800; color: #d81b60;">
-            <button onclick="verifyOTP()" id="btnVerifyOtp">Doğrula ve Kaydı Tamamla ✅</button>
-            <button onclick="toggleAuthMode('register')" style="background:transparent; color:#d81b60; box-shadow:none; border: 2px solid #ffe4e8; margin-top:15px;">İptal Et ve Geri Dön</button>
-        </div>
-
+    <div id="registerForm" style="display:none;">
+        <h2>✨ Yeni Hesap Aç</h2>
+        <label>E-Posta Adresiniz:</label>
+        <input type="email" id="regEmail" placeholder="ornek@mail.com">
+        <label>Güçlü Bir Şifre Belirleyin:</label>
+        <input type="password" id="regPassword" placeholder="Kasanızı kilitleyecek şifre">
+        <label>Şifre Tekrar:</label>
+        <input type="password" id="regPasswordConf" placeholder="Aynı şifreyi tekrar girin">
+        <button onclick="requestRegistration()" id="btnRequestReg">Devam Et 📩</button>
+        <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
+            Zaten hesabınız var mı? <a href="#" onclick="toggleAuthMode('login')">Giriş Yapın</a>
+        </p>
     </div>
 </div>
 
@@ -132,6 +131,9 @@
 </div>
 
 <script>
+    function openInfo() { document.getElementById('infoModal').style.display = 'block'; }
+    function closeInfo() { document.getElementById('infoModal').style.display = 'none'; }
+    window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) closeInfo(); }
     // PYTHON SUNUCUMUZUN ADRESİ (Artık aynı yerden yayınlanıyor)
     const API_URL = "";
 
