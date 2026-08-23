@@ -130,79 +130,39 @@
         }
     }
 
-    // 1. AŞAMA: E-Posta Onayı İste (Python Sunucusuna API İsteği)
     async function requestRegistration() {
         const email = document.getElementById('regEmail').value.trim();
         const pwd = document.getElementById('regPassword').value;
         const pwdConf = document.getElementById('regPasswordConf').value;
         const btn = document.getElementById('btnRequestReg');
-
+        
         if (!email || !pwd || !pwdConf) { alert("Tüm alanları doldurun!"); return; }
         if (pwd !== pwdConf) { alert("Şifreler birbirleriyle uyuşmuyor!"); return; }
-
-        btn.innerText = "Mail Gönderiliyor... ⏳";
-        btn.disabled = true;
-
-        try {
-            // Sunucuya OTP göndermesi için istek at
-            const response = await fetch(`${API_URL}/send_otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email })
-            });
-            const data = await response.json();
-
-            if (data.success) {
-                pendingEmail = email;
-                pendingPwd = pwd;
-                toggleAuthMode('otp');
-            } else {
-                alert("Hata: " + data.message);
-            }
-        } catch (error) {
-            alert("Sunucuya bağlanılamadı. VS Code üzerinden 'python server.py' komutunu çalıştırdığından emin misin?");
-        } finally {
-            btn.innerText = "Devam Et 📩";
-            btn.disabled = false;
-        }
-    }
-
-    // 2. AŞAMA: Kodu Doğrula ve Asıl Kaydı Tamamla (SQLite Veritabanına Yazma)
-    async function verifyOTP() {
-        let inputOtp = document.getElementById('otpInput').value.trim();
-        const btn = document.getElementById('btnVerifyOtp');
         
-        if (inputOtp === "") { alert("Lütfen kodu girin!"); return; }
-
-        btn.innerText = "Doğrulanıyor... ⏳";
+        btn.innerText = "Kaydediliyor... ⏳";
         btn.disabled = true;
-
+        
         try {
             const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: pendingEmail,
-                    password: pendingPwd, // Sunucu bu şifreyi alıp SHA-256 ile hashleyecek!
-                    otp: inputOtp
-                })
+                body: JSON.stringify({ email: email, password: pwd })
             });
             const data = await response.json();
-
+            
             if (data.success) {
-                alert("Tebrikler! E-postanız doğrulandı ve hesabınız veritabanına kaydedildi.");
-                document.getElementById('otpInput').value = "";
+                alert("Kayıt Başarılı! Şimdi giriş yapabilirsiniz.");
                 document.getElementById('regEmail').value = "";
                 document.getElementById('regPassword').value = "";
                 document.getElementById('regPasswordConf').value = "";
-                toggleAuthMode('login'); 
+                toggleAuthMode('login');
             } else {
                 alert("Hata: " + data.message);
             }
         } catch (error) {
-            alert("Sunucuya bağlanılamadı!");
+            alert("Sunucuya bağlanılamadı. VS Code üzerinden sunucu çalışıyor mu?");
         } finally {
-            btn.innerText = "Doğrula ve Kaydı Tamamla ✅";
+            btn.innerText = "Devam Et 📩";
             btn.disabled = false;
         }
     }

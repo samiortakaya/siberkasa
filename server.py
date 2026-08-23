@@ -70,11 +70,12 @@ def serve_index():
     # Bu klasördeki index.html dosyasını ekrana basar
     return send_from_directory('.', 'index.html')
 
-# --- 1. ADIM: OTP TALEBİ ---
-@app.route('/send_otp', methods=['POST'])
-def handle_send_otp():
+# --- 1. ADIM: KAYIT OLMA (OTP OLMADAN DOĞRUDAN KAYIT) ---
+@app.route('/register', methods=['POST'])
+def handle_register():
     data = request.json
     email = data.get('email')
+    pwd = data.get('password')
     
     # Kullanıcı zaten var mı kontrol et
     conn = sqlite3.connect('siber_kasa.db')
@@ -83,46 +84,14 @@ def handle_send_otp():
     if cursor.fetchone():
         return jsonify({"success": False, "message": "Bu e-posta zaten kayıtlı!"})
     
-    # 6 haneli kod üret
-    otp = str(random.randint(100000, 999999))
-    pending_otps[email] = otp
-    
-    # Gerçek Maili Gönder (Şifre girildiyse çalışır)
-    if GENDERICI_SIFRE != "uygulama_sifren_buraya_gelecek":
-        mail_gitti_mi = send_email(email, otp)
-        if not mail_gitti_mi:
-            return jsonify({"success": False, "message": "Mail gönderilirken hata oluştu. Lütfen server.py'deki mail şifrenizi kontrol edin."})
-    
-    # Geliştirme aşamasında terminale de basalım görelim
-    print(f"\n[SISTEM UYARISI] {email} adresine gonderilen kod: {otp}\n")
-    
-    return jsonify({"success": True, "message": "Doğrulama kodu gönderildi!"})
-
-# --- 2. ADIM: KAYIT OLMA (OTP DOĞRULAYIP VERİTABANINA YAZMA) ---
-@app.route('/register', methods=['POST'])
-def handle_register():
-    data = request.json
-    email = data.get('email')
-    pwd = data.get('password')
-    otp_input = data.get('otp')
-    
-    # Kod doğru mu?
-    if pending_otps.get(email) != otp_input:
-        return jsonify({"success": False, "message": "Hatalı doğrulama kodu!"})
-    
-    # Kod doğruysa arka planda şifreyi Hashle (SHA-256)
+    # Şifreyi Hashle (SHA-256)
     hashed_pwd = hashlib.sha256(pwd.encode()).hexdigest()
     
     # Veritabanına kaydet
-    conn = sqlite3.connect('siber_kasa.db')
-    cursor = conn.cursor()
     cursor.execute("INSERT INTO users (email, password_hash, encrypted_vault) VALUES (?, ?, ?)", 
                    (email, hashed_pwd, "")) # İlk başta kasa boş
     conn.commit()
     conn.close()
-    
-    # Geçici hafızadan sil
-    del pending_otps[email]
     
     return jsonify({"success": True, "message": "Kayıt başarılı!"})
 
