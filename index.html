@@ -141,11 +141,17 @@
     <button class="info-btn" onclick="openInfo()">📖 Nasıl Kullanılır?</button>
 
     <div id="loginForm">
-        <h2> Giriş Yap</h2>
+        <h2>🔐 Giriş Yap</h2>
         <label>E-Posta Adresiniz:</label>
-        <input type="email" id="loginEmail" placeholder="ornek@mail.com">
+        <input type="email" id="loginEmail" placeholder="ornek@mail.com" onkeydown="if(event.key==='Enter') login()">
         <label>Şifreniz (Ana Kilit):</label>
-        <input type="password" id="loginPassword" placeholder="Hesap şifrenizi girin">
+        <input type="password" id="loginPassword" placeholder="Hesap şifrenizi girin" onkeydown="if(event.key==='Enter') login()">
+        
+        <div style="display: flex; align-items: center; gap: 8px; margin: -5px 0 15px 5px;">
+            <input type="checkbox" id="rememberMe" style="width: auto; margin: 0; cursor: pointer;" checked>
+            <label for="rememberMe" style="margin: 0; cursor: pointer; user-select: none; font-size: 13px; color: #555;">Beni Hatırla (Oturumu Açık Tut)</label>
+        </div>
+
         <button onclick="login()">Giriş Yap 🔓</button>
         <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
             Hesabınız yok mu? <a href="#" onclick="toggleAuthMode('register')">Buradan Kayıt Olun</a>
@@ -239,6 +245,8 @@
             
             if (data.success) {
                 alert("Kayıt Başarılı! Şimdi giriş yapabilirsiniz.");
+                document.getElementById('loginEmail').value = email;
+                document.getElementById('loginPassword').value = pwd;
                 document.getElementById('regEmail').value = "";
                 document.getElementById('regPassword').value = "";
                 document.getElementById('regPasswordConf').value = "";
@@ -247,7 +255,7 @@
                 alert("Hata: " + data.message);
             }
         } catch (error) {
-            alert("Sunucuya bağlanılamadı. VS Code üzerinden sunucu çalışıyor mu?");
+            alert("Sunucuya bağlanılamadı. Python sunucusu çalışıyor mu?");
         } finally {
             btn.innerText = "Devam Et 📩";
             btn.disabled = false;
@@ -255,11 +263,16 @@
     }
 
     // GİRİŞ YAPMA (LOGIN)
-    async function login() {
+    async function login(isAuto = false) {
         const email = document.getElementById('loginEmail').value.trim();
         const pwd = document.getElementById('loginPassword').value;
+        const rememberEl = document.getElementById('rememberMe');
+        const isRemember = rememberEl ? rememberEl.checked : true;
 
-        if (!email || !pwd) { alert("Lütfen E-posta ve şifrenizi girin!"); return; }
+        if (!email || !pwd) { 
+            if (!isAuto) alert("Lütfen E-posta ve şifrenizi girin!"); 
+            return; 
+        }
 
         try {
             const response = await fetch(`${API_URL}/login`, {
@@ -273,6 +286,15 @@
                 currentUserEmail = email;
                 currentMasterKey = pwd; // Kasayı AES ile çözmek için
                 document.getElementById('userWelcomeTitle').innerText = email.split('@')[0] + "'in Kasası";
+
+                // Oturum durumunu kaydet (Tarayıcı kapanıp açıldığında hatırlaması için)
+                if (isRemember) {
+                    localStorage.setItem('siber_kasa_session', JSON.stringify({ email: email, masterKey: pwd }));
+                    localStorage.setItem('siber_kasa_saved_email', email);
+                } else {
+                    sessionStorage.setItem('siber_kasa_session', JSON.stringify({ email: email, masterKey: pwd }));
+                    localStorage.removeItem('siber_kasa_session');
+                }
 
                 // Şifreli kasayı çöz
                 if (data.encrypted_vault) {
@@ -290,10 +312,18 @@
                 document.getElementById('dashboardScreen').style.display = 'flex';
                 renderVault();
             } else {
-                alert("Giriş Başarısız: " + data.message);
+                if (!isAuto) {
+                    alert("Giriş Başarısız: " + data.message);
+                } else {
+                    // Kayıtlı bilgiler geçersizse temizle
+                    localStorage.removeItem('siber_kasa_session');
+                    sessionStorage.removeItem('siber_kasa_session');
+                }
             }
         } catch (error) {
-            alert("Sunucuya bağlanılamadı. Terminalde python server.py çalışıyor mu?");
+            if (!isAuto) {
+                alert("Sunucuya bağlanılamadı. Python sunucusu çalışıyor mu?");
+            }
         }
     }
 
@@ -364,11 +394,53 @@
     }
 
     function logout() {
-        currentUserEmail = ""; currentMasterKey = ""; vaultData = []; 
+        currentUserEmail = ""; 
+        currentMasterKey = ""; 
+        vaultData = []; 
+        localStorage.removeItem('siber_kasa_session');
+        sessionStorage.removeItem('siber_kasa_session');
         document.getElementById('loginPassword').value = "";
         document.getElementById('dashboardScreen').style.display = 'none';
         document.getElementById('authScreen').style.display = 'block';
+        
+        // Hatırlanan e-posta varsa geri yükle
+        const savedEmail = localStorage.getItem('siber_kasa_saved_email');
+        if (savedEmail) {
+            document.getElementById('loginEmail').value = savedEmail;
+        }
     }
+
+    // Sayfa Yüklendiğinde Oturumu Otomatik Kontrol Et
+    async function initSession() {
+        const rawSession = localStorage.getItem('siber_kasa_session') || sessionStorage.getItem('siber_kasa_session');
+        if (rawSession) {
+            try {
+                const session = JSON.parse(rawSession);
+                if (session.email && session.masterKey) {
+                    document.getElementById('loginEmail').value = session.email;
+                    document.getElementById('loginPassword').value = session.masterKey;
+                    if (document.getElementById('rememberMe')) {
+                        document.getElementById('rememberMe').checked = (localStorage.getItem('siber_kasa_session') !== null);
+                    }
+                    await login(true);
+                    return;
+                }
+            } catch(e) {
+                console.error("Kayıtlı oturum okunamadı:", e);
+            }
+        }
+
+        // Aktif oturum yoksa kayıtlı e-postayı doldur
+        const savedEmail = localStorage.getItem('siber_kasa_saved_email');
+        if (savedEmail) {
+            document.getElementById('loginEmail').value = savedEmail;
+            if (document.getElementById('rememberMe')) {
+                document.getElementById('rememberMe').checked = true;
+            }
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', initSession);
 
     function checkPasswordStrength() {
         let pwd = document.getElementById("regPassword").value;
@@ -376,7 +448,7 @@
         if (pwd.length >= 6) strength += 25;
         if (pwd.length >= 10) strength += 25;
         if (/[A-Z]/.test(pwd)) strength += 25;
-        if (/[0-9!@#\$%\^&\*]/.test(pwd)) strength += 25;
+        if (/[0-9!@#\$%\^\*]/.test(pwd)) strength += 25;
         
         let bar = document.getElementById("pwdStrengthBar");
         bar.style.width = strength + "%";
