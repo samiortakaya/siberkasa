@@ -1877,7 +1877,8 @@
                 // Decrypt Vault
                 if (data.encrypted_vault) {
                     try {
-                        const bytes = CryptoJS.AES.decrypt(data.encrypted_vault, currentMasterKey);
+                        // Seçenek 2: Şifreleme/çözme işlemi e-posta ile yapılır (Parola sıfırlamada veri kaybolmaz)
+                        const bytes = CryptoJS.AES.decrypt(data.encrypted_vault, currentUserEmail);
                         const decryptedStr = bytes.toString(CryptoJS.enc.Utf8);
                         vaultData = JSON.parse(decryptedStr) || [];
                     } catch (e) {
@@ -1937,7 +1938,8 @@
     async function saveVaultToBackend() {
         try {
             const dataStr = JSON.stringify(vaultData);
-            const encrypted = CryptoJS.AES.encrypt(dataStr, currentMasterKey).toString();
+            // Seçenek 2: Şifreleme e-posta ile yapılır
+            const encrypted = CryptoJS.AES.encrypt(dataStr, currentUserEmail).toString();
 
             await fetch(`${API_URL}/save_vault`, {
                 method: 'POST',

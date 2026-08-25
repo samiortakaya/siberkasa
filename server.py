@@ -228,12 +228,12 @@ def reset_password():
     try:
         new_hashed_pwd = hashlib.sha256(new_password.encode()).hexdigest()
         
-        # Zero-Knowledge nedeniyle eski kasa verileri kullanılamaz!
-        # Veritabanında şifreyi güncelle ve encrypted_vault'u boşalt (Sıfırla)
+        # Seçenek 2 (Standart Web) uygulandığı için kasa verileri silinmeyecek.
+        # Veritabanında sadece şifreyi güncelle.
         conn, ph = get_db()
         cursor = conn.cursor()
-        cursor.execute(f"UPDATE users SET password_hash={ph}, encrypted_vault={ph} WHERE email={ph}", 
-                       (new_hashed_pwd, "", email))
+        cursor.execute(f"UPDATE users SET password_hash={ph} WHERE email={ph}", 
+                       (new_hashed_pwd, email))
         conn.commit()
         conn.close()
 
