@@ -104,6 +104,10 @@ def serve_index():
     # Bu klasördeki index.html dosyasını ekrana basar
     return send_from_directory('.', 'index.html')
 
+@app.route('/health')
+def health_check():
+    return jsonify({"status": "ok", "service": "siberkasa", "version": "2.0"}), 200
+
 # --- 1. ADIM: KAYIT OLMA ---
 @app.route('/register', methods=['POST'])
 def handle_register():

@@ -1,225 +1,1383 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siber Kasa: Parola Yöneticisi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>SİBER KASA • Quantum Security Vault</title>
     
+    <!-- Google Fonts: Space Grotesk, Outfit & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Pro & CryptoJS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+
     <style>
-        body { font-family: 'Nunito', sans-serif; margin: 0; padding: 20px 0; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            /* YENİ: Animasyonlu Liquid Arka Plan */
-            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #ffc3a0, #ffafbd);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #4a4a4a;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        :root {
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            /* Futuristic Obsidian Cyber Palette (Default Dark) */
+            --bg-deep: #030712;
+            --bg-surface: rgba(11, 17, 32, 0.7);
+            --bg-surface-hover: rgba(17, 27, 49, 0.85);
+            --bg-card: rgba(15, 23, 42, 0.65);
+            --bg-card-border: rgba(255, 255, 255, 0.08);
+            --bg-input: rgba(3, 7, 18, 0.6);
+            --modal-backdrop: rgba(2, 6, 23, 0.82);
+
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --neon-cyan: #00f2fe;
+            --neon-blue: #38bdf8;
+            --neon-purple: #a855f7;
+            --neon-emerald: #10b981;
+            --neon-rose: #f43f5e;
+            --neon-amber: #fbbf24;
+
+            --gradient-cyber: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7000ff 100%);
+            --gradient-emerald: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            --gradient-purple: linear-gradient(135deg, #c084fc 0%, #6366f1 100%);
+            --gradient-rose: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+
+            --glow-cyan: 0 0 25px rgba(0, 242, 254, 0.35);
+            --glow-emerald: 0 0 25px rgba(16, 185, 129, 0.35);
+            --glow-purple: 0 0 25px rgba(168, 85, 247, 0.35);
+            --shadow-subtle: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+            --radius-card: 20px;
+            --radius-pill: 9999px;
         }
 
-        /* YENİ: Romantic Mesaj Banner'ı */
-        .love-banner {
-            margin-top: 10px;
-            margin-bottom: 25px;
-            padding: 12px 30px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
-            font-size: 18px;
+        [data-theme="light"] {
+            --bg-deep: #f8fafc;
+            --bg-surface: rgba(255, 255, 255, 0.85);
+            --bg-surface-hover: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card-border: rgba(0, 0, 0, 0.08);
+            --bg-input: rgba(241, 245, 249, 0.8);
+            --modal-backdrop: rgba(15, 23, 42, 0.4);
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+
+            --neon-cyan: #0284c7;
+            --neon-emerald: #059669;
+            --shadow-subtle: 0 12px 30px -5px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 🌌 Futuristic Cyber Matrix & Nebula Canvas Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.07) 0%, transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+                linear-gradient(to bottom, transparent, var(--bg-deep));
+        }
+
+        .cyber-grid {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+
+        /* 🔮 Glowing Quantum Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.5;
+            animation: floatOrb 18s ease-in-out infinite alternate;
+        }
+        .orb-1 { width: 450px; height: 450px; background: #00f2fe; top: -100px; left: -100px; animation-duration: 20s; }
+        .orb-2 { width: 500px; height: 500px; background: #7c3aed; top: 30%; right: -150px; animation-duration: 25s; }
+        .orb-3 { width: 400px; height: 400px; background: #10b981; bottom: -100px; left: 30%; animation-duration: 22s; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 40px) scale(1.15); }
+            100% { transform: translate(-40px, 80px) scale(0.95); }
+        }
+
+        /* 🚀 TOP NAVIGATION */
+        .cyber-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            background: rgba(3, 7, 18, 0.7);
+            border-bottom: 1px solid var(--bg-card-border);
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        [data-theme="light"] .cyber-nav {
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .brand-logo-hex {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-cyber);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #030712;
+            font-size: 20px;
+            box-shadow: var(--glow-cyan);
+            position: relative;
+            transform: rotate(-4deg);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .brand-container:hover .brand-logo-hex {
+            transform: rotate(0deg) scale(1.08);
+        }
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 22px;
             font-weight: 800;
-            color: #d81b60;
-            text-align: center;
-            letter-spacing: 1px;
-            animation: pulse 2s infinite;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        @keyframes pulse { 
-            0% { transform: scale(1); } 
-            50% { transform: scale(1.05); } 
-            100% { transform: scale(1); } 
+        [data-theme="light"] .brand-title {
+            background: linear-gradient(135deg, #0f172a 30%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .brand-chip {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            text-transform: uppercase;
         }
 
-        /* YENİ: Liquid Glass Konteyner */
-        .container { 
-            background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 30px; 
-            padding: 35px 40px; 
-            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.3); 
+        .nav-right-tools {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-icon:hover {
+            color: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .user-hud-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px 6px 8px;
+            border-radius: var(--radius-pill);
+            background: var(--bg-surface);
+            border: 1px solid var(--bg-card-border);
+            backdrop-filter: blur(12px);
+        }
+        .user-hud-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gradient-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            color: #fff;
+        }
+        .user-hud-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* 📦 MAIN CONTENT CONTAINER */
+        .app-container {
+            position: relative;
             z-index: 10;
+            max-width: 1240px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 24px 80px;
+            flex: 1;
         }
 
-        .dashboard-container { width: 800px; display: flex; gap: 30px; }
-        h2 { text-align: center; color: #c2185b; font-weight: 800; margin-top: 0; margin-bottom: 25px; text-shadow: 0 2px 4px rgba(255,255,255,0.5);}
-        h3 { color: #d81b60; font-weight: 800; border-bottom: 2px solid rgba(255,255,255,0.5); padding-bottom: 10px; margin-top: 0;}
-        label { font-size: 13px; color: #555; font-weight: 800; margin-left: 5px; display: block; }
-        
-        /* Cam efektli inputlar */
-        input { 
-            width: 100%; padding: 14px 15px; margin: 8px 0 18px 0; 
-            border: 1px solid rgba(255, 255, 255, 0.8); 
-            border-radius: 16px; 
-            background: rgba(255, 255, 255, 0.5); 
-            color: #333; box-sizing: border-box; transition: all 0.3s ease; font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 700;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        /* 🔐 AUTHENTICATION PORTAL */
+        .auth-portal {
+            max-width: 460px;
+            margin: 50px auto;
+            background: var(--bg-surface);
+            backdrop-filter: blur(32px) saturate(200%);
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 28px;
+            padding: 40px 36px;
+            box-shadow: var(--shadow-subtle), 0 0 40px rgba(0, 242, 254, 0.08);
+            position: relative;
+            overflow: hidden;
+            animation: portalEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        input:focus { outline: none; border-color: #ff9a9e; background: rgba(255, 255, 255, 0.8); box-shadow: 0 0 12px rgba(255, 154, 158, 0.5); }
-        
-        /* Cam efektli Butonlar */
-        button { 
-            width: 100%; padding: 15px; 
-            background: linear-gradient(135deg, rgba(255,154,158,0.8) 0%, rgba(254,207,239,0.8) 100%); 
-            color: #c2185b; border: 1px solid rgba(255,255,255,0.5); 
-            border-radius: 16px; cursor: pointer; font-weight: 800; margin-top: 10px; font-size: 16px; font-family: 'Nunito', sans-serif; 
-            box-shadow: 0 8px 20px rgba(255, 154, 158, 0.4); transition: all 0.3s ease; 
-            backdrop-filter: blur(5px);
+        .auth-portal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gradient-cyber);
         }
-        button:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(255, 154, 158, 0.6); background: linear-gradient(135deg, rgba(255,154,158,1) 0%, rgba(254,207,239,1) 100%); }
-        .btn-save { background: linear-gradient(135deg, rgba(168, 230, 207, 0.8) 0%, rgba(220, 237, 193, 0.8) 100%); color: #2e7d32; box-shadow: 0 8px 20px rgba(168, 230, 207, 0.4); }
-        .btn-logout { background: rgba(255, 255, 255, 0.5); color: #d81b60; padding: 8px 15px; width: auto; font-size: 13px; margin: 0; box-shadow: none; float: right; border-radius: 12px;}
-        
-        #generatedPassword { font-size: 18px; text-align: center; color: #c2185b; font-weight: 800; letter-spacing: 1.5px; background: rgba(255,255,255,0.7); border: 2px dashed #ff9a9e;}
-        
-        /* Kasa Item'ları */
-        .vault-item { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8); border-radius: 16px; padding: 15px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
-        .vault-platform { font-weight: 800; color: #c2185b; font-size: 16px; }
-        .vault-password { background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 10px; font-family: monospace; font-size: 15px; color: #333; text-align: center; font-weight: bold; border: 1px solid rgba(255,154,158,0.3);}
-        .empty-vault { text-align: center; color: #666; margin-top: 50px; font-size: 14px; font-weight: 700;}
-        a { color: #c2185b; font-weight: bold; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        
-        @media (max-width: 850px) {
-            .dashboard-container { flex-direction: column; width: 90%; padding: 20px;}
-            .dashboard-container > div { border-left: none !important; padding: 0 !important; }
-            .container { width: 90%; max-width: 420px; padding: 25px 20px; }
+        @keyframes portalEntrance {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        
-        /* Modal Stili - Liquid Glass */
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);}
-        .modal-content { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); margin: 15% auto; padding: 35px; border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 30px; width: 90%; max-width: 450px; box-shadow: 0 20px 50px rgba(255, 105, 180, 0.3); }
-        .close-btn { color: #d81b60; float: right; font-size: 32px; font-weight: bold; cursor: pointer; transition: all 0.2s;}
-        .close-btn:hover { color: #ff758f; transform: scale(1.1);}
-        .info-btn { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(255,255,255,0.8); color: #d81b60; font-weight: 800; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(255,105,180,0.1); border-radius: 20px;}
-        .info-btn:hover { background: rgba(255, 255, 255, 0.7); }
+
+        .auth-segmented-switch {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            padding: 5px;
+            margin-bottom: 28px;
+        }
+        .auth-switch-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+        .auth-switch-btn.active {
+            background: var(--gradient-cyber);
+            color: #030712;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.35);
+        }
+
+        /* INPUTS & CONTROLS */
+        .hud-input-group {
+            margin-bottom: 20px;
+        }
+        .hud-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 2px;
+        }
+        .hud-input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .hud-input-icon {
+            position: absolute;
+            left: 16px;
+            color: var(--text-muted);
+            font-size: 16px;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+        .hud-input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: var(--bg-input);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 14.5px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+        .hud-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            background: rgba(0, 242, 254, 0.04);
+            box-shadow: 0 0 18px rgba(0, 242, 254, 0.25);
+        }
+        .hud-input:focus + .hud-input-icon {
+            color: var(--neon-cyan);
+        }
+        .hud-input.mono {
+            font-family: var(--font-mono);
+            letter-spacing: 0.5px;
+        }
+
+        .hud-eye-btn {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+        .hud-eye-btn:hover {
+            color: var(--neon-cyan);
+        }
+
+        .btn-cyber-primary {
+            width: 100%;
+            padding: 15px 24px;
+            border-radius: 16px;
+            border: none;
+            background: var(--gradient-cyber);
+            color: #030712;
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--glow-cyan);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cyber-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
+        }
+        .btn-cyber-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-cyber-secondary {
+            background: var(--bg-surface);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-primary);
+            padding: 11px 20px;
+            border-radius: 14px;
+            font-family: var(--font-display);
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-cyber-secondary:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 📊 METRIC HUD CARDS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .metric-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 22px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--neon-cyan);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: var(--shadow-subtle), 0 0 25px rgba(0, 242, 254, 0.1);
+        }
+        .metric-card:hover::before { opacity: 1; }
+
+        .metric-icon-pod {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .pod-total { background: rgba(0, 242, 254, 0.12); color: var(--neon-cyan); }
+        .pod-health { background: rgba(16, 185, 129, 0.12); color: var(--neon-emerald); }
+        .pod-weak { background: rgba(251, 191, 36, 0.12); color: var(--neon-amber); }
+        .pod-dup { background: rgba(244, 63, 94, 0.12); color: var(--neon-rose); }
+
+        .metric-detail h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .metric-detail .metric-num {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+
+        /* 🎛️ HUD COMMAND & FILTER DECK */
+        .hud-command-deck {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 24px;
+            padding: 18px 24px;
+            margin-bottom: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+        .search-quantum-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+        .search-quantum-input {
+            width: 100%;
+            padding: 13px 18px 13px 44px;
+            background: var(--bg-input);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-size: 14.5px;
+            transition: all 0.25s ease;
+        }
+        .search-quantum-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+        }
+
+        .category-filter-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .cat-chip {
+            background: var(--bg-surface);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-secondary);
+            padding: 9px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cat-chip:hover, .cat-chip.active {
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--neon-cyan);
+            border-color: rgba(0, 242, 254, 0.4);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 💎 QUANTUM VAULT GRID & CARDS */
+        .vault-quantum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .vault-item-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 24px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--shadow-subtle);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .vault-item-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 242, 254, 0.35);
+            box-shadow: var(--shadow-subtle), 0 0 30px rgba(0, 242, 254, 0.15);
+        }
+
+        /* REAL APP LOGO EMBED */
+        .app-badge-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .app-identity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .app-logo-frame {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--bg-card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+        .vault-item-card:hover .app-logo-frame {
+            transform: scale(1.08);
+        }
+        .app-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .app-logo-fallback {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--neon-cyan);
+        }
+
+        .app-text-info .app-name {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .app-text-info .app-category-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--bg-card-border);
+            display: inline-block;
+            margin-top: 3px;
+        }
+
+        .vault-field-strip {
+            background: var(--bg-input);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 14px;
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .field-label-tiny {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .field-val-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-all;
+        }
+        .field-val-text.mono {
+            font-family: var(--font-mono);
+            letter-spacing: 1px;
+        }
+
+        .card-footer-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 🪟 QUANTUM GLASS MODALS */
+        .quantum-modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--modal-backdrop);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: modalFadeIn 0.25s ease;
+        }
+        .quantum-modal-dialog {
+            background: var(--bg-surface);
+            backdrop-filter: blur(36px) saturate(200%);
+            -webkit-backdrop-filter: blur(36px) saturate(200%);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.1);
+            position: relative;
+            animation: modalPopUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPopUp { from { transform: scale(0.94) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+        .modal-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--bg-card-border);
+        }
+        .modal-top-bar h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 🔔 TOAST FLOATING HUD */
+        #toastDock {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .hud-toast {
+            pointer-events: auto;
+            min-width: 300px;
+            max-width: 420px;
+            background: var(--bg-surface);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--bg-card-border);
+            border-left: 4px solid var(--neon-cyan);
+            border-radius: 16px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .hud-toast.success { border-left-color: var(--neon-emerald); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), var(--glow-emerald); }
+        .hud-toast.error { border-left-color: var(--neon-rose); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(244, 63, 94, 0.3); }
+        .hud-toast.info { border-left-color: var(--neon-purple); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), var(--glow-purple); }
+
+        @keyframes toastSlideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastSlideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .cyber-nav { padding: 12px 18px; }
+            .brand-title { font-size: 18px; }
+            .app-container { padding: 18px 14px 60px; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            .vault-quantum-grid { grid-template-columns: 1fr; }
+            .hud-command-deck { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
 
-<div class="love-banner"></div>
+<!-- Ambient Particles & Nebula Background -->
+<div class="cyber-bg">
+    <div class="cyber-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
 
-<!-- NASIL KULLANILIR MODALI -->
-<div id="infoModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeInfo()">&times;</span>
-        <h2 style="font-size: 24px; text-align: left; margin-bottom: 15px;">🛡️ Siber Kasa'ya Hoş Geldin!</h2>
-        <p style="font-size: 14.5px; font-weight: 600; color: #555; line-height: 1.6; margin-bottom: 20px;">
-            Bu uygulama, seni hesap çalınmalarından korumak için tasarlandı. "Acaba şifrem çalındı mı?" korkusuna son!
-        </p>
-        <ul style="font-size: 14px; font-weight: 600; color: #666; line-height: 1.8; padding-left: 20px;">
-            <li>🔐 <b>Kayıt Ol:</b> Unutmayacağın tek bir <u style="color:#d81b60">Ana Şifre</u> belirle.</li>
-            <li>✨ <b>Üret:</b> Renk ve isimlerle <b>kırılması imkansız</b> (Leet Speak) parolalar üret.</li>
-            <li>📥 <b>Stokla:</b> Instagram, E-Devlet, Banka şifrelerini kasanıza kaydedin.</li>
-        </ul>
-        <div style="margin-top: 25px; padding: 15px; background: rgba(255, 255, 255, 0.7); border-radius: 12px; font-size: 13px; font-weight: 700; color: #d81b60; text-align: center;">
-            <span style="font-size: 18px;">🧠 Sıfır Bilgi Mimarisi</span><br>
-            Parolalarınız AES-256 ile cihazınızda şifrelenir. Biz bile göremeyiz!
+<!-- 🚀 TOP NAVIGATION -->
+<header class="cyber-nav">
+    <a href="#" class="brand-container">
+        <div class="brand-logo-hex">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+            <div class="brand-title">SİBER KASA</div>
+        </div>
+        <span class="brand-chip">QUANTUM v3.0</span>
+    </a>
+
+    <div class="nav-right-tools">
+        <!-- Theme Toggle -->
+        <button class="btn-icon" onclick="toggleTheme()" id="themeToggleBtn" title="Temayı Değiştir">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- User Controls (When Logged In) -->
+        <div id="navUserSection" style="display: none; align-items: center; gap: 10px;">
+            <div class="user-hud-badge">
+                <div class="user-hud-avatar" id="navUserAvatar">U</div>
+                <span class="user-hud-name" id="navUserEmail">kullanici@mail.com</span>
+            </div>
+            <button class="btn-icon" onclick="openAuditModal()" title="Kasa Güvenlik Analizi">
+                <i class="fa-solid fa-heart-pulse" style="color: var(--neon-emerald)"></i>
+            </button>
+            <button class="btn-icon" onclick="logout()" title="Kasayı Kilitle ve Çık" style="color: var(--neon-rose)">
+                <i class="fa-solid fa-lock"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- 📦 APP MAIN CONTAINER -->
+<main class="app-container">
+
+    <!-- 1. AUTHENTICATION PORTAL -->
+    <div id="authScreen" class="auth-portal">
+        <div class="auth-segmented-switch">
+            <button class="auth-switch-btn active" id="tabLogin" onclick="switchAuthTab('login')">
+                <i class="fa-solid fa-unlock-keyhole"></i> Giriş Yap
+            </button>
+            <button class="auth-switch-btn" id="tabRegister" onclick="switchAuthTab('register')">
+                <i class="fa-solid fa-user-plus"></i> Hesap Aç
+            </button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginSection">
+            <div class="hud-input-group">
+                <label class="hud-label">E-Posta Adresiniz</label>
+                <div class="hud-input-box">
+                    <i class="fa-solid fa-envelope hud-input-icon"></i>
+                    <input type="email" id="loginEmail" class="hud-input" placeholder="adiniz@ornek.com" onkeydown="if(event.key==='Enter') login()">
+                </div>
+            </div>
+
+            <div class="hud-input-group">
+                <label class="hud-label">Master Anahtar Şifresi</label>
+                <div class="hud-input-box">
+                    <i class="fa-solid fa-key hud-input-icon"></i>
+                    <input type="password" id="loginPassword" class="hud-input mono" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') login()">
+                    <button class="hud-eye-btn" type="button" onclick="togglePasswordVisibility('loginPassword', this)">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0 24px 2px;">
+                <input type="checkbox" id="rememberMe" style="accent-color: var(--neon-cyan); width: 18px; height: 18px; cursor: pointer;" checked>
+                <label for="rememberMe" style="font-size: 13.5px; color: var(--text-secondary); cursor: pointer; user-select: none;">Beni Hatırla (Oturumu Koru)</label>
+            </div>
+
+            <button class="btn-cyber-primary" onclick="login()" id="btnLoginSubmit">
+                <span>KASAYI AÇ</span> <i class="fa-solid fa-shield-halved"></i>
+            </button>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerSection" style="display: none;">
+            <div class="hud-input-group">
+                <label class="hud-label">E-Posta Adresiniz</label>
+                <div class="hud-input-box">
+                    <i class="fa-solid fa-envelope hud-input-icon"></i>
+                    <input type="email" id="regEmail" class="hud-input" placeholder="adiniz@ornek.com">
+                </div>
+            </div>
+
+            <div class="hud-input-group">
+                <label class="hud-label">
+                    <span>Güçlü Bir Anahtar Şifre Belirleyin</span>
+                    <span id="pwdStrengthText" style="font-size: 11.5px; font-weight: 700; color: var(--text-muted);">Zayıf</span>
+                </label>
+                <div class="hud-input-box">
+                    <i class="fa-solid fa-shield-halved hud-input-icon"></i>
+                    <input type="password" id="regPassword" class="hud-input mono" placeholder="Kasanızı kilitleyecek şifre" oninput="checkStrength()">
+                    <button class="hud-eye-btn" type="button" onclick="togglePasswordVisibility('regPassword', this)">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <!-- Strength Line -->
+                <div style="height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-top: 8px; overflow: hidden;">
+                    <div id="strengthBarFill" style="height: 100%; width: 0%; background: var(--neon-rose); transition: width 0.3s ease, background 0.3s ease;"></div>
+                </div>
+            </div>
+
+            <div class="hud-input-group">
+                <label class="hud-label">Şifre Tekrar</label>
+                <div class="hud-input-box">
+                    <i class="fa-solid fa-check-double hud-input-icon"></i>
+                    <input type="password" id="regPasswordConf" class="hud-input mono" placeholder="Şifrenizi onaylayın">
+                </div>
+            </div>
+
+            <button class="btn-cyber-primary" onclick="requestRegistration()" id="btnRegisterSubmit">
+                <span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. QUANTUM DASHBOARD (Kasa Yönetim Ekranı) -->
+    <div id="dashboardScreen" style="display: none;">
+
+        <!-- 📊 Metrics HUD Overview -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon-pod pod-total"><i class="fa-solid fa-key"></i></div>
+                <div class="metric-detail">
+                    <h4>Toplam Parola</h4>
+                    <div class="metric-num" id="statTotalCount">0</div>
+                </div>
+            </div>
+            <div class="metric-card" style="cursor: pointer;" onclick="openAuditModal()">
+                <div class="metric-icon-pod pod-health"><i class="fa-solid fa-shield-check"></i></div>
+                <div class="metric-detail">
+                    <h4>Kasa Sağlığı</h4>
+                    <div class="metric-num" id="statHealthScore">%100</div>
+                </div>
+            </div>
+            <div class="metric-card" style="cursor: pointer;" onclick="filterWeakPasswords()">
+                <div class="metric-icon-pod pod-weak"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="metric-detail">
+                    <h4>Zayıf Parolalar</h4>
+                    <div class="metric-num" id="statWeakCount">0</div>
+                </div>
+            </div>
+            <div class="metric-card" style="cursor: pointer;" onclick="filterDuplicatePasswords()">
+                <div class="metric-icon-pod pod-dup"><i class="fa-solid fa-clone"></i></div>
+                <div class="metric-detail">
+                    <h4>Tekrar Edenler</h4>
+                    <div class="metric-num" id="statDupCount">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🎛️ HUD Command Deck (Search & Action Buttons) -->
+        <div class="hud-command-deck">
+            <div class="search-quantum-box">
+                <i class="fa-solid fa-magnifying-glass hud-input-icon" style="top: 15px; left: 16px;"></i>
+                <input type="text" class="search-quantum-input" id="searchBox" placeholder="Platform, e-posta veya notlarda anlık ara..." oninput="handleSearch()">
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn-cyber-secondary" onclick="openGeneratorModal()">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-cyan)"></i> Parola Üret
+                </button>
+                <button class="btn-cyber-secondary" onclick="openBackupModal()">
+                    <i class="fa-solid fa-file-export" style="color: var(--neon-purple)"></i> Yedekle / Aktar
+                </button>
+                <button class="btn-cyber-primary" style="width: auto; padding: 12px 24px;" onclick="openAddVaultModal()">
+                    <i class="fa-solid fa-plus"></i> Yeni Ekle
+                </button>
+            </div>
+        </div>
+
+        <!-- Category Chips Bar -->
+        <div class="category-filter-bar" id="categoryFilterBar">
+            <button class="cat-chip active" onclick="setCategoryFilter('all')"><i class="fa-solid fa-border-all"></i> Tümü</button>
+            <button class="cat-chip" onclick="setCategoryFilter('social')"><i class="fa-solid fa-globe"></i> Sosyal Medya</button>
+            <button class="cat-chip" onclick="setCategoryFilter('finance')"><i class="fa-solid fa-credit-card"></i> Finans & Banka</button>
+            <button class="cat-chip" onclick="setCategoryFilter('work')"><i class="fa-solid fa-briefcase"></i> İş & Yazılım</button>
+            <button class="cat-chip" onclick="setCategoryFilter('email')"><i class="fa-solid fa-envelope"></i> E-Posta</button>
+            <button class="cat-chip" onclick="setCategoryFilter('general')"><i class="fa-solid fa-cube"></i> Genel</button>
+        </div>
+
+        <!-- 💎 Quantum Vault Items Grid -->
+        <div class="vault-quantum-grid" id="vaultContainer">
+            <!-- Dynamic Vault Cards Injected Here -->
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- 1. ADD / EDIT VAULT ITEM MODAL -->
+<div class="quantum-modal-backdrop" id="vaultModal">
+    <div class="quantum-modal-dialog">
+        <div class="modal-top-bar">
+            <h3 id="vaultModalTitle">
+                <i class="fa-solid fa-key" style="color: var(--neon-cyan)"></i> Yeni Parola Kaydı
+            </h3>
+            <button class="btn-icon" onclick="closeModal('vaultModal')">&times;</button>
+        </div>
+
+        <input type="hidden" id="editItemIndex" value="-1">
+
+        <div class="hud-input-group">
+            <label class="hud-label">Platform / Uygulama Adı</label>
+            <div class="hud-input-box">
+                <i class="fa-solid fa-tag hud-input-icon"></i>
+                <input type="text" id="vaultPlatform" class="hud-input" placeholder="Örn: Instagram, Facebook, GitHub, Google..." oninput="previewAppLogoOnType(this.value)">
+            </div>
+            <!-- Live Logo Preview Pill -->
+            <div id="liveLogoPreviewContainer" style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 6px 12px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--bg-card-border);">
+                <div class="app-logo-frame" id="liveLogoFrame" style="width: 32px; height: 32px; border-radius: 8px;">
+                    <i class="fa-solid fa-cube" style="color: var(--neon-cyan); font-size: 14px;"></i>
+                </div>
+                <span id="liveLogoText" style="font-size: 12.5px; color: var(--text-secondary); font-weight: 600;">Otomatik logo algılayıcı aktif</span>
+            </div>
+        </div>
+
+        <div class="hud-input-group">
+            <label class="hud-label">Kategori</label>
+            <div class="hud-input-box">
+                <i class="fa-solid fa-layer-group hud-input-icon"></i>
+                <select id="vaultCategory" class="hud-input" style="appearance: none; cursor: pointer;">
+                    <option value="general">🔑 Genel</option>
+                    <option value="social">🌐 Sosyal Medya</option>
+                    <option value="finance">💳 Finans & Bankacılık</option>
+                    <option value="work">💼 İş & Yazılım</option>
+                    <option value="email">✉️ E-Posta Servisi</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="hud-input-group">
+            <label class="hud-label">Kullanıcı Adı veya E-Posta</label>
+            <div class="hud-input-box">
+                <i class="fa-solid fa-user hud-input-icon"></i>
+                <input type="text" id="vaultUsername" class="hud-input" placeholder="kullanici_adi veya ornek@mail.com">
+            </div>
+        </div>
+
+        <div class="hud-input-group">
+            <div class="hud-label">
+                <span>Parola</span>
+                <button type="button" style="background: none; border: none; color: var(--neon-cyan); font-size: 12.5px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 4px;" onclick="quickGeneratePasswordForModal()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Güçlü Üret
+                </button>
+            </div>
+            <div class="hud-input-box">
+                <i class="fa-solid fa-lock hud-input-icon"></i>
+                <input type="password" id="vaultPassword" class="hud-input mono" placeholder="Parolanızı girin">
+                <button class="hud-eye-btn" type="button" onclick="togglePasswordVisibility('vaultPassword', this)">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="hud-input-group">
+            <label class="hud-label">Web Sitesi Adresi (Opsiyonel)</label>
+            <div class="hud-input-box">
+                <i class="fa-solid fa-link hud-input-icon"></i>
+                <input type="url" id="vaultUrl" class="hud-input" placeholder="https://instagram.com">
+            </div>
+        </div>
+
+        <div class="hud-input-group">
+            <label class="hud-label">Özel Notlar (Opsiyonel)</label>
+            <div class="hud-input-box">
+                <i class="fa-solid fa-comment-dots hud-input-icon"></i>
+                <input type="text" id="vaultNotes" class="hud-input" placeholder="Kurtarma kodları, PIN vb.">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 26px;">
+            <button class="btn-cyber-secondary" style="flex: 1; justify-content: center;" onclick="closeModal('vaultModal')">İptal</button>
+            <button class="btn-cyber-primary" style="flex: 2;" onclick="saveVaultItem()">KAYDET 💾</button>
         </div>
     </div>
 </div>
 
-<!-- 1. KULLANICI GİRİŞ/KAYIT EKRANI -->
-<div class="container" id="authScreen" style="width: 90%; max-width: 420px;">
-    
-    <button class="info-btn" onclick="openInfo()">📖 Nasıl Kullanılır?</button>
-
-    <div id="loginForm">
-        <h2>🔐 Giriş Yap</h2>
-        <label>E-Posta Adresiniz:</label>
-        <input type="email" id="loginEmail" placeholder="ornek@mail.com" onkeydown="if(event.key==='Enter') login()">
-        <label>Şifreniz (Ana Kilit):</label>
-        <input type="password" id="loginPassword" placeholder="Hesap şifrenizi girin" onkeydown="if(event.key==='Enter') login()">
-        
-        <div style="display: flex; align-items: center; gap: 8px; margin: -5px 0 15px 5px;">
-            <input type="checkbox" id="rememberMe" style="width: auto; margin: 0; cursor: pointer;" checked>
-            <label for="rememberMe" style="margin: 0; cursor: pointer; user-select: none; font-size: 13px; color: #555;">Beni Hatırla (Oturumu Açık Tut)</label>
+<!-- 2. ADVANCED PASSWORD GENERATOR MODAL -->
+<div class="quantum-modal-backdrop" id="genModal">
+    <div class="quantum-modal-dialog">
+        <div class="modal-top-bar">
+            <h3>
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-cyan)"></i> Kuantum Parola Üretici
+            </h3>
+            <button class="btn-icon" onclick="closeModal('genModal')">&times;</button>
         </div>
 
-        <button onclick="login()">Giriş Yap 🔓</button>
-        <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
-            Hesabınız yok mu? <a href="#" onclick="toggleAuthMode('register')">Buradan Kayıt Olun</a>
-        </p>
-    </div>
-
-    <div id="registerForm" style="display:none;">
-        <h2>✨ Yeni Hesap Aç</h2>
-        <label>E-Posta Adresiniz:</label>
-        <input type="email" id="regEmail" placeholder="ornek@mail.com">
-        <label>Güçlü Bir Şifre Belirleyin:</label>
-        <input type="password" id="regPassword" placeholder="Kasanızı kilitleyecek şifre" onkeyup="checkPasswordStrength()">
-        <div style="height: 6px; background: rgba(255,255,255,0.5); border-radius: 5px; margin-top: -10px; margin-bottom: 10px; overflow: hidden;">
-            <div id="pwdStrengthBar" style="height: 100%; width: 0%; background: #ff4d4d; transition: width 0.3s ease, background 0.3s ease;"></div>
+        <!-- Generated Display Box -->
+        <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); border-radius: 18px; padding: 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--glow-cyan);">
+            <span id="genResultText" style="font-family: var(--font-mono); font-size: 19px; font-weight: 700; color: var(--neon-cyan); word-break: break-all; user-select: all;">Parola Üretiliyor...</span>
+            <div style="display: flex; gap: 6px;">
+                <button class="btn-icon" onclick="generateAdvancedPassword()" title="Yeniden Üret">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <button class="btn-icon" onclick="copyGeneratedPassword()" title="Kopyala">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+            </div>
         </div>
-        <label>Şifre Tekrar:</label>
-        <input type="password" id="regPasswordConf" placeholder="Aynı şifreyi tekrar girin">
-        <button onclick="requestRegistration()" id="btnRequestReg">Devam Et 📩</button>
-        <p style="text-align:center; font-size:13px; margin-top:20px; color:#888;">
-            Zaten hesabınız var mı? <a href="#" onclick="toggleAuthMode('login')">Giriş Yapın</a>
-        </p>
+
+        <!-- Slider -->
+        <div style="margin: 20px 0;">
+            <div class="hud-label">
+                <span>Parola Uzunluğu</span>
+                <span id="genLengthDisplay" style="font-family: var(--font-mono); font-weight: 700; color: var(--neon-cyan);">16 Karakter</span>
+            </div>
+            <input type="range" min="8" max="48" value="16" style="width: 100%; height: 6px; border-radius: 5px; accent-color: var(--neon-cyan); cursor: pointer;" id="genLengthSlider" oninput="updateGenLength(this.value)">
+        </div>
+
+        <!-- Checkboxes -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
+                <input type="checkbox" id="genUpper" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Büyük Harf (A-Z)
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
+                <input type="checkbox" id="genLower" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Küçük Harf (a-z)
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
+                <input type="checkbox" id="genNumbers" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Rakamlar (0-9)
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
+                <input type="checkbox" id="genSymbols" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Semboller (!@#$%)
+            </label>
+        </div>
+
+        <div style="margin-top: 24px;">
+            <button class="btn-cyber-primary" onclick="useGeneratedInAddModal()">
+                <span>BU PAROLAYI KASAYA AKTAR</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
     </div>
 </div>
 
-<!-- 2. ANA YÖNETİM EKRANI (Başlangıçta Gizli) -->
-<div class="container dashboard-container" id="dashboardScreen" style="display: none;">
-    <div style="flex: 1; padding-right: 15px;">
-        <h3>✨ Yeni Parola Üret</h3>
-        <label>Platform (Örn: Instagram):</label>
-        <input type="text" id="platform" placeholder="Hangi site/uygulama?">
-        <label>Renk:</label>
-        <input type="text" id="color" placeholder="Renk girin">
-        <label>Unutmadığınız İsim:</label>
-        <input type="text" id="name" placeholder="Bir isim girin">
-        <label>Sayı:</label>
-        <input type="number" id="number" placeholder="Sayı girin">
+<!-- 3. VAULT HEALTH AUDIT MODAL -->
+<div class="quantum-modal-backdrop" id="auditModal">
+    <div class="quantum-modal-dialog">
+        <div class="modal-top-bar">
+            <h3>
+                <i class="fa-solid fa-shield-halved" style="color: var(--neon-emerald)"></i> Kasa Sağlık Denetimi
+            </h3>
+            <button class="btn-icon" onclick="closeModal('auditModal')">&times;</button>
+        </div>
 
-        <button onclick="generateCustomPassword()">Formülle Üret ✨</button>
-        <input type="text" id="generatedPassword" readonly placeholder="Üretilen parola">
-        <button class="btn-save" onclick="saveToVault()">KASAMA KAYDET 📥</button>
-    </div>
+        <div id="auditContent">
+            <!-- Dynamic Audit List -->
+        </div>
 
-    <div style="flex: 1; padding-left: 15px; border-left: 2px dashed #ffe4e8;">
-        <button class="btn-logout" onclick="logout()">Kilitle ve Çık 🔒</button>
-        <h3 id="userWelcomeTitle">Kayıtlı Parolalarım</h3>
-        <div id="vaultList" style="max-height: 450px; overflow-y: auto; padding-right: 10px;"></div>
+        <div style="margin-top: 24px;">
+            <button class="btn-cyber-primary" onclick="closeModal('auditModal')">Kapat</button>
+        </div>
     </div>
 </div>
 
+<!-- 4. BACKUP & EXPORT/IMPORT MODAL -->
+<div class="quantum-modal-backdrop" id="backupModal">
+    <div class="quantum-modal-dialog">
+        <div class="modal-top-bar">
+            <h3>
+                <i class="fa-solid fa-database" style="color: var(--neon-purple)"></i> Kasa Yedekleme & Aktarım
+            </h3>
+            <button class="btn-icon" onclick="closeModal('backupModal')">&times;</button>
+        </div>
+
+        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 22px;">
+            Kasanızı şifreli veya taşınabilir JSON dosyası olarak tek tıkla cihazınıza indirebilir veya mevcut bir yedeği kasanıza geri yükleyebilirsiniz.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+            <button class="btn-cyber-secondary" style="justify-content: center; padding: 15px;" onclick="exportVaultBackup()">
+                <i class="fa-solid fa-file-arrow-down" style="color: var(--neon-emerald); font-size: 18px;"></i>
+                <span>Şifreli Kasa Yedeğini İndir (.json)</span>
+            </button>
+
+            <label class="btn-cyber-secondary" style="justify-content: center; padding: 15px; cursor: pointer;">
+                <i class="fa-solid fa-file-arrow-up" style="color: var(--neon-cyan); font-size: 18px;"></i>
+                <span>Yedekten Geri Yükle (İçe Aktar)</span>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importVaultBackup(event)">
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- 🔔 FLOATING TOAST DOCK -->
+<div id="toastDock"></div>
+
+<!-- ==================== JAVASCRIPT LOGIC ==================== -->
 <script>
-    function openInfo() { document.getElementById('infoModal').style.display = 'block'; }
-    function closeInfo() { document.getElementById('infoModal').style.display = 'none'; }
-    window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) closeInfo(); }
-    // PYTHON SUNUCUMUZUN ADRESİ (Artık aynı yerden yayınlanıyor)
     const API_URL = "";
 
-    let currentUserEmail = ""; 
-    let currentMasterKey = ""; 
-    let vaultData = []; 
+    // Global State
+    let currentUserEmail = "";
+    let currentMasterKey = "";
+    let vaultData = [];
+    let currentCategoryFilter = "all";
+    let searchQuery = "";
 
-    function toggleAuthMode(mode) {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'none';
+    // --- 1. TOAST NOTIFICATION SYSTEM ---
+    function showToast(message, type = "success") {
+        const dock = document.getElementById("toastDock");
+        const toast = document.createElement("div");
+        toast.className = `hud-toast ${type}`;
+        
+        let icon = "fa-circle-check";
+        if (type === "error") icon = "fa-circle-xmark";
+        if (type === "warning") icon = "fa-triangle-exclamation";
+        if (type === "info") icon = "fa-circle-info";
 
-        if (mode === 'register') {
-            document.getElementById('registerForm').style.display = 'block';
-        } else if (mode === 'login') {
-            document.getElementById('loginForm').style.display = 'block';
+        toast.innerHTML = `<i class="fa-solid ${icon}" style="font-size: 18px;"></i> <span>${message}</span>`;
+        dock.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = "toastSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards";
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+    }
+
+    // --- 2. THEME CONTROLLER ---
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("siber_theme", newTheme);
+        
+        const btn = document.getElementById("themeToggleBtn");
+        btn.innerHTML = newTheme === "dark" ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun" style="color:#f59e0b"></i>';
+    }
+
+    function initTheme() {
+        const savedTheme = localStorage.getItem("siber_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        const btn = document.getElementById("themeToggleBtn");
+        btn.innerHTML = savedTheme === "dark" ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun" style="color:#f59e0b"></i>';
+    }
+
+    // --- 3. ADVANCED LOGO DETECTOR (Direct High-Res CDN & Favicon) ---
+    function getApplicationLogo(platformName, websiteUrl = "") {
+        const name = (platformName || "").toLowerCase().trim();
+        
+        // 1. Check direct popular high-res logos (Vector / SVG / High-Res PNG)
+        const brandMap = {
+            instagram: { url: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg", name: "Instagram" },
+            facebook: { url: "https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg", name: "Facebook" },
+            twitter: { url: "https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg", name: "X (Twitter)" },
+            x: { url: "https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg", name: "X" },
+            github: { url: "https://github.githubassets.com/favicons/favicon.svg", name: "GitHub" },
+            google: { url: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg", name: "Google" },
+            gmail: { url: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg", name: "Gmail" },
+            netflix: { url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", name: "Netflix" },
+            spotify: { url: "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg", name: "Spotify" },
+            discord: { url: "https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png", name: "Discord" },
+            youtube: { url: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg", name: "YouTube" },
+            linkedin: { url: "https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg", name: "LinkedIn" },
+            amazon: { url: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg", name: "Amazon" },
+            tiktok: { url: "https://sf-tb-sg.ibytedtos.com/obj/sound-va-sg/common/tiktok_share_icon.png", name: "TikTok" },
+            steam: { url: "https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg", name: "Steam" },
+            twitch: { url: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Twitch_Glitch_Logo_Purple.svg", name: "Twitch" },
+            reddit: { url: "https://www.redditstatic.com/shreddit/assets/favicon/192x192.png", name: "Reddit" },
+            pinterest: { url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png", name: "Pinterest" },
+            telegram: { url: "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg", name: "Telegram" },
+            whatsapp: { url: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg", name: "WhatsApp" },
+            apple: { url: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg", name: "Apple" },
+            microsoft: { url: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg", name: "Microsoft" },
+            chatgpt: { url: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", name: "ChatGPT" },
+            openai: { url: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", name: "OpenAI" },
+            binance: { url: "https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png", name: "Binance" },
+            papara: { url: "https://www.google.com/s2/favicons?domain=papara.com&sz=128", name: "Papara" },
+            garanti: { url: "https://www.google.com/s2/favicons?domain=garantibbva.com.tr&sz=128", name: "Garanti BBVA" },
+            isbank: { url: "https://www.google.com/s2/favicons?domain=isbank.com.tr&sz=128", name: "İş Bankası" },
+            yapikredi: { url: "https://www.google.com/s2/favicons?domain=yapikredi.com.tr&sz=128", name: "Yapı Kredi" },
+            akbank: { url: "https://www.google.com/s2/favicons?domain=akbank.com&sz=128", name: "Akbank" },
+            ziraat: { url: "https://www.google.com/s2/favicons?domain=ziraatbank.com.tr&sz=128", name: "Ziraat Bankası" },
+            enpara: { url: "https://www.google.com/s2/favicons?domain=qnb.com.tr&sz=128", name: "Enpara" },
+            trendyol: { url: "https://www.google.com/s2/favicons?domain=trendyol.com&sz=128", name: "Trendyol" },
+            hepsiburada: { url: "https://www.google.com/s2/favicons?domain=hepsiburada.com&sz=128", name: "Hepsiburada" },
+            notion: { url: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png", name: "Notion" },
+            figma: { url: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg", name: "Figma" },
+            canva: { url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg", name: "Canva" },
+            zoom: { url: "https://www.google.com/s2/favicons?domain=zoom.us&sz=128", name: "Zoom" }
+        };
+
+        for (let key in brandMap) {
+            if (name.includes(key)) {
+                return `<img src="${brandMap[key].url}" class="app-logo-img" alt="${platformName}" onerror="this.parentElement.innerHTML='<span class=\\'app-logo-fallback\\'>${(platformName||'K').charAt(0).toUpperCase()}</span>'">`;
+            }
+        }
+
+        // 2. If website URL or domain is provided, fetch high-res favicon
+        let domain = "";
+        if (websiteUrl) {
+            try {
+                domain = new URL(websiteUrl.startsWith("http") ? websiteUrl : "https://" + websiteUrl).hostname;
+            } catch (e) {
+                domain = "";
+            }
+        } else if (name.includes(".")) {
+            domain = name;
+        }
+
+        if (domain) {
+            return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" class="app-logo-img" alt="${platformName}" onerror="this.parentElement.innerHTML='<span class=\\'app-logo-fallback\\'>${(platformName||'K').charAt(0).toUpperCase()}</span>'">`;
+        }
+
+        // 3. Fallback: Cyber Monogram Letter
+        const initial = (platformName || "K").charAt(0).toUpperCase();
+        return `<span class="app-logo-fallback">${initial}</span>`;
+    }
+
+    function previewAppLogoOnType(val) {
+        const frame = document.getElementById("liveLogoFrame");
+        const text = document.getElementById("liveLogoText");
+        if (!val.trim()) {
+            frame.innerHTML = '<i class="fa-solid fa-cube" style="color: var(--neon-cyan); font-size: 14px;"></i>';
+            text.innerText = "Otomatik logo algılayıcı aktif";
+            return;
+        }
+
+        frame.innerHTML = getApplicationLogo(val);
+        text.innerText = `${val} logosu algılandı`;
+    }
+
+    // --- 4. AUTH FLOW ---
+    function switchAuthTab(tab) {
+        const isLogin = tab === 'login';
+        document.getElementById('tabLogin').classList.toggle('active', isLogin);
+        document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+        document.getElementById('loginSection').style.display = isLogin ? 'block' : 'none';
+        document.getElementById('registerSection').style.display = isLogin ? 'none' : 'block';
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        btn.innerHTML = isPassword ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+    }
+
+    function checkStrength() {
+        const pwd = document.getElementById("regPassword").value;
+        let score = 0;
+        if (pwd.length >= 8) score += 25;
+        if (/[A-Z]/.test(pwd)) score += 25;
+        if (/[0-9]/.test(pwd)) score += 25;
+        if (/[^A-Za-z0-9]/.test(pwd)) score += 25;
+
+        const fill = document.getElementById("strengthBarFill");
+        const text = document.getElementById("pwdStrengthText");
+        fill.style.width = score + "%";
+
+        if (score <= 25) {
+            fill.style.background = "var(--neon-rose)";
+            text.innerText = "Zayıf";
+            text.style.color = "var(--neon-rose)";
+        } else if (score <= 75) {
+            fill.style.background = "var(--neon-amber)";
+            text.innerText = "Orta";
+            text.style.color = "var(--neon-amber)";
+        } else {
+            fill.style.background = "var(--neon-emerald)";
+            text.innerText = "Mükemmel";
+            text.style.color = "var(--neon-emerald)";
         }
     }
 
@@ -227,191 +1385,646 @@
         const email = document.getElementById('regEmail').value.trim();
         const pwd = document.getElementById('regPassword').value;
         const pwdConf = document.getElementById('regPasswordConf').value;
-        const btn = document.getElementById('btnRequestReg');
-        
-        if (!email || !pwd || !pwdConf) { alert("Tüm alanları doldurun!"); return; }
-        if (pwd !== pwdConf) { alert("Şifreler birbirleriyle uyuşmuyor!"); return; }
-        
-        btn.innerText = "Kaydediliyor... ⏳";
+        const btn = document.getElementById('btnRegisterSubmit');
+
+        if (!email || !pwd || !pwdConf) {
+            showToast("Lütfen tüm alanları eksiksiz doldurun!", "warning");
+            return;
+        }
+        if (pwd !== pwdConf) {
+            showToast("Şifreler birbirleriyle eşleşmiyor!", "error");
+            return;
+        }
+
         btn.disabled = true;
-        
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Hesabınız Oluşturuluyor...';
+
         try {
-            const response = await fetch(`${API_URL}/register`, {
+            const res = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, password: pwd })
+                body: JSON.stringify({ email, password: pwd })
             });
-            const data = await response.json();
-            
+            const data = await res.json();
+
             if (data.success) {
-                alert("Kayıt Başarılı! Şimdi giriş yapabilirsiniz.");
+                showToast("Hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.", "success");
                 document.getElementById('loginEmail').value = email;
                 document.getElementById('loginPassword').value = pwd;
-                document.getElementById('regEmail').value = "";
-                document.getElementById('regPassword').value = "";
-                document.getElementById('regPasswordConf').value = "";
-                toggleAuthMode('login');
+                switchAuthTab('login');
             } else {
-                alert("Hata: " + data.message);
+                showToast(data.message || "Kayıt işlemi başarısız oldu!", "error");
             }
-        } catch (error) {
-            alert("Sunucuya bağlanılamadı. Python sunucusu çalışıyor mu?");
+        } catch (err) {
+            showToast("Sunucuya bağlanılamadı. Lütfen sunucunun açık olduğundan emin olun.", "error");
         } finally {
-            btn.innerText = "Devam Et 📩";
             btn.disabled = false;
+            btn.innerHTML = '<span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>';
         }
     }
 
-    // GİRİŞ YAPMA (LOGIN)
     async function login(isAuto = false) {
         const email = document.getElementById('loginEmail').value.trim();
         const pwd = document.getElementById('loginPassword').value;
         const rememberEl = document.getElementById('rememberMe');
         const isRemember = rememberEl ? rememberEl.checked : true;
+        const btn = document.getElementById('btnLoginSubmit');
 
-        if (!email || !pwd) { 
-            if (!isAuto) alert("Lütfen E-posta ve şifrenizi girin!"); 
-            return; 
+        if (!email || !pwd) {
+            if (!isAuto) showToast("Lütfen e-posta ve şifrenizi girin!", "warning");
+            return;
+        }
+
+        if (!isAuto) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kasa Açılıyor...';
         }
 
         try {
-            const response = await fetch(`${API_URL}/login`, {
+            const res = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, password: pwd })
+                body: JSON.stringify({ email, password: pwd })
             });
-            const data = await response.json();
+            const data = await res.json();
 
             if (data.success) {
                 currentUserEmail = email;
-                currentMasterKey = pwd; // Kasayı AES ile çözmek için
-                document.getElementById('userWelcomeTitle').innerText = email.split('@')[0] + "'in Kasası";
+                currentMasterKey = pwd;
 
-                // Oturum durumunu kaydet (Tarayıcı kapanıp açıldığında hatırlaması için)
+                // Session Persistence
                 if (isRemember) {
-                    localStorage.setItem('siber_kasa_session', JSON.stringify({ email: email, masterKey: pwd }));
+                    localStorage.setItem('siber_kasa_session', JSON.stringify({ email, masterKey: pwd }));
                     localStorage.setItem('siber_kasa_saved_email', email);
                 } else {
-                    sessionStorage.setItem('siber_kasa_session', JSON.stringify({ email: email, masterKey: pwd }));
+                    sessionStorage.setItem('siber_kasa_session', JSON.stringify({ email, masterKey: pwd }));
                     localStorage.removeItem('siber_kasa_session');
                 }
 
-                // Şifreli kasayı çöz
+                // Decrypt Vault
                 if (data.encrypted_vault) {
                     try {
-                        let bytes = CryptoJS.AES.decrypt(data.encrypted_vault, currentMasterKey);
-                        vaultData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-                    } catch(e) { 
-                        vaultData = []; 
+                        const bytes = CryptoJS.AES.decrypt(data.encrypted_vault, currentMasterKey);
+                        const decryptedStr = bytes.toString(CryptoJS.enc.Utf8);
+                        vaultData = JSON.parse(decryptedStr) || [];
+                    } catch (e) {
+                        vaultData = [];
                     }
                 } else {
                     vaultData = [];
                 }
 
+                // UI Update
+                document.getElementById('navUserEmail').innerText = email;
+                document.getElementById('navUserAvatar').innerText = email.charAt(0).toUpperCase();
+                document.getElementById('navUserSection').style.display = 'flex';
                 document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('dashboardScreen').style.display = 'flex';
+                document.getElementById('dashboardScreen').style.display = 'block';
+
                 renderVault();
+                updateStats();
+                if (!isAuto) showToast(`Hoş geldiniz! Kasanız başarıyla açıldı. 🛡️`, "success");
             } else {
                 if (!isAuto) {
-                    alert("Giriş Başarısız: " + data.message);
+                    showToast(data.message || "E-posta veya şifre yanlış!", "error");
                 } else {
-                    // Kayıtlı bilgiler geçersizse temizle
                     localStorage.removeItem('siber_kasa_session');
                     sessionStorage.removeItem('siber_kasa_session');
                 }
             }
-        } catch (error) {
+        } catch (err) {
+            if (!isAuto) showToast("Sunucuya bağlanılamadı!", "error");
+        } finally {
             if (!isAuto) {
-                alert("Sunucuya bağlanılamadı. Python sunucusu çalışıyor mu?");
+                btn.disabled = false;
+                btn.innerHTML = '<span>KASAYI AÇ</span> <i class="fa-solid fa-shield-halved"></i>';
             }
         }
     }
 
-    // KASAYI SUNUCUYA (SQLite) KAYDET
-    async function saveVaultToStorage() {
-        const dataStr = JSON.stringify(vaultData);
-        // AES ile şifrele
-        const encrypted = CryptoJS.AES.encrypt(dataStr, currentMasterKey).toString();
-        
+    function logout() {
+        currentUserEmail = "";
+        currentMasterKey = "";
+        vaultData = [];
+        localStorage.removeItem('siber_kasa_session');
+        sessionStorage.removeItem('siber_kasa_session');
+
+        document.getElementById('loginPassword').value = "";
+        document.getElementById('navUserSection').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'none';
+        document.getElementById('authScreen').style.display = 'block';
+
+        const savedEmail = localStorage.getItem('siber_kasa_saved_email');
+        if (savedEmail) document.getElementById('loginEmail').value = savedEmail;
+
+        showToast("Kasanız kilitlendi ve oturum kapatıldı.", "info");
+    }
+
+    // --- 5. VAULT CRUD OPERATIONS ---
+    async function saveVaultToBackend() {
         try {
+            const dataStr = JSON.stringify(vaultData);
+            const encrypted = CryptoJS.AES.encrypt(dataStr, currentMasterKey).toString();
+
             await fetch(`${API_URL}/save_vault`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: currentUserEmail, encrypted_vault: encrypted })
             });
-            renderVault();
-        } catch (error) {
-            alert("Kasa sunucuya kaydedilemedi!");
+            updateStats();
+        } catch (err) {
+            showToast("Veriler veritabanına eşitlenemedi!", "error");
         }
     }
 
-    function saveToVault() {
-        const platform = document.getElementById('platform').value.trim();
-        const password = document.getElementById('generatedPassword').value.trim();
-        if(!platform || !password) { alert("Önce bir platform adı yazıp parola üretmelisiniz!"); return; }
+    function openAddVaultModal() {
+        document.getElementById('editItemIndex').value = "-1";
+        document.getElementById('vaultModalTitle').innerHTML = '<i class="fa-solid fa-plus" style="color: var(--neon-cyan)"></i> Yeni Parola Kaydı';
+        document.getElementById('vaultPlatform').value = "";
+        document.getElementById('vaultCategory').value = "general";
+        document.getElementById('vaultUsername').value = "";
+        document.getElementById('vaultPassword').value = "";
+        document.getElementById('vaultUrl').value = "";
+        document.getElementById('vaultNotes').value = "";
+        previewAppLogoOnType("");
+        openModal('vaultModal');
+    }
 
-        vaultData.push({ platform: platform, password: password });
-        saveVaultToStorage();
-        alert("Parola kasanıza kaydedildi ve veritabanına eşitlendi! ✅");
-        
-        document.getElementById('platform').value = "";
-        document.getElementById('generatedPassword').value = "";
+    function openEditVaultModal(index) {
+        const item = vaultData[index];
+        if (!item) return;
+
+        document.getElementById('editItemIndex').value = index;
+        document.getElementById('vaultModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--neon-cyan)"></i> Parolayı Düzenle';
+        document.getElementById('vaultPlatform').value = item.platform || "";
+        document.getElementById('vaultCategory').value = item.category || "general";
+        document.getElementById('vaultUsername').value = item.username || "";
+        document.getElementById('vaultPassword').value = item.password || "";
+        document.getElementById('vaultUrl').value = item.url || "";
+        document.getElementById('vaultNotes').value = item.notes || "";
+        previewAppLogoOnType(item.platform || "");
+        openModal('vaultModal');
+    }
+
+    function saveVaultItem() {
+        const index = parseInt(document.getElementById('editItemIndex').value);
+        const platform = document.getElementById('vaultPlatform').value.trim();
+        const category = document.getElementById('vaultCategory').value;
+        const username = document.getElementById('vaultUsername').value.trim();
+        const password = document.getElementById('vaultPassword').value.trim();
+        const url = document.getElementById('vaultUrl').value.trim();
+        const notes = document.getElementById('vaultNotes').value.trim();
+
+        if (!platform || !password) {
+            showToast("Platform adı ve parola zorunludur!", "warning");
+            return;
+        }
+
+        const newItem = {
+            id: index >= 0 && vaultData[index].id ? vaultData[index].id : Date.now(),
+            platform,
+            category,
+            username,
+            password,
+            url,
+            notes,
+            updatedAt: new Date().toISOString()
+        };
+
+        if (index >= 0) {
+            vaultData[index] = newItem;
+            showToast("Kayıt başarıyla güncellendi! ✅", "success");
+        } else {
+            vaultData.unshift(newItem);
+            showToast(`${platform} kasanıza logosuyla eklendi! 🛡️`, "success");
+        }
+
+        closeModal('vaultModal');
+        saveVaultToBackend();
+        renderVault();
     }
 
     function deleteVaultItem(index) {
-        if(confirm("Bu parolayı silmek istediğinize emin misiniz?")) {
+        if (confirm("Bu parolayı kasanızdan silmek istediğinize emin misiniz?")) {
             vaultData.splice(index, 1);
-            saveVaultToStorage();
+            saveVaultToBackend();
+            renderVault();
+            showToast("Parola kasadan silindi.", "info");
         }
     }
-    
-    function copyToClipboard(text) {
+
+    function copyToClipboard(text, label = "Parola") {
+        if (!text) return;
         navigator.clipboard.writeText(text).then(() => {
-            alert("Parola kopyalandı! 📋");
+            showToast(`${label} panoya kopyalandı! 📋`, "success");
+        }).catch(() => {
+            showToast("Kopyalama başarısız!", "error");
         });
+    }
+
+    // --- 6. RENDER VAULT & QUANTUM CARDS ---
+    function setCategoryFilter(cat) {
+        currentCategoryFilter = cat;
+        document.querySelectorAll('.cat-chip').forEach(btn => btn.classList.remove('active'));
+        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        renderVault();
+    }
+
+    function handleSearch() {
+        searchQuery = document.getElementById('searchBox').value.toLowerCase().trim();
+        renderVault();
+    }
+
+    function filterWeakPasswords() {
+        searchQuery = "";
+        document.getElementById('searchBox').value = "";
+        currentCategoryFilter = "weak_filter";
+        renderVault();
+    }
+
+    function filterDuplicatePasswords() {
+        searchQuery = "";
+        document.getElementById('searchBox').value = "";
+        currentCategoryFilter = "dup_filter";
+        renderVault();
     }
 
     function renderVault() {
-        const listDiv = document.getElementById('vaultList');
-        listDiv.innerHTML = "";
-        if(vaultData.length === 0) {
-            listDiv.innerHTML = "<div class='empty-vault'>Kasanız şu an boş. Sol taraftan parola üretip kaydedebilirsiniz. 💖</div>"; return;
-        }
-        vaultData.forEach((item, index) => {
-            listDiv.innerHTML += `
-                <div class="vault-item">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="vault-platform">${item.platform}</span>
-                        <div style="display:flex; gap: 5px;">
-                            <button style="width:auto; padding:5px 10px; margin:0; font-size:14px; border-radius:10px; box-shadow:none; backdrop-filter:blur(2px);" onclick="copyToClipboard('${item.password}')" title="Kopyala">📋</button>
-                            <button style="width:auto; padding:5px 10px; margin:0; font-size:14px; background:rgba(255,100,100,0.5); border-radius:10px; box-shadow:none; backdrop-filter:blur(2px);" onclick="deleteVaultItem(${index})" title="Sil">🗑️</button>
-                        </div>
-                    </div>
-                    <span class="vault-password">${item.password}</span>
+        const container = document.getElementById('vaultContainer');
+        container.innerHTML = "";
+
+        let filtered = vaultData.filter(item => {
+            let matchesCategory = true;
+            if (currentCategoryFilter === 'weak_filter') {
+                matchesCategory = (item.password || "").length < 10 || !/[A-Z]/.test(item.password) || !/[0-9]/.test(item.password);
+            } else if (currentCategoryFilter === 'dup_filter') {
+                const count = vaultData.filter(x => x.password === item.password).length;
+                matchesCategory = count > 1;
+            } else if (currentCategoryFilter !== 'all') {
+                matchesCategory = (item.category || 'general') === currentCategoryFilter;
+            }
+
+            let matchesSearch = true;
+            if (searchQuery) {
+                const p = (item.platform || "").toLowerCase();
+                const u = (item.username || "").toLowerCase();
+                const n = (item.notes || "").toLowerCase();
+                matchesSearch = p.includes(searchQuery) || u.includes(searchQuery) || n.includes(searchQuery);
+            }
+
+            return matchesCategory && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 70px 20px; background: var(--bg-card); border: 2px dashed var(--bg-card-border); border-radius: 28px; backdrop-filter: blur(20px);">
+                    <div style="font-size: 52px; color: var(--neon-cyan); margin-bottom: 18px; opacity: 0.8;"><i class="fa-solid fa-vault"></i></div>
+                    <h3 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 8px;">Kasanızda Eşleşen Parola Bulunamadı</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">Yeni bir parola ekleyerek kasanızı doldurmaya başlayabilirsiniz.</p>
+                    <button class="btn-cyber-primary" style="width: auto; margin: 0 auto;" onclick="openAddVaultModal()">
+                        <i class="fa-solid fa-plus"></i> Yeni Parola Ekle
+                    </button>
                 </div>
             `;
+            return;
+        }
+
+        filtered.forEach((item) => {
+            const originalIndex = vaultData.indexOf(item);
+            const logoHtml = getApplicationLogo(item.platform, item.url);
+            const isWeak = (item.password || "").length < 10;
+            const categoryNames = {
+                general: "🔑 Genel",
+                social: "🌐 Sosyal Medya",
+                finance: "💳 Finans & Banka",
+                work: "💼 İş & Yazılım",
+                email: "✉️ E-Posta"
+            };
+
+            const card = document.createElement('div');
+            card.className = "vault-item-card";
+            card.innerHTML = `
+                <div class="app-badge-header">
+                    <div class="app-identity">
+                        <div class="app-logo-frame">
+                            ${logoHtml}
+                        </div>
+                        <div class="app-text-info">
+                            <div class="app-name">${item.platform}</div>
+                            <span class="app-category-badge">${categoryNames[item.category] || "🔑 Genel"}</span>
+                        </div>
+                    </div>
+                    ${item.url ? `
+                        <a href="${item.url.startsWith('http') ? item.url : 'https://' + item.url}" target="_blank" class="btn-icon" style="width:34px; height:34px;" title="Web Sitesine Git">
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 13px;"></i>
+                        </a>
+                    ` : ''}
+                </div>
+
+                ${item.username ? `
+                    <div class="vault-field-strip">
+                        <div style="overflow: hidden; flex: 1;">
+                            <div class="field-label-tiny">Kullanıcı Adı / E-Posta</div>
+                            <div class="field-val-text">${item.username}</div>
+                        </div>
+                        <button class="btn-icon" style="width:32px; height:32px;" onclick="copyToClipboard('${item.username.replace(/'/g, "\\'")}', 'Kullanıcı adı')" title="Kullanıcı Adını Kopyala">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                ` : ''}
+
+                <div class="vault-field-strip">
+                    <div style="overflow: hidden; flex: 1;">
+                        <div class="field-label-tiny">Parola ${isWeak ? '<span style="color: var(--neon-rose);">(Zayıf)</span>' : ''}</div>
+                        <div class="field-val-text mono" id="passText_${originalIndex}">••••••••••••</div>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn-icon" style="width:32px; height:32px;" onclick="toggleCardPassword(${originalIndex}, '${item.password.replace(/'/g, "\\'")}', this)" title="Şifreyi Göster/Gizle">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" style="width:32px; height:32px;" onclick="copyToClipboard('${item.password.replace(/'/g, "\\'")}', 'Parola')" title="Parolayı Kopyala">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                ${item.notes ? `
+                    <div style="font-size: 12.5px; color: var(--text-secondary); background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 10px; border: 1px dashed var(--bg-card-border);">
+                        <i class="fa-regular fa-note-sticky" style="color: var(--neon-cyan); margin-right: 5px;"></i> ${item.notes}
+                    </div>
+                ` : ''}
+
+                <div class="card-footer-strip">
+                    <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+                        ${item.updatedAt ? new Date(item.updatedAt).toLocaleDateString('tr-TR') : 'Kayıtlı'}
+                    </span>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn-icon" style="width:32px; height:32px;" onclick="openEditVaultModal(${originalIndex})" title="Düzenle">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-icon" style="width:32px; height:32px; color: var(--neon-rose);" onclick="deleteVaultItem(${originalIndex})" title="Sil">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
         });
     }
 
-    function logout() {
-        currentUserEmail = ""; 
-        currentMasterKey = ""; 
-        vaultData = []; 
-        localStorage.removeItem('siber_kasa_session');
-        sessionStorage.removeItem('siber_kasa_session');
-        document.getElementById('loginPassword').value = "";
-        document.getElementById('dashboardScreen').style.display = 'none';
-        document.getElementById('authScreen').style.display = 'block';
-        
-        // Hatırlanan e-posta varsa geri yükle
-        const savedEmail = localStorage.getItem('siber_kasa_saved_email');
-        if (savedEmail) {
-            document.getElementById('loginEmail').value = savedEmail;
+    function toggleCardPassword(index, realPassword, btn) {
+        const textEl = document.getElementById(`passText_${index}`);
+        if (!textEl) return;
+
+        if (textEl.innerText === "••••••••••••") {
+            // Decrypt Glitch Animation Effect
+            let chars = "!@#$%^&*()_+~|}{[]:;?><,.-=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let iterations = 0;
+            const interval = setInterval(() => {
+                textEl.innerText = realPassword
+                    .split("")
+                    .map((letter, idx) => {
+                        if (idx < iterations) return realPassword[idx];
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join("");
+                
+                if (iterations >= realPassword.length) clearInterval(interval);
+                iterations += 1 / 2;
+            }, 25);
+
+            btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+        } else {
+            textEl.innerText = "••••••••••••";
+            btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
         }
     }
 
-    // Sayfa Yüklendiğinde Oturumu Otomatik Kontrol Et
-    async function initSession() {
+    // --- 7. STATS & HEALTH AUDIT ---
+    function updateStats() {
+        const total = vaultData.length;
+        document.getElementById('statTotalCount').innerText = total;
+
+        if (total === 0) {
+            document.getElementById('statHealthScore').innerText = "%100";
+            document.getElementById('statWeakCount').innerText = "0";
+            document.getElementById('statDupCount').innerText = "0";
+            return;
+        }
+
+        let weakCount = 0;
+        let dupCount = 0;
+        const passMap = {};
+
+        vaultData.forEach(item => {
+            const pwd = item.password || "";
+            if (pwd.length < 10 || !/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) weakCount++;
+            passMap[pwd] = (passMap[pwd] || 0) + 1;
+        });
+
+        Object.values(passMap).forEach(c => {
+            if (c > 1) dupCount += c;
+        });
+
+        const deductions = (weakCount * 15) + (dupCount * 20);
+        const healthScore = Math.max(10, 100 - deductions);
+
+        document.getElementById('statHealthScore').innerText = `%${healthScore}`;
+        document.getElementById('statWeakCount').innerText = weakCount;
+        document.getElementById('statDupCount').innerText = dupCount;
+    }
+
+    function openAuditModal() {
+        const content = document.getElementById('auditContent');
+        content.innerHTML = "";
+
+        let issues = [];
+        const passMap = {};
+
+        vaultData.forEach(item => {
+            const pwd = item.password || "";
+            if (pwd.length < 10) {
+                issues.push({ type: 'weak', title: item.platform, desc: 'Parola 10 karakterden kısa ve zayıf seviyede.' });
+            }
+            passMap[pwd] = (passMap[pwd] || 0) + 1;
+        });
+
+        vaultData.forEach(item => {
+            if (passMap[item.password] > 1) {
+                issues.push({ type: 'dup', title: item.platform, desc: 'Bu parola başka bir hesapla aynı (Tekrar eden şifre tehlikesi).' });
+            }
+        });
+
+        if (issues.length === 0) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 30px 10px;">
+                    <i class="fa-solid fa-circle-check" style="font-size: 52px; color: var(--neon-emerald); margin-bottom: 14px;"></i>
+                    <h4 style="font-family: var(--font-display); font-size: 18px; margin-bottom: 6px;">Kasanız Kusursuz ve Güvenli!</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary);">Hiçbir zayıf veya tekrar eden şifre tespit edilmedi.</p>
+                </div>
+            `;
+        } else {
+            let html = `<div style="display: flex; flex-direction: column; gap: 12px; max-height: 380px; overflow-y: auto;">`;
+            issues.forEach(iss => {
+                html += `
+                    <div style="display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 16px;">
+                        <i class="fa-solid ${iss.type === 'weak' ? 'fa-triangle-exclamation' : 'fa-clone'}" style="color: ${iss.type === 'weak' ? 'var(--neon-amber)' : 'var(--neon-rose)'}; font-size: 20px;"></i>
+                        <div>
+                            <div style="font-weight: 700; font-size: 15px;">${iss.title}</div>
+                            <div style="font-size: 12.5px; color: var(--text-secondary);">${iss.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+        }
+
+        openModal('auditModal');
+    }
+
+    // --- 8. QUANTUM PASSWORD GENERATOR ---
+    function openGeneratorModal() {
+        generateAdvancedPassword();
+        openModal('genModal');
+    }
+
+    function updateGenLength(val) {
+        document.getElementById('genLengthDisplay').innerText = `${val} Karakter`;
+        generateAdvancedPassword();
+    }
+
+    function generateAdvancedPassword() {
+        const length = parseInt(document.getElementById('genLengthSlider').value) || 16;
+        const incUpper = document.getElementById('genUpper').checked;
+        const incLower = document.getElementById('genLower').checked;
+        const incNumbers = document.getElementById('genNumbers').checked;
+        const incSymbols = document.getElementById('genSymbols').checked;
+
+        let charset = "";
+        if (incUpper) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (incLower) charset += "abcdefghijklmnopqrstuvwxyz";
+        if (incNumbers) charset += "0123456789";
+        if (incSymbols) charset += "!@#$%^&*()_+~|}{[]:;?><,.-=";
+
+        if (!charset) charset = "abcdefghijklmnopqrstuvwxyz";
+
+        let password = "";
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset[randomIndex];
+        }
+
+        document.getElementById('genResultText').innerText = password;
+    }
+
+    function copyGeneratedPassword() {
+        const text = document.getElementById('genResultText').innerText;
+        copyToClipboard(text, "Oluşturulan parola");
+    }
+
+    function useGeneratedInAddModal() {
+        const text = document.getElementById('genResultText').innerText;
+        closeModal('genModal');
+        openAddVaultModal();
+        document.getElementById('vaultPassword').value = text;
+        document.getElementById('vaultPassword').type = "text";
+    }
+
+    function quickGeneratePasswordForModal() {
+        const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        let password = "";
+        for (let i = 0; i < 18; i++) {
+            password += charset[Math.floor(Math.random() * charset.length)];
+        }
+        const pwdInput = document.getElementById('vaultPassword');
+        pwdInput.value = password;
+        pwdInput.type = "text";
+        showToast("Kuantum seviyesinde güçlü parola oluşturuldu! ✨", "success");
+    }
+
+    // --- 9. BACKUP & RESTORE ---
+    function openBackupModal() {
+        openModal('backupModal');
+    }
+
+    function exportVaultBackup() {
+        if (vaultData.length === 0) {
+            showToast("Kasanızda dışa aktarılacak parola yok!", "warning");
+            return;
+        }
+
+        const dataStr = JSON.stringify({
+            exportedAt: new Date().toISOString(),
+            user: currentUserEmail,
+            version: "3.0",
+            vault: vaultData
+        }, null, 2);
+
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `SiberKasa_Kuantum_Yedek_${currentUserEmail.split('@')[0]}_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast("Kasa yedeği başarıyla indirildi! 📥", "success");
+        closeModal('backupModal');
+    }
+
+    function importVaultBackup(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const parsed = JSON.parse(e.target.result);
+                const importedList = Array.isArray(parsed) ? parsed : (parsed.vault || []);
+
+                if (importedList.length === 0) {
+                    showToast("Dosyada geçerli parola bulunamadı!", "error");
+                    return;
+                }
+
+                if (confirm(`${importedList.length} adet parola kasanıza eklensin mi?`)) {
+                    vaultData = [...vaultData, ...importedList];
+                    saveVaultToBackend();
+                    renderVault();
+                    showToast(`${importedList.length} adet parola başarıyla içe aktarıldı! 🎉`, "success");
+                    closeModal('backupModal');
+                }
+            } catch (err) {
+                showToast("Geçersiz yedek dosyası formatı!", "error");
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // --- 10. MODAL HELPERS ---
+    function openModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'flex';
+    }
+
+    function closeModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target.classList.contains('quantum-modal-backdrop')) {
+            event.target.style.display = 'none';
+        }
+    };
+
+    // --- 11. INITIALIZATION ---
+    async function initApp() {
+        initTheme();
+
         const rawSession = localStorage.getItem('siber_kasa_session') || sessionStorage.getItem('siber_kasa_session');
         if (rawSession) {
             try {
@@ -425,77 +2038,18 @@
                     await login(true);
                     return;
                 }
-            } catch(e) {
-                console.error("Kayıtlı oturum okunamadı:", e);
+            } catch (e) {
+                console.error("Oturum çözülemedi:", e);
             }
         }
 
-        // Aktif oturum yoksa kayıtlı e-postayı doldur
         const savedEmail = localStorage.getItem('siber_kasa_saved_email');
         if (savedEmail) {
             document.getElementById('loginEmail').value = savedEmail;
-            if (document.getElementById('rememberMe')) {
-                document.getElementById('rememberMe').checked = true;
-            }
         }
     }
 
-    window.addEventListener('DOMContentLoaded', initSession);
-
-    function checkPasswordStrength() {
-        let pwd = document.getElementById("regPassword").value;
-        let strength = 0;
-        if (pwd.length >= 6) strength += 25;
-        if (pwd.length >= 10) strength += 25;
-        if (/[A-Z]/.test(pwd)) strength += 25;
-        if (/[0-9!@#\$%\^\*]/.test(pwd)) strength += 25;
-        
-        let bar = document.getElementById("pwdStrengthBar");
-        bar.style.width = strength + "%";
-        if (strength < 50) bar.style.background = "#ff4d4d";
-        else if (strength < 75) bar.style.background = "#ffd633";
-        else bar.style.background = "#5cd65c";
-    }
-
-    // Auto-Logout Feature (Güvenlik)
-    let inactivityTimer;
-    function resetInactivityTimer() {
-        clearTimeout(inactivityTimer);
-        if (currentUserEmail !== "") {
-            inactivityTimer = setTimeout(() => {
-                alert("🔒 Güvenliğiniz için 3 dakika boyunca işlem yapmadığınızdan oturumunuz otomatik olarak kapatıldı.");
-                logout();
-            }, 3 * 60 * 1000); // 3 dakika
-        }
-    }
-    window.addEventListener('mousemove', resetInactivityTimer);
-    window.addEventListener('keydown', resetInactivityTimer);
-
-    function generateCustomPassword() {
-        let platform = document.getElementById('platform').value.trim();
-        let color = document.getElementById('color').value.trim();
-        let name = document.getElementById('name').value.trim();
-        let num = document.getElementById('number').value.trim();
-        if (!platform || !color || !name || !num) { alert("Tüm alanları doldur!"); return; }
-
-        let platPrefix = platform.substring(0, 3).toLowerCase();
-        platPrefix = platPrefix.charAt(0).toUpperCase() + platPrefix.slice(1);
-        let combinedWord = color + name;
-
-        const leetMap = { 'a':'@','A':'@', 'e':'3','E':'3', 'i':'1','I':'1','ı':'1','İ':'1', 'o':'0','O':'0', 's':'$','S':'$', 'ş':'$','Ş':'$', 't':'7','T':'7' };
-        let securePass = "";
-        for (let i = 0; i < combinedWord.length; i++) {
-            let char = combinedWord[i];
-            if (leetMap[char] && Math.random() > 0.2) securePass += leetMap[char];
-            else securePass += (Math.random() > 0.5) ? char.toUpperCase() : char.toLowerCase();
-        }
-
-        const symbols = "!#*?-+";
-        let randomSym1 = symbols[Math.floor(Math.random() * symbols.length)];
-        let randomSym2 = symbols[Math.floor(Math.random() * symbols.length)];
-        let finalPassword = randomSym1 + platPrefix + "_" + securePass + num + randomSym2;
-        document.getElementById('generatedPassword').value = finalPassword;
-    }
+    window.addEventListener('DOMContentLoaded', initApp);
 </script>
 
 </body>
