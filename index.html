@@ -19,53 +19,57 @@
             --font-sans: 'Plus Jakarta Sans', 'Outfit', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
 
-            /* 🌸 Soft Aurora Luxury Palette (Dark Mode - Apple/Linear inspired) */
-            --bg-canvas: #070a12;
-            --bg-card: rgba(18, 26, 44, 0.65);
-            --bg-card-hover: rgba(26, 37, 62, 0.85);
-            --bg-surface: rgba(13, 19, 35, 0.8);
-            --bg-input: rgba(8, 13, 25, 0.7);
-            --border-soft: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(167, 139, 250, 0.45);
-            --border-highlight: rgba(255, 255, 255, 0.15);
+            /* 👑 Premium Gold & White Palette (Dark Mode) */
+            --bg-canvas: #09090b;
+            --bg-card: rgba(24, 24, 27, 0.65);
+            --bg-card-hover: rgba(39, 39, 42, 0.85);
+            --bg-surface: rgba(24, 24, 27, 0.8);
+            --bg-input: rgba(9, 9, 11, 0.7);
+            --border-soft: rgba(255, 255, 255, 0.12);
+            --border-hover: rgba(252, 211, 77, 0.45);
+            --border-highlight: rgba(255, 255, 255, 0.25);
 
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --text-dim: #64748b;
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
 
-            /* Soft Pastel Aurora Accents */
-            --pastel-lavender: #a78bfa;
-            --pastel-mint: #34d399;
-            --pastel-sky: #38bdf8;
-            --pastel-rose: #fb7185;
-            --pastel-amber: #fbbf24;
-            --pastel-indigo: #818cf8;
+            /* Elegant Accents (Variable names kept for compatibility) */
+            --pastel-lavender: #fcd34d; /* Soft Gold/Yellow */
+            --pastel-mint: #ffffff;     /* Pure White */
+            --pastel-sky: #fef3c7;      /* Light Yellow */
+            --pastel-rose: #ef4444;     /* Error Red */
+            --pastel-amber: #f59e0b;    /* Warning Amber */
+            --pastel-indigo: #e4e4e7;   /* Light Gray */
 
-            --grad-aurora: linear-gradient(135deg, #a78bfa 0%, #38bdf8 50%, #34d399 100%);
-            --grad-lavender: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
-            --grad-mint: linear-gradient(135deg, #34d399 0%, #2dd4bf 100%);
-            --grad-rose: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+            --grad-aurora: linear-gradient(135deg, #fcd34d 0%, #ffffff 100%);
+            --grad-lavender: linear-gradient(135deg, #fbbf24 0%, #fcd34d 100%);
+            --grad-mint: linear-gradient(135deg, #ffffff 0%, #f4f4f5 100%);
+            --grad-rose: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
 
-            --shadow-3d: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px rgba(167, 139, 250, 0.08);
-            --shadow-icon-3d: 0 12px 24px -6px rgba(0, 0, 0, 0.4);
-            --shadow-modal: 0 30px 70px -20px rgba(0, 0, 0, 0.7);
+            --shadow-3d: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px rgba(252, 211, 77, 0.05);
+            --shadow-icon-3d: 0 12px 24px -6px rgba(0, 0, 0, 0.5);
+            --shadow-modal: 0 30px 70px -20px rgba(0, 0, 0, 0.8);
         }
 
         [data-theme="light"] {
-            --bg-canvas: #f8fafc;
+            --bg-canvas: #fafafa;
             --bg-card: rgba(255, 255, 255, 0.85);
             --bg-card-hover: rgba(255, 255, 255, 0.98);
             --bg-surface: rgba(255, 255, 255, 0.9);
-            --bg-input: rgba(241, 245, 249, 0.9);
-            --border-soft: rgba(0, 0, 0, 0.06);
-            --border-hover: rgba(129, 140, 248, 0.45);
-            --border-highlight: rgba(255, 255, 255, 0.9);
+            --bg-input: rgba(244, 244, 245, 0.9);
+            --border-soft: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(245, 158, 11, 0.45);
+            --border-highlight: rgba(0, 0, 0, 0.15);
 
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --text-dim: #94a3b8;
+            --text-main: #09090b;
+            --text-muted: #52525b;
+            --text-dim: #a1a1aa;
 
-            --shadow-3d: 0 20px 40px -15px rgba(0, 0, 0, 0.06), 0 0 20px rgba(129, 140, 248, 0.1);
+            --pastel-lavender: #d97706; /* Darker Gold for visibility */
+            --pastel-mint: #000000;
+            --pastel-sky: #b45309;
+
+            --shadow-3d: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 20px rgba(245, 158, 11, 0.1);
             --shadow-icon-3d: 0 10px 20px -5px rgba(0, 0, 0, 0.12);
         }
 
@@ -98,15 +102,15 @@
         .aurora-blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.32;
+            filter: blur(90px);
+            opacity: 0.12;
             will-change: transform;
             transform: translate3d(0,0,0);
             animation: floatAurora 24s ease-in-out infinite alternate;
         }
-        .blob-1 { width: 500px; height: 500px; background: #818cf8; top: -100px; left: 10%; }
-        .blob-2 { width: 550px; height: 550px; background: #a78bfa; top: 35%; right: -80px; animation-duration: 28s; }
-        .blob-3 { width: 450px; height: 450px; background: #34d399; bottom: -120px; left: 25%; animation-duration: 22s; }
+        .blob-1 { width: 500px; height: 500px; background: #fef3c7; top: -100px; left: 10%; }
+        .blob-2 { width: 550px; height: 550px; background: #fcd34d; top: 35%; right: -80px; animation-duration: 28s; }
+        .blob-3 { width: 450px; height: 450px; background: #ffffff; bottom: -120px; left: 25%; animation-duration: 22s; opacity: 0.08; }
 
         @keyframes floatAurora {
             0% { transform: translate3d(0, 0, 0) scale(1); }
@@ -861,19 +865,31 @@
         /* RESPONSIVE */
         @media (max-width: 960px) {
             .auth-hero-grid { grid-template-columns: 1fr; gap: 30px; }
-            .auth-showcase-3d { order: 2; }
+            .auth-showcase-3d { order: 2; margin-top: 10px; }
             .auth-card-3d { order: 1; }
             .showcase-title-huge { font-size: 32px; }
             .sample-3d-dock { grid-template-columns: repeat(4, 1fr); }
         }
         @media (max-width: 600px) {
-            .aurora-nav { padding: 12px 18px; }
+            .aurora-nav { padding: 12px 16px; }
             .brand-title-main { font-size: 17px; }
-            .viewport-wrapper { padding: 18px 14px 60px; }
-            .sample-3d-dock { grid-template-columns: repeat(2, 1fr); }
-            .stats-deck-3d { grid-template-columns: 1fr 1fr; }
-            .vault-grid-3d { grid-template-columns: 1fr; }
-            .controls-glass-bar { flex-direction: column; align-items: stretch; }
+            .viewport-wrapper { padding: 16px 12px 80px; }
+            .sample-3d-dock { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .sample-3d-item { padding: 12px 8px; }
+            .sample-3d-icon-pod { width: 38px; height: 38px; padding: 6px; }
+            .sample-3d-name { font-size: 11px; }
+            .stats-deck-3d { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .stat-tile-3d { padding: 16px; gap: 12px; }
+            .stat-orb-badge { width: 42px; height: 42px; font-size: 18px; }
+            .stat-text-meta .stat-val { font-size: 22px; }
+            .vault-grid-3d { grid-template-columns: 1fr; gap: 16px; }
+            .controls-glass-bar { flex-direction: column; align-items: stretch; padding: 16px; gap: 12px; }
+            .auth-card-3d { padding: 26px 20px; border-radius: 26px; }
+            .btn-aurora-primary { padding: 18px 24px; font-size: 16px; }
+            .input-soft { padding: 16px 16px 16px 44px; font-size: 15px; }
+            .input-icon-soft { top: 17px; }
+            .showcase-title-huge { font-size: 27px; line-height: 1.2; }
+            .showcase-desc { font-size: 14.5px; }
         }
     </style>
 </head>
