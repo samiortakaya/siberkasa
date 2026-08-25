@@ -22,6 +22,7 @@ GENDERICI_SIFRE = os.getenv("MAIL_PASS", "kfvw exzo dvxq ogzf")
 
 # Geçici OTP (Doğrulama kodları) hafızası
 pending_otps = {}
+pending_resets = {}
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
@@ -108,9 +109,9 @@ def serve_index():
 def health_check():
     return jsonify({"status": "ok", "service": "siberkasa", "version": "2.0"}), 200
 
-# --- 1. ADIM: KAYIT OLMA ---
-@app.route('/register', methods=['POST'])
-def handle_register():
+# --- 1. ADIM: KAYIT OLMA (OTP GÖNDERME) ---
+@app.route('/send_registration_otp', methods=['POST'])
+def send_registration_otp():
     data = request.json or {}
     email = data.get('email')
     pwd = data.get('password')
@@ -125,19 +126,123 @@ def handle_register():
         if cursor.fetchone():
             conn.close()
             return jsonify({"success": False, "message": "Bu e-posta zaten kayıtlı!"})
-        
-        # Şifreyi Hashle (SHA-256)
+        conn.close()
+
+        # OTP Üret (6 haneli)
+        otp = str(random.randint(100000, 999999))
         hashed_pwd = hashlib.sha256(pwd.encode()).hexdigest()
         
-        # Veritabanına kaydet
+        # Belleğe kaydet (gerçek hayatta Redis vb. kullanılır)
+        pending_otps[email] = {"otp": otp, "password_hash": hashed_pwd}
+
+        # Mail Gönder
+        if send_email(email, otp):
+            return jsonify({"success": True, "message": "Doğrulama kodu e-postanıza gönderildi!"})
+        else:
+            return jsonify({"success": False, "message": "Mail gönderilirken hata oluştu. Lütfen bilgilerinizi kontrol edin."})
+            
+    except Exception as e:
+        print("OTP gonderme hatasi:", e)
+        return jsonify({"success": False, "message": f"Sunucu hatası: {str(e)}"}), 500
+
+# --- 2. ADIM: OTP DOĞRULAMA & HESABI ONAYLAMA ---
+@app.route('/verify_registration', methods=['POST'])
+def verify_registration():
+    data = request.json or {}
+    email = data.get('email')
+    otp = data.get('otp')
+
+    if not email or not otp:
+        return jsonify({"success": False, "message": "E-posta ve OTP gereklidir."}), 400
+
+    pending_data = pending_otps.get(email)
+    
+    if not pending_data or pending_data['otp'] != otp:
+        return jsonify({"success": False, "message": "Hatalı veya süresi geçmiş kod!"})
+
+    try:
+        # Doğrulama başarılı, kullanıcıyı veritabanına ekle
+        conn, ph = get_db()
+        cursor = conn.cursor()
         cursor.execute(f"INSERT INTO users (email, password_hash, encrypted_vault) VALUES ({ph}, {ph}, {ph})", 
-                       (email, hashed_pwd, "")) # İlk başta kasa boş
+                       (email, pending_data['password_hash'], ""))
         conn.commit()
         conn.close()
         
-        return jsonify({"success": True, "message": "Kayıt başarılı!"})
+        # Bellekten sil
+        del pending_otps[email]
+        
+        return jsonify({"success": True, "message": "Kayıt başarıyla tamamlandı!"})
     except Exception as e:
-        print("Kayit hatasi:", e)
+        print("Kayit dogrulama hatasi:", e)
+        return jsonify({"success": False, "message": f"Sunucu hatası: {str(e)}"}), 500
+
+# --- ŞİFRE SIFIRLAMA: OTP GÖNDERME ---
+@app.route('/send_reset_otp', methods=['POST'])
+def send_reset_otp():
+    data = request.json or {}
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"success": False, "message": "E-posta gereklidir."}), 400
+
+    try:
+        conn, ph = get_db()
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT email FROM users WHERE email={ph}", (email,))
+        if not cursor.fetchone():
+            conn.close()
+            # Güvenlik gereği "Böyle bir e-posta yok" demek yerine başarılı dönmek daha iyidir (Email Enumeration önleme)
+            # Ama basitlik açısından hatayı gösterelim.
+            return jsonify({"success": False, "message": "Bu e-posta adresi sistemde kayıtlı değil!"})
+        conn.close()
+
+        # OTP Üret
+        otp = str(random.randint(100000, 999999))
+        pending_resets[email] = otp
+
+        # Mail Gönder
+        if send_email(email, otp):
+            return jsonify({"success": True, "message": "Şifre sıfırlama kodu e-postanıza gönderildi!"})
+        else:
+            return jsonify({"success": False, "message": "Mail gönderilirken hata oluştu."})
+            
+    except Exception as e:
+        print("Sifre sifirlama mail hatasi:", e)
+        return jsonify({"success": False, "message": f"Sunucu hatası: {str(e)}"}), 500
+
+# --- ŞİFRE SIFIRLAMA: YENİ ŞİFRE BELİRLEME ---
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    data = request.json or {}
+    email = data.get('email')
+    otp = data.get('otp')
+    new_password = data.get('new_password')
+
+    if not email or not otp or not new_password:
+        return jsonify({"success": False, "message": "E-posta, OTP ve yeni şifre gereklidir."}), 400
+
+    if pending_resets.get(email) != otp:
+        return jsonify({"success": False, "message": "Hatalı veya süresi geçmiş kod!"})
+
+    try:
+        new_hashed_pwd = hashlib.sha256(new_password.encode()).hexdigest()
+        
+        # Zero-Knowledge nedeniyle eski kasa verileri kullanılamaz!
+        # Veritabanında şifreyi güncelle ve encrypted_vault'u boşalt (Sıfırla)
+        conn, ph = get_db()
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE users SET password_hash={ph}, encrypted_vault={ph} WHERE email={ph}", 
+                       (new_hashed_pwd, "", email))
+        conn.commit()
+        conn.close()
+
+        # Bellekten sil
+        del pending_resets[email]
+        
+        return jsonify({"success": True, "message": "Şifreniz başarıyla yenilendi! Yeni şifrenizle giriş yapabilirsiniz."})
+    except Exception as e:
+        print("Sifre sifirlama hatasi:", e)
         return jsonify({"success": False, "message": f"Sunucu hatası: {str(e)}"}), 500
 
 # --- 3. ADIM: GİRİŞ YAPMA ---

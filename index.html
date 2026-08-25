@@ -1030,9 +1030,12 @@
                     </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0 22px 2px;">
-                    <input type="checkbox" id="rememberMe" style="accent-color: var(--pastel-lavender); width: 18px; height: 18px; cursor: pointer;" checked>
-                    <label for="rememberMe" style="font-size: 13.5px; color: var(--text-muted); cursor: pointer; user-select: none;">Beni Hatırla (Oturumu Koru)</label>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin: 12px 0 22px 2px;">
+                    <label style="display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--text-muted); cursor: pointer; user-select: none;">
+                        <input type="checkbox" id="rememberMe" style="accent-color: var(--pastel-lavender); width: 18px; height: 18px; cursor: pointer;" checked>
+                        Beni Hatırla
+                    </label>
+                    <a href="#" onclick="openForgotPasswordModal()" style="font-size: 13.5px; color: var(--pastel-sky); text-decoration: none; font-weight: 500; transition: color 0.2s ease;">Şifremi Unuttum?</a>
                 </div>
 
                 <button class="btn-aurora-primary" onclick="login()" id="btnLoginSubmit">
@@ -1353,6 +1356,95 @@
     </div>
 </div>
 
+<!-- 5. OTP VERIFICATION MODAL (For Registration) -->
+<div class="modal-overlay-3d" id="otpModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
+            <h3>
+                <i class="fa-solid fa-envelope-circle-check" style="color: var(--pastel-mint)"></i> Doğrulama Kodu
+            </h3>
+            <button class="btn-soft-icon" onclick="closeModal('otpModal')">&times;</button>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+            E-posta adresinize gönderilen 6 haneli doğrulama kodunu giriniz.
+        </p>
+        <div class="input-group-3d">
+            <div class="input-box-3d" style="justify-content: center;">
+                <input type="text" id="regOtpCode" class="input-soft mono" placeholder="XXXXXX" style="text-align: center; letter-spacing: 4px; font-size: 18px; font-weight: 700;" maxlength="6">
+            </div>
+        </div>
+        <div style="margin-top: 24px;">
+            <button class="btn-aurora-primary" onclick="verifyRegistrationOtp()" id="btnVerifyOtp">
+                <span>DOĞRULA VE HESABI AÇ</span> <i class="fa-solid fa-check"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 6. FORGOT PASSWORD MODAL (Request Email) -->
+<div class="modal-overlay-3d" id="forgotPasswordModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
+            <h3>
+                <i class="fa-solid fa-key" style="color: var(--pastel-sky)"></i> Şifremi Unuttum
+            </h3>
+            <button class="btn-soft-icon" onclick="closeModal('forgotPasswordModal')">&times;</button>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+            Kayıtlı e-posta adresinizi girin. Size 6 haneli bir sıfırlama kodu göndereceğiz.<br><br>
+            <strong style="color: var(--pastel-rose);">Önemli:</strong> Güvenliğiniz için (Sıfır-Bilgi mimarisi gereği) kasanız eski şifrenizle kilitlidir. Şifrenizi sıfırladığınızda yepyeni (boş) bir kasa oluşturulacaktır.
+        </p>
+        <div class="input-group-3d">
+            <label class="input-label-soft">E-Posta Adresiniz</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-envelope input-icon-soft"></i>
+                <input type="email" id="forgotEmail" class="input-soft" placeholder="adiniz@ornek.com">
+            </div>
+        </div>
+        <div style="margin-top: 24px;">
+            <button class="btn-aurora-primary" onclick="requestPasswordReset()" id="btnForgotSubmit">
+                <span>KOD GÖNDER</span> <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 7. RESET PASSWORD MODAL (Verify & New Password) -->
+<div class="modal-overlay-3d" id="resetPasswordModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
+            <h3>
+                <i class="fa-solid fa-unlock-keyhole" style="color: var(--pastel-lavender)"></i> Yeni Şifre Belirle
+            </h3>
+            <button class="btn-soft-icon" onclick="closeModal('resetPasswordModal')">&times;</button>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+            E-posta adresinize gönderilen 6 haneli sıfırlama kodunu ve yeni kasanız için güçlü bir ana şifre giriniz.
+        </p>
+        <div class="input-group-3d">
+            <label class="input-label-soft">Doğrulama Kodu</label>
+            <div class="input-box-3d">
+                <input type="text" id="resetOtpCode" class="input-soft mono" placeholder="XXXXXX" style="text-align: center; letter-spacing: 4px; font-size: 16px; font-weight: 700;" maxlength="6">
+            </div>
+        </div>
+        <div class="input-group-3d">
+            <label class="input-label-soft">Yeni Master Şifre</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-shield-halved input-icon-soft"></i>
+                <input type="password" id="resetNewPassword" class="input-soft mono" placeholder="Yeni kasa şifreniz">
+                <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('resetNewPassword', this)">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        <div style="margin-top: 24px;">
+            <button class="btn-aurora-primary" onclick="submitPasswordReset()" id="btnResetSubmit">
+                <span>ŞİFREMİ YENİLE</span> <i class="fa-solid fa-rotate"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- 🔔 FLOATING SOFT TOAST DOCK -->
 <div id="softToastDock"></div>
 
@@ -1563,6 +1655,8 @@
         }
     }
 
+    let tempRegEmail = "";
+
     async function requestRegistration() {
         const email = document.getElementById('regEmail').value.trim();
         const pwd = document.getElementById('regPassword').value;
@@ -1579,10 +1673,10 @@
         }
 
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Hesabınız Oluşturuluyor...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Doğrulama Kodu Gönderiliyor...';
 
         try {
-            const res = await fetch(`${API_URL}/register`, {
+            const res = await fetch(`${API_URL}/send_registration_otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password: pwd })
@@ -1590,18 +1684,139 @@
             const data = await res.json();
 
             if (data.success) {
-                showToast("Hesabınız başarıyla açıldı! Giriş yapabilirsiniz.", "success");
-                document.getElementById('loginEmail').value = email;
-                document.getElementById('loginPassword').value = pwd;
-                switchAuthTab('login');
+                showToast("Doğrulama kodu e-postanıza gönderildi!", "success");
+                tempRegEmail = email;
+                document.getElementById('regOtpCode').value = "";
+                openModal('otpModal');
             } else {
-                showToast(data.message || "Kayıt sırasında hata oluştu!", "error");
+                showToast(data.message || "İşlem sırasında hata oluştu!", "error");
             }
         } catch (err) {
             showToast("Sunucuya bağlanılamadı. Lütfen sunucunuzu kontrol edin.", "error");
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>';
+        }
+    }
+
+    async function verifyRegistrationOtp() {
+        const otp = document.getElementById('regOtpCode').value.trim();
+        const btn = document.getElementById('btnVerifyOtp');
+        
+        if (!otp || otp.length !== 6) {
+            showToast("Lütfen 6 haneli kodu eksiksiz girin.", "warning");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Doğrulanıyor...';
+
+        try {
+            const res = await fetch(`${API_URL}/verify_registration`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: tempRegEmail, otp })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                showToast("Hesabınız başarıyla açıldı! Giriş yapabilirsiniz.", "success");
+                closeModal('otpModal');
+                document.getElementById('loginEmail').value = tempRegEmail;
+                document.getElementById('loginPassword').value = document.getElementById('regPassword').value;
+                switchAuthTab('login');
+            } else {
+                showToast(data.message || "Kod hatalı!", "error");
+            }
+        } catch (err) {
+            showToast("Sunucu hatası oluştu.", "error");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span>DOĞRULA VE HESABI AÇ</span> <i class="fa-solid fa-check"></i>';
+        }
+    }
+
+    // --- ŞİFREMİ UNUTTUM AKIŞI ---
+    let tempResetEmail = "";
+
+    function openForgotPasswordModal() {
+        document.getElementById('forgotEmail').value = document.getElementById('loginEmail').value;
+        openModal('forgotPasswordModal');
+    }
+
+    async function requestPasswordReset() {
+        const email = document.getElementById('forgotEmail').value.trim();
+        const btn = document.getElementById('btnForgotSubmit');
+
+        if (!email) {
+            showToast("Lütfen e-posta adresinizi girin.", "warning");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kod Gönderiliyor...';
+
+        try {
+            const res = await fetch(`${API_URL}/send_reset_otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                showToast("Sıfırlama kodu e-postanıza gönderildi!", "success");
+                tempResetEmail = email;
+                closeModal('forgotPasswordModal');
+                document.getElementById('resetOtpCode').value = "";
+                document.getElementById('resetNewPassword').value = "";
+                openModal('resetPasswordModal');
+            } else {
+                showToast(data.message || "Hata oluştu!", "error");
+            }
+        } catch (err) {
+            showToast("Sunucu hatası.", "error");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span>KOD GÖNDER</span> <i class="fa-solid fa-paper-plane"></i>';
+        }
+    }
+
+    async function submitPasswordReset() {
+        const otp = document.getElementById('resetOtpCode').value.trim();
+        const newPassword = document.getElementById('resetNewPassword').value;
+        const btn = document.getElementById('btnResetSubmit');
+
+        if (!otp || !newPassword) {
+            showToast("Kod ve yeni şifre gereklidir.", "warning");
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Şifre Yenileniyor...';
+
+        try {
+            const res = await fetch(`${API_URL}/reset_password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: tempResetEmail, otp, new_password: newPassword })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                showToast("Şifreniz başarıyla sıfırlandı! Yeni kasanıza giriş yapabilirsiniz.", "success");
+                closeModal('resetPasswordModal');
+                document.getElementById('loginEmail').value = tempResetEmail;
+                document.getElementById('loginPassword').value = newPassword;
+                switchAuthTab('login');
+            } else {
+                showToast(data.message || "Hata oluştu!", "error");
+            }
+        } catch (err) {
+            showToast("Sunucu hatası.", "error");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span>ŞİFREMİ YENİLE</span> <i class="fa-solid fa-rotate"></i>';
         }
     }
 
