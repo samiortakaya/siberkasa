@@ -12,6 +12,24 @@ app = Flask(__name__)
 # CORS, farklı portlardan (HTML dosyamızdan) gelen isteklere izin verir
 CORS(app)
 
+@app.errorhandler(400)
+def handle_400_error(e):
+    return jsonify({"success": False, "message": f"Kötü İstek: {str(e)}"}), 400
+
+@app.errorhandler(404)
+def handle_404_error(e):
+    return jsonify({"success": False, "message": "Sayfa veya Endpoint bulunamadı."}), 404
+
+@app.errorhandler(500)
+def handle_500_error(e):
+    return jsonify({"success": False, "message": f"Sunucu Hatası: {str(e)}"}), 500
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # catch-all for any unhandled exceptions
+    print(f"Unhandled Exception: {e}")
+    return jsonify({"success": False, "message": f"Beklenmeyen Hata: {str(e)}"}), 500
+
 # ---------------------------------------------------------
 # BURAYA KENDİ MAİL BİLGİLERİNİ GİRMELİSİN
 # Gmail kullanıyorsan "Uygulama Şifresi" oluşturman gerekir!
@@ -113,7 +131,7 @@ def health_check():
 @app.route('/send_registration_otp', methods=['POST'])
 def send_registration_otp():
     data = request.json or {}
-    email = data.get('email', '').strip().lower()
+    email = str(data.get('email') or '').strip().lower()
     pwd = data.get('password')
     
     if not email or not pwd:
@@ -149,7 +167,7 @@ def send_registration_otp():
 @app.route('/verify_registration', methods=['POST'])
 def verify_registration():
     data = request.json or {}
-    email = data.get('email', '').strip().lower()
+    email = str(data.get('email') or '').strip().lower()
     otp = data.get('otp')
 
     if not email or not otp:
@@ -181,7 +199,7 @@ def verify_registration():
 @app.route('/send_reset_otp', methods=['POST'])
 def send_reset_otp():
     data = request.json or {}
-    email = data.get('email', '').strip().lower()
+    email = str(data.get('email') or '').strip().lower()
 
     if not email:
         return jsonify({"success": False, "message": "E-posta gereklidir."}), 400
@@ -215,7 +233,7 @@ def send_reset_otp():
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
     data = request.json or {}
-    email = data.get('email', '').strip().lower()
+    email = str(data.get('email') or '').strip().lower()
     otp = data.get('otp')
     new_password = data.get('new_password')
 
@@ -249,7 +267,7 @@ def reset_password():
 @app.route('/login', methods=['POST'])
 def handle_login():
     data = request.json or {}
-    email = data.get('email', '').strip().lower()
+    email = str(data.get('email') or '').strip().lower()
     pwd = data.get('password')
     
     if not email or not pwd:
@@ -276,7 +294,7 @@ def handle_login():
 @app.route('/save_vault', methods=['POST'])
 def handle_save_vault():
     data = request.json or {}
-    email = data.get('email', '').strip().lower()
+    email = str(data.get('email') or '').strip().lower()
     encrypted_vault = data.get('encrypted_vault')
     
     if not email:
