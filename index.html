@@ -891,9 +891,65 @@
             .showcase-title-huge { font-size: 27px; line-height: 1.2; }
             .showcase-desc { font-size: 14.5px; }
         }
+        /* ==================== MOBİL OPTİMİZASYON ==================== */
+        @media (max-width: 768px) {
+            .aurora-nav {
+                padding: 12px 16px;
+            }
+            .brand-title-main {
+                font-size: 16px;
+            }
+            .auth-card-3d {
+                padding: 24px 20px;
+                border-radius: 24px;
+                margin: 0 16px;
+            }
+            .hero-section-3d {
+                padding: 0 16px;
+                margin-top: 20px;
+                flex-direction: column;
+            }
+            .glass-features-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-deck-3d {
+                grid-template-columns: 1fr;
+            }
+            .controls-glass-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 16px;
+                border-radius: 20px;
+            }
+            .controls-glass-bar .search-box-soft {
+                width: 100%;
+                min-width: unset;
+            }
+            .controls-glass-bar > div:last-child {
+                flex-direction: column;
+                width: 100%;
+            }
+            .controls-glass-bar button {
+                width: 100% !important;
+                justify-content: center;
+            }
+            .vault-grid-3d {
+                grid-template-columns: 1fr;
+                padding: 0 16px;
+            }
+            .modal-body-3d {
+                width: 90%;
+                padding: 20px;
+                border-radius: 20px;
+            }
+            .category-scroll-pills {
+                padding: 0 16px;
+            }
+        }
     </style>
 </head>
 <body>
+
 
 <!-- 🌌 Soft Ambient Aurora Mesh (GPU-Optimized) -->
 <div class="aurora-bg">
@@ -1674,7 +1730,7 @@
     let tempRegEmail = "";
 
     async function requestRegistration() {
-        const email = document.getElementById('regEmail').value.trim();
+        const email = document.getElementById('regEmail').value.trim().toLowerCase();
         const pwd = document.getElementById('regPassword').value;
         const pwdConf = document.getElementById('regPasswordConf').value;
         const btn = document.getElementById('btnRegisterSubmit');
@@ -1761,7 +1817,7 @@
     }
 
     async function requestPasswordReset() {
-        const email = document.getElementById('forgotEmail').value.trim();
+        const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
         const btn = document.getElementById('btnForgotSubmit');
 
         if (!email) {
@@ -1837,7 +1893,7 @@
     }
 
     async function login(isAuto = false) {
-        const email = document.getElementById('loginEmail').value.trim();
+        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
         const pwd = document.getElementById('loginPassword').value;
         const rememberEl = document.getElementById('rememberMe');
         const isRemember = rememberEl ? rememberEl.checked : true;
@@ -1880,9 +1936,22 @@
                         // Seçenek 2: Şifreleme/çözme işlemi e-posta ile yapılır (Parola sıfırlamada veri kaybolmaz)
                         const bytes = CryptoJS.AES.decrypt(data.encrypted_vault, currentUserEmail);
                         const decryptedStr = bytes.toString(CryptoJS.enc.Utf8);
+                        if (!decryptedStr) throw new Error("Empty decryption");
                         vaultData = JSON.parse(decryptedStr) || [];
                     } catch (e) {
-                        vaultData = [];
+                        try {
+                            // Eski sürümlerde parola ile şifrelenen kasalar için fallback
+                            const fallbackBytes = CryptoJS.AES.decrypt(data.encrypted_vault, currentMasterKey);
+                            const fallbackStr = fallbackBytes.toString(CryptoJS.enc.Utf8);
+                            if (!fallbackStr) throw new Error("Empty fallback decryption");
+                            vaultData = JSON.parse(fallbackStr) || [];
+                            // Başarılı olursa yeni email şifreleme formatına geçir
+                            if(vaultData.length > 0) {
+                                setTimeout(() => saveVaultToBackend(), 1500);
+                            }
+                        } catch (e2) {
+                            vaultData = [];
+                        }
                     }
                 } else {
                     vaultData = [];

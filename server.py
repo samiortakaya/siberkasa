@@ -113,7 +113,7 @@ def health_check():
 @app.route('/send_registration_otp', methods=['POST'])
 def send_registration_otp():
     data = request.json or {}
-    email = data.get('email')
+    email = data.get('email', '').strip().lower()
     pwd = data.get('password')
     
     if not email or not pwd:
@@ -149,7 +149,7 @@ def send_registration_otp():
 @app.route('/verify_registration', methods=['POST'])
 def verify_registration():
     data = request.json or {}
-    email = data.get('email')
+    email = data.get('email', '').strip().lower()
     otp = data.get('otp')
 
     if not email or not otp:
@@ -181,7 +181,7 @@ def verify_registration():
 @app.route('/send_reset_otp', methods=['POST'])
 def send_reset_otp():
     data = request.json or {}
-    email = data.get('email')
+    email = data.get('email', '').strip().lower()
 
     if not email:
         return jsonify({"success": False, "message": "E-posta gereklidir."}), 400
@@ -215,7 +215,7 @@ def send_reset_otp():
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
     data = request.json or {}
-    email = data.get('email')
+    email = data.get('email', '').strip().lower()
     otp = data.get('otp')
     new_password = data.get('new_password')
 
@@ -249,7 +249,7 @@ def reset_password():
 @app.route('/login', methods=['POST'])
 def handle_login():
     data = request.json or {}
-    email = data.get('email')
+    email = data.get('email', '').strip().lower()
     pwd = data.get('password')
     
     if not email or not pwd:
@@ -276,7 +276,7 @@ def handle_login():
 @app.route('/save_vault', methods=['POST'])
 def handle_save_vault():
     data = request.json or {}
-    email = data.get('email')
+    email = data.get('email', '').strip().lower()
     encrypted_vault = data.get('encrypted_vault')
     
     if not email:
