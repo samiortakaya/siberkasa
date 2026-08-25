@@ -17,7 +17,7 @@ CORS(app)
 # Gmail kullanıyorsan "Uygulama Şifresi" oluşturman gerekir!
 # ---------------------------------------------------------
 GENDERICI_MAIL = os.getenv("MAIL_USER", "samiortakaya63@gmail.com")
-GENDERICI_SIFRE = os.getenv("MAIL_PASS", "kfvw exzo dvxq ogzf")
+GENDERICI_SIFRE = os.getenv("MAIL_PASS", "kfvwexzodvxqogzf").replace(" ", "")
 # ---------------------------------------------------------
 
 # Geçici OTP (Doğrulama kodları) hafızası
