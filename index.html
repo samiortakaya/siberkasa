@@ -1692,7 +1692,7 @@
                 showToast(data.message || "İşlem sırasında hata oluştu!", "error");
             }
         } catch (err) {
-            showToast("Sunucuya bağlanılamadı. Lütfen sunucunuzu kontrol edin.", "error");
+            showToast("Bağlantı Hatası: " + err.message, "error");
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>';
@@ -1729,7 +1729,7 @@
                 showToast(data.message || "Kod hatalı!", "error");
             }
         } catch (err) {
-            showToast("Sunucu hatası oluştu.", "error");
+            showToast("Bağlantı Hatası: " + err.message, "error");
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<span>DOĞRULA VE HESABI AÇ</span> <i class="fa-solid fa-check"></i>';
@@ -1775,7 +1775,7 @@
                 showToast(data.message || "Hata oluştu!", "error");
             }
         } catch (err) {
-            showToast("Sunucu hatası.", "error");
+            showToast("Bağlantı Hatası: " + err.message, "error");
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<span>KOD GÖNDER</span> <i class="fa-solid fa-paper-plane"></i>';
@@ -1813,7 +1813,7 @@
                 showToast(data.message || "Hata oluştu!", "error");
             }
         } catch (err) {
-            showToast("Sunucu hatası.", "error");
+            showToast("Bağlantı Hatası: " + err.message, "error");
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<span>ŞİFREMİ YENİLE</span> <i class="fa-solid fa-rotate"></i>';
