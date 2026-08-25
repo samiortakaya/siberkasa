@@ -20,13 +20,13 @@
             --font-mono: 'JetBrains Mono', monospace;
 
             /* 🌸 Soft Aurora Luxury Palette (Dark Mode - Apple/Linear inspired) */
-            --bg-canvas: #090d16;
-            --bg-card: rgba(22, 30, 49, 0.55);
-            --bg-card-hover: rgba(30, 41, 67, 0.75);
-            --bg-surface: rgba(15, 23, 42, 0.75);
-            --bg-input: rgba(10, 15, 29, 0.65);
+            --bg-canvas: #070a12;
+            --bg-card: rgba(18, 26, 44, 0.65);
+            --bg-card-hover: rgba(26, 37, 62, 0.85);
+            --bg-surface: rgba(13, 19, 35, 0.8);
+            --bg-input: rgba(8, 13, 25, 0.7);
             --border-soft: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(167, 139, 250, 0.4);
+            --border-hover: rgba(167, 139, 250, 0.45);
             --border-highlight: rgba(255, 255, 255, 0.15);
 
             --text-main: #f8fafc;
@@ -53,13 +53,13 @@
 
         [data-theme="light"] {
             --bg-canvas: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.75);
-            --bg-card-hover: rgba(255, 255, 255, 0.95);
-            --bg-surface: rgba(255, 255, 255, 0.85);
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(255, 255, 255, 0.98);
+            --bg-surface: rgba(255, 255, 255, 0.9);
             --bg-input: rgba(241, 245, 249, 0.9);
             --border-soft: rgba(0, 0, 0, 0.06);
-            --border-hover: rgba(129, 140, 248, 0.4);
-            --border-highlight: rgba(255, 255, 255, 0.8);
+            --border-hover: rgba(129, 140, 248, 0.45);
+            --border-highlight: rgba(255, 255, 255, 0.9);
 
             --text-main: #0f172a;
             --text-muted: #475569;
@@ -85,33 +85,35 @@
             flex-direction: column;
             overflow-x: hidden;
             perspective: 1200px;
+            contain: paint;
         }
 
-        /* 🌌 Soft Ambient Aurora Mesh Background */
+        /* 🌌 Soft Ambient Aurora Mesh Background (GPU-Optimized) */
         .aurora-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
+            transform: translate3d(0,0,0);
         }
         .aurora-blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.38;
+            filter: blur(80px);
+            opacity: 0.32;
             will-change: transform;
-            animation: floatAurora 22s ease-in-out infinite alternate;
+            transform: translate3d(0,0,0);
+            animation: floatAurora 24s ease-in-out infinite alternate;
         }
-        .blob-1 { width: 550px; height: 550px; background: #818cf8; top: -120px; left: 10%; animation-duration: 24s; }
-        .blob-2 { width: 600px; height: 600px; background: #a78bfa; top: 35%; right: -100px; animation-duration: 28s; }
-        .blob-3 { width: 500px; height: 500px; background: #34d399; bottom: -150px; left: 25%; animation-duration: 20s; }
-        .blob-4 { width: 400px; height: 400px; background: #38bdf8; top: 15%; right: 30%; animation-duration: 26s; }
+        .blob-1 { width: 500px; height: 500px; background: #818cf8; top: -100px; left: 10%; }
+        .blob-2 { width: 550px; height: 550px; background: #a78bfa; top: 35%; right: -80px; animation-duration: 28s; }
+        .blob-3 { width: 450px; height: 450px; background: #34d399; bottom: -120px; left: 25%; animation-duration: 22s; }
 
         @keyframes floatAurora {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            50% { transform: translate(70px, 50px) scale(1.12) rotate(15deg); }
-            100% { transform: translate(-50px, 90px) scale(0.92) rotate(-10deg); }
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(50px, 40px, 0) scale(1.1); }
+            100% { transform: translate3d(-40px, 70px, 0) scale(0.95); }
         }
 
         /* 💎 SOFT GLASS NAVBAR */
@@ -119,17 +121,17 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
-            background: rgba(9, 13, 22, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(7, 10, 18, 0.7);
             border-bottom: 1px solid var(--border-soft);
-            padding: 16px 32px;
+            padding: 14px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         [data-theme="light"] .aurora-nav {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.75);
         }
 
         .nav-brand-box {
@@ -140,15 +142,15 @@
             color: var(--text-main);
         }
         .brand-3d-badge {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 14px;
             background: var(--grad-aurora);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            color: #090d16;
+            font-size: 19px;
+            color: #070a12;
             box-shadow: 0 8px 20px rgba(167, 139, 250, 0.35);
             transform-style: preserve-3d;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -157,12 +159,8 @@
             transform: rotateY(20deg) rotateX(-10deg) scale(1.1);
         }
 
-        .brand-text-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
         .brand-title-main {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 800;
             letter-spacing: -0.4px;
             background: linear-gradient(135deg, var(--text-main) 40%, var(--pastel-lavender) 100%);
@@ -170,8 +168,8 @@
             -webkit-text-fill-color: transparent;
         }
         .brand-subtitle {
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 10.5px;
+            font-weight: 700;
             color: var(--pastel-mint);
             letter-spacing: 0.5px;
             text-transform: uppercase;
@@ -195,15 +193,15 @@
             justify-content: center;
             cursor: pointer;
             font-size: 15px;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(10px);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform-style: preserve-3d;
         }
         .btn-soft-icon:hover {
             color: var(--pastel-lavender);
             border-color: var(--pastel-lavender);
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 20px rgba(167, 139, 250, 0.2);
+            box-shadow: 0 8px 18px rgba(167, 139, 250, 0.2);
         }
 
         .user-soft-pill {
@@ -214,7 +212,7 @@
             border-radius: 30px;
             background: var(--bg-card);
             border: 1px solid var(--border-soft);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
         }
         .user-avatar-dot {
             width: 28px;
@@ -227,7 +225,6 @@
             font-weight: 800;
             font-size: 12px;
             color: #fff;
-            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.3);
         }
 
         /* 📦 MAIN CONTAINER */
@@ -241,24 +238,127 @@
             flex: 1;
         }
 
-        /* 🔐 3D AUTHENTICATION CARD */
-        .auth-card-3d {
-            max-width: 450px;
-            margin: 50px auto;
+        /* ==================== 🚀 3D HERO AUTHENTICATION SECTION ==================== */
+        .auth-hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.95fr;
+            gap: 40px;
+            align-items: center;
+            margin: 30px auto 50px;
+            max-width: 1100px;
+        }
+
+        /* 3D Showcase Left Column */
+        .auth-showcase-3d {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            perspective: 1200px;
+        }
+        .showcase-pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background: rgba(167, 139, 250, 0.12);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: var(--pastel-lavender);
+            font-size: 12.5px;
+            font-weight: 700;
+            width: fit-content;
+            box-shadow: 0 4px 15px rgba(167, 139, 250, 0.15);
+        }
+        .showcase-title-huge {
+            font-size: 40px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+        .showcase-title-huge span {
+            background: var(--grad-aurora);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .showcase-desc {
+            font-size: 15.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* 🌟 INTERACTIVE 3D LOGO DOCK (HERO FEATURE) */
+        .sample-3d-dock {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 10px;
+            perspective: 1200px;
+        }
+        .sample-3d-item {
             background: var(--bg-card);
-            backdrop-filter: blur(36px) saturate(190%);
-            -webkit-backdrop-filter: blur(36px) saturate(190%);
+            border: 1px solid var(--border-soft);
+            border-radius: 22px;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: var(--shadow-3d);
+            transform-style: preserve-3d;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+            will-change: transform;
+            backdrop-filter: blur(16px);
+        }
+        /* ✨ Smooth 3D Pop-Out on Hover */
+        .sample-3d-item:hover {
+            transform: translate3d(0, -10px, 45px) rotateX(10deg) rotateY(-8deg) scale(1.15);
+            border-color: var(--pastel-lavender);
+            box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(167, 139, 250, 0.4);
+            z-index: 20;
+        }
+        .sample-3d-icon-pod {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-highlight);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: var(--shadow-icon-3d);
+            transform: translate3d(0, 0, 20px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .sample-3d-item:hover .sample-3d-icon-pod {
+            transform: translate3d(0, 0, 35px) scale(1.1);
+        }
+        .sample-3d-name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-main);
+            transform: translate3d(0, 0, 15px);
+        }
+
+        /* 🔐 3D AUTH CARD RIGHT COLUMN */
+        .auth-card-3d {
+            background: var(--bg-card);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
             border: 1px solid var(--border-soft);
             border-radius: 32px;
-            padding: 42px 36px;
+            padding: 38px 32px;
             box-shadow: var(--shadow-3d);
             position: relative;
             transform-style: preserve-3d;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+            will-change: transform;
             animation: authEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes authEntrance {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translate3d(0, 40px, 0) scale(0.95); }
+            to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
 
         .auth-tab-switch {
@@ -267,7 +367,7 @@
             border: 1px solid var(--border-soft);
             border-radius: 18px;
             padding: 5px;
-            margin-bottom: 28px;
+            margin-bottom: 26px;
         }
         .auth-tab-btn {
             flex: 1;
@@ -283,7 +383,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .auth-tab-btn.active {
             background: var(--grad-lavender);
@@ -294,7 +394,7 @@
 
         /* INPUTS */
         .input-group-3d {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         .input-label-soft {
             display: flex;
@@ -317,7 +417,6 @@
             color: var(--text-dim);
             font-size: 15px;
             pointer-events: none;
-            transition: color 0.2s ease;
         }
         .input-soft {
             width: 100%;
@@ -329,17 +428,13 @@
             font-family: var(--font-sans);
             font-size: 14.5px;
             font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s ease;
         }
         .input-soft:focus {
             outline: none;
             border-color: var(--pastel-lavender);
             background: rgba(167, 139, 250, 0.04);
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
-            transform: translateY(-1px);
-        }
-        .input-soft:focus + .input-icon-soft {
-            color: var(--pastel-lavender);
+            box-shadow: 0 0 18px rgba(167, 139, 250, 0.2);
         }
         .input-soft.mono {
             font-family: var(--font-mono);
@@ -363,15 +458,15 @@
             justify-content: center;
             gap: 10px;
             box-shadow: 0 10px 25px rgba(167, 139, 250, 0.35);
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform-style: preserve-3d;
         }
         .btn-aurora-primary:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translate3d(0, -3px, 10px) scale(1.02);
             box-shadow: 0 15px 35px rgba(167, 139, 250, 0.5);
         }
         .btn-aurora-primary:active {
-            transform: translateY(0) scale(0.98);
+            transform: translate3d(0, 0, 0) scale(0.98);
         }
 
         .btn-aurora-secondary {
@@ -387,9 +482,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(14px);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform-style: preserve-3d;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .btn-aurora-secondary:hover {
             border-color: var(--pastel-lavender);
@@ -397,7 +491,7 @@
             box-shadow: 0 8px 20px rgba(167, 139, 250, 0.15);
         }
 
-        /* 📊 3D FLOATING STAT CARDS */
+        /* 📊 3D STAT CARDS */
         .stats-deck-3d {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -407,8 +501,8 @@
         }
         .stat-tile-3d {
             background: var(--bg-card);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid var(--border-soft);
             border-radius: 24px;
             padding: 24px;
@@ -417,11 +511,12 @@
             gap: 18px;
             box-shadow: var(--shadow-3d);
             cursor: pointer;
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease;
             transform-style: preserve-3d;
+            will-change: transform;
         }
         .stat-tile-3d:hover {
-            transform: translateY(-6px) rotateX(4deg) scale(1.02);
+            transform: translate3d(0, -6px, 15px) scale(1.02);
             border-color: var(--border-hover);
             box-shadow: var(--shadow-3d), 0 15px 30px rgba(167, 139, 250, 0.15);
         }
@@ -435,11 +530,11 @@
             justify-content: center;
             font-size: 22px;
             flex-shrink: 0;
-            transform: translateZ(20px);
+            transform: translate3d(0, 0, 15px);
             transition: transform 0.3s ease;
         }
         .stat-tile-3d:hover .stat-orb-badge {
-            transform: translateZ(30px) scale(1.1);
+            transform: translate3d(0, 0, 25px) scale(1.1);
         }
         .orb-total { background: rgba(167, 139, 250, 0.15); color: var(--pastel-lavender); }
         .orb-health { background: rgba(52, 211, 153, 0.15); color: var(--pastel-mint); }
@@ -462,8 +557,8 @@
         /* 🎛️ CONTROLS & FILTER BAR */
         .controls-glass-bar {
             background: var(--bg-card);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid var(--border-soft);
             border-radius: 26px;
             padding: 18px 24px;
@@ -488,7 +583,7 @@
             border-radius: 18px;
             color: var(--text-main);
             font-size: 14.5px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
         .search-input-soft:focus {
             outline: none;
@@ -514,8 +609,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(14px);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(12px);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .pill-category-btn:hover, .pill-category-btn.active {
             background: rgba(167, 139, 250, 0.15);
@@ -525,7 +620,7 @@
             box-shadow: 0 6px 16px rgba(167, 139, 250, 0.2);
         }
 
-        /* 💎 3D FLOATING VAULT CARDS (HERO FEATURE) */
+        /* 💎 3D VAULT CARDS */
         .vault-grid-3d {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -535,8 +630,8 @@
 
         .card-vault-3d {
             background: var(--bg-card);
-            backdrop-filter: blur(32px) saturate(180%);
-            -webkit-backdrop-filter: blur(32px) saturate(180%);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
             border: 1px solid var(--border-soft);
             border-radius: 26px;
             padding: 24px;
@@ -546,7 +641,7 @@
             box-shadow: var(--shadow-3d);
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
             will-change: transform;
             cursor: default;
         }
@@ -560,7 +655,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transform: translateZ(15px);
+            transform: translate3d(0, 0, 15px);
         }
         .app-meta-3d {
             display: flex;
@@ -581,12 +676,11 @@
             flex-shrink: 0;
             box-shadow: var(--shadow-icon-3d);
             transform-style: preserve-3d;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform: translateZ(20px);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translate3d(0, 0, 20px);
         }
-        /* ✨ When hovering the card, the logo pops out in 3D with realistic depth */
         .card-vault-3d:hover .app-icon-pod-3d {
-            transform: translateZ(45px) rotateY(15deg) rotateX(-8deg) scale(1.18);
+            transform: translate3d(0, -4px, 45px) rotateY(15deg) rotateX(-8deg) scale(1.18);
             box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.5), 0 0 25px rgba(167, 139, 250, 0.4);
             border-color: var(--pastel-lavender);
         }
@@ -596,6 +690,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 14px;
+            pointer-events: none;
         }
         .app-icon-monogram {
             font-size: 22px;
@@ -609,7 +704,7 @@
             font-size: 17px;
             font-weight: 700;
             color: var(--text-main);
-            transform: translateZ(10px);
+            transform: translate3d(0, 0, 10px);
         }
         .app-info-3d .app-tag {
             font-size: 11px;
@@ -632,7 +727,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            transform: translateZ(10px);
+            transform: translate3d(0, 0, 10px);
             transition: border-color 0.2s ease;
         }
         .card-field-box:hover {
@@ -663,27 +758,27 @@
             justify-content: space-between;
             padding-top: 8px;
             border-top: 1px solid var(--border-soft);
-            transform: translateZ(5px);
+            transform: translate3d(0, 0, 5px);
         }
 
-        /* 🪟 3D FROSTED GLASS MODAL */
+        /* 🪟 MODALS */
         .modal-overlay-3d {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(5, 8, 15, 0.75);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 200;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            animation: fadeIn 0.25s ease;
+            animation: fadeIn 0.2s ease;
         }
         .modal-body-3d {
             background: var(--bg-card);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            backdrop-filter: blur(32px) saturate(190%);
+            -webkit-backdrop-filter: blur(32px) saturate(190%);
             border: 1px solid var(--border-soft);
             border-radius: 32px;
             width: 100%;
@@ -694,10 +789,10 @@
             box-shadow: var(--shadow-modal), 0 0 40px rgba(167, 139, 250, 0.12);
             position: relative;
             transform-style: preserve-3d;
-            animation: modalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes modalPop { from { transform: scale(0.92) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        @keyframes modalPop { from { transform: translate3d(0, 30px, 0) scale(0.92); opacity: 0; } to { transform: translate3d(0, 0, 0) scale(1); opacity: 1; } }
 
         .modal-nav-bar {
             display: flex;
@@ -716,7 +811,7 @@
             gap: 10px;
         }
 
-        /* 🔔 SOFT TOAST FLOATING DOCK */
+        /* 🔔 TOAST FLOATING DOCK */
         #softToastDock {
             position: fixed;
             bottom: 28px;
@@ -732,8 +827,8 @@
             min-width: 300px;
             max-width: 420px;
             background: var(--bg-surface);
-            backdrop-filter: blur(28px) saturate(180%);
-            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid var(--border-soft);
             border-left: 4px solid var(--pastel-lavender);
             border-radius: 18px;
@@ -751,14 +846,20 @@
         .soft-toast.error { border-left-color: var(--pastel-rose); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(251, 113, 133, 0.2); }
         .soft-toast.info { border-left-color: var(--pastel-sky); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2); }
 
-        @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+        @keyframes toastIn { from { transform: translate3d(120%, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
+        @keyframes toastOut { from { transform: translate3d(0, 0, 0); opacity: 1; } to { transform: translate3d(120%, 0, 0); opacity: 0; } }
 
         /* RESPONSIVE */
-        @media (max-width: 768px) {
+        @media (max-width: 960px) {
+            .auth-hero-grid { grid-template-columns: 1fr; gap: 30px; }
+            .showcase-title-huge { font-size: 32px; }
+            .sample-3d-dock { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 600px) {
             .aurora-nav { padding: 12px 18px; }
             .brand-title-main { font-size: 17px; }
             .viewport-wrapper { padding: 18px 14px 60px; }
+            .sample-3d-dock { grid-template-columns: repeat(2, 1fr); }
             .stats-deck-3d { grid-template-columns: 1fr 1fr; }
             .vault-grid-3d { grid-template-columns: 1fr; }
             .controls-glass-bar { flex-direction: column; align-items: stretch; }
@@ -767,12 +868,11 @@
 </head>
 <body>
 
-<!-- 🌌 Soft Ambient Aurora Mesh -->
+<!-- 🌌 Soft Ambient Aurora Mesh (GPU-Optimized) -->
 <div class="aurora-bg">
     <div class="aurora-blob blob-1"></div>
     <div class="aurora-blob blob-2"></div>
     <div class="aurora-blob blob-3"></div>
-    <div class="aurora-blob blob-4"></div>
 </div>
 
 <!-- 🚀 TOP GLASS NAVBAR -->
@@ -812,117 +912,194 @@
 <!-- 📦 VIEWPORT MAIN WRAPPER -->
 <main class="viewport-wrapper">
 
-    <!-- 1. AUTH SCREEN (Giriş & Kayıt) -->
-    <div id="authScreen" class="auth-card-3d">
-        <div class="auth-tab-switch">
-            <button class="auth-tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">
-                <i class="fa-solid fa-unlock-keyhole"></i> Giriş Yap
-            </button>
-            <button class="auth-tab-btn" id="tabRegister" onclick="switchAuthTab('register')">
-                <i class="fa-solid fa-user-plus"></i> Hesap Aç
-            </button>
+    <!-- ==================== 1. 3D HERO & AUTH SCREEN ==================== -->
+    <div id="authScreen" class="auth-hero-grid">
+        
+        <!-- Left: 3D App Showcase & Interactive Dock -->
+        <div class="auth-showcase-3d">
+            <div class="showcase-pill-badge">
+                <i class="fa-solid fa-cube"></i> 3D Akıllı Parola Yöneticisi
+            </div>
+            <h1 class="showcase-title-huge">
+                Tüm Dijital Dünyanız <span>Tek Bir Kasada</span> Güvende.
+            </h1>
+            <p class="showcase-desc">
+                Sosyal medya, bankalar ve iş uygulamalarınız için gerçek 3D logolarla zenginleştirilmiş, sıfır-bilgi (Zero-Knowledge) AES-256 şifreleme standardı.
+            </p>
+
+            <!-- 🌟 Sample 3D Interactive App Badges -->
+            <div class="sample-3d-dock">
+                <div class="sample-3d-item" title="Instagram 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" class="app-icon-img" alt="Instagram">
+                    </div>
+                    <span class="sample-3d-name">Instagram</span>
+                </div>
+
+                <div class="sample-3d-item" title="Google 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="app-icon-img" alt="Google">
+                    </div>
+                    <span class="sample-3d-name">Google</span>
+                </div>
+
+                <div class="sample-3d-item" title="Spotify 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" class="app-icon-img" alt="Spotify">
+                    </div>
+                    <span class="sample-3d-name">Spotify</span>
+                </div>
+
+                <div class="sample-3d-item" title="ChatGPT 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="app-icon-img" alt="ChatGPT">
+                    </div>
+                    <span class="sample-3d-name">ChatGPT</span>
+                </div>
+
+                <div class="sample-3d-item" title="Apple 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="app-icon-img" alt="Apple">
+                    </div>
+                    <span class="sample-3d-name">Apple</span>
+                </div>
+
+                <div class="sample-3d-item" title="Netflix 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="app-icon-img" alt="Netflix">
+                    </div>
+                    <span class="sample-3d-name">Netflix</span>
+                </div>
+
+                <div class="sample-3d-item" title="Steam 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" class="app-icon-img" alt="Steam">
+                    </div>
+                    <span class="sample-3d-name">Steam</span>
+                </div>
+
+                <div class="sample-3d-item" title="Binance 3D">
+                    <div class="sample-3d-icon-pod">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png" class="app-icon-img" alt="Binance">
+                    </div>
+                    <span class="sample-3d-name">Binance</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Login Form -->
-        <div id="loginSection">
-            <div class="input-group-3d">
-                <label class="input-label-soft">E-Posta Adresiniz</label>
-                <div class="input-box-3d">
-                    <i class="fa-solid fa-envelope input-icon-soft"></i>
-                    <input type="email" id="loginEmail" class="input-soft" placeholder="adiniz@ornek.com" onkeydown="if(event.key==='Enter') login()">
+        <!-- Right: 3D Interactive Auth Card -->
+        <div class="auth-card-3d" id="mainAuthCard">
+            <div class="auth-tab-switch">
+                <button class="auth-tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">
+                    <i class="fa-solid fa-unlock-keyhole"></i> Giriş Yap
+                </button>
+                <button class="auth-tab-btn" id="tabRegister" onclick="switchAuthTab('register')">
+                    <i class="fa-solid fa-user-plus"></i> Hesap Aç
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginSection">
+                <div class="input-group-3d">
+                    <label class="input-label-soft">E-Posta Adresiniz</label>
+                    <div class="input-box-3d">
+                        <i class="fa-solid fa-envelope input-icon-soft"></i>
+                        <input type="email" id="loginEmail" class="input-soft" placeholder="adiniz@ornek.com" onkeydown="if(event.key==='Enter') login()">
+                    </div>
                 </div>
-            </div>
 
-            <div class="input-group-3d">
-                <label class="input-label-soft">Ana Kilit (Master Şifre)</label>
-                <div class="input-box-3d">
-                    <i class="fa-solid fa-key input-icon-soft"></i>
-                    <input type="password" id="loginPassword" class="input-soft mono" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') login()">
-                    <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('loginPassword', this)">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
+                <div class="input-group-3d">
+                    <label class="input-label-soft">Ana Kilit (Master Şifre)</label>
+                    <div class="input-box-3d">
+                        <i class="fa-solid fa-key input-icon-soft"></i>
+                        <input type="password" id="loginPassword" class="input-soft mono" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') login()">
+                        <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('loginPassword', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
                 </div>
+
+                <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0 22px 2px;">
+                    <input type="checkbox" id="rememberMe" style="accent-color: var(--pastel-lavender); width: 18px; height: 18px; cursor: pointer;" checked>
+                    <label for="rememberMe" style="font-size: 13.5px; color: var(--text-muted); cursor: pointer; user-select: none;">Beni Hatırla (Oturumu Koru)</label>
+                </div>
+
+                <button class="btn-aurora-primary" onclick="login()" id="btnLoginSubmit">
+                    <span>KASAYI AÇ</span> <i class="fa-solid fa-shield-halved"></i>
+                </button>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0 24px 2px;">
-                <input type="checkbox" id="rememberMe" style="accent-color: var(--pastel-lavender); width: 18px; height: 18px; cursor: pointer;" checked>
-                <label for="rememberMe" style="font-size: 13.5px; color: var(--text-muted); cursor: pointer; user-select: none;">Beni Hatırla (Oturumu Koru)</label>
-            </div>
+            <!-- Register Form -->
+            <div id="registerSection" style="display: none;">
+                <div class="input-group-3d">
+                    <label class="input-label-soft">E-Posta Adresiniz</label>
+                    <div class="input-box-3d">
+                        <i class="fa-solid fa-envelope input-icon-soft"></i>
+                        <input type="email" id="regEmail" class="input-soft" placeholder="adiniz@ornek.com">
+                    </div>
+                </div>
 
-            <button class="btn-aurora-primary" onclick="login()" id="btnLoginSubmit">
-                <span>KASAYI AÇ</span> <i class="fa-solid fa-shield-halved"></i>
-            </button>
+                <div class="input-group-3d">
+                    <label class="input-label-soft">
+                        <span>Güçlü Bir Anahtar Şifre Belirleyin</span>
+                        <span id="pwdStrengthText" style="font-size: 11.5px; font-weight: 700; color: var(--text-dim);">Zayıf</span>
+                    </label>
+                    <div class="input-box-3d">
+                        <i class="fa-solid fa-shield-halved input-icon-soft"></i>
+                        <input type="password" id="regPassword" class="input-soft mono" placeholder="Kasanızı kilitleyecek şifre" oninput="checkStrength()">
+                        <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('regPassword', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <!-- Strength Line -->
+                    <div style="height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-top: 8px; overflow: hidden;">
+                        <div id="strengthBarFill" style="height: 100%; width: 0%; background: var(--pastel-rose); transition: width 0.3s ease, background 0.3s ease;"></div>
+                    </div>
+                </div>
+
+                <div class="input-group-3d">
+                    <label class="input-label-soft">Şifre Tekrar</label>
+                    <div class="input-box-3d">
+                        <i class="fa-solid fa-check-double input-icon-soft"></i>
+                        <input type="password" id="regPasswordConf" class="input-soft mono" placeholder="Şifrenizi onaylayın">
+                    </div>
+                </div>
+
+                <button class="btn-aurora-primary" onclick="requestRegistration()" id="btnRegisterSubmit">
+                    <span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>
+                </button>
+            </div>
         </div>
 
-        <!-- Register Form -->
-        <div id="registerSection" style="display: none;">
-            <div class="input-group-3d">
-                <label class="input-label-soft">E-Posta Adresiniz</label>
-                <div class="input-box-3d">
-                    <i class="fa-solid fa-envelope input-icon-soft"></i>
-                    <input type="email" id="regEmail" class="input-soft" placeholder="adiniz@ornek.com">
-                </div>
-            </div>
-
-            <div class="input-group-3d">
-                <label class="input-label-soft">
-                    <span>Güçlü Bir Anahtar Şifre Belirleyin</span>
-                    <span id="pwdStrengthText" style="font-size: 11.5px; font-weight: 700; color: var(--text-dim);">Zayıf</span>
-                </label>
-                <div class="input-box-3d">
-                    <i class="fa-solid fa-shield-halved input-icon-soft"></i>
-                    <input type="password" id="regPassword" class="input-soft mono" placeholder="Kasanızı kilitleyecek şifre" oninput="checkStrength()">
-                    <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('regPassword', this)">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
-                </div>
-                <!-- Strength Line -->
-                <div style="height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-top: 8px; overflow: hidden;">
-                    <div id="strengthBarFill" style="height: 100%; width: 0%; background: var(--pastel-rose); transition: width 0.3s ease, background 0.3s ease;"></div>
-                </div>
-            </div>
-
-            <div class="input-group-3d">
-                <label class="input-label-soft">Şifre Tekrar</label>
-                <div class="input-box-3d">
-                    <i class="fa-solid fa-check-double input-icon-soft"></i>
-                    <input type="password" id="regPasswordConf" class="input-soft mono" placeholder="Şifrenizi onaylayın">
-                </div>
-            </div>
-
-            <button class="btn-aurora-primary" onclick="requestRegistration()" id="btnRegisterSubmit">
-                <span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>
-            </button>
-        </div>
     </div>
 
-    <!-- 2. DASHBOARD (3D Kasa Yönetim Ekranı) -->
+    <!-- ==================== 2. DASHBOARD (3D KASA EKRANI) ==================== -->
     <div id="dashboardScreen" style="display: none;">
 
         <!-- 📊 3D Floating Stat Cards -->
         <div class="stats-deck-3d">
-            <div class="stat-tile-3d" data-tilt>
+            <div class="stat-tile-3d">
                 <div class="stat-orb-badge orb-total"><i class="fa-solid fa-key"></i></div>
                 <div class="stat-text-meta">
                     <h4>Toplam Parola</h4>
                     <div class="stat-val" id="statTotalCount">0</div>
                 </div>
             </div>
-            <div class="stat-tile-3d" data-tilt onclick="openAuditModal()">
+            <div class="stat-tile-3d" onclick="openAuditModal()">
                 <div class="stat-orb-badge orb-health"><i class="fa-solid fa-shield-check"></i></div>
                 <div class="stat-text-meta">
                     <h4>Kasa Sağlığı</h4>
                     <div class="stat-val" id="statHealthScore">%100</div>
                 </div>
             </div>
-            <div class="stat-tile-3d" data-tilt onclick="filterWeakPasswords()">
+            <div class="stat-tile-3d" onclick="filterWeakPasswords()">
                 <div class="stat-orb-badge orb-weak"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <div class="stat-text-meta">
                     <h4>Zayıf Parolalar</h4>
                     <div class="stat-val" id="statWeakCount">0</div>
                 </div>
             </div>
-            <div class="stat-tile-3d" data-tilt onclick="filterDuplicatePasswords()">
+            <div class="stat-tile-3d" onclick="filterDuplicatePasswords()">
                 <div class="stat-orb-badge orb-dup"><i class="fa-solid fa-clone"></i></div>
                 <div class="stat-text-meta">
                     <h4>Tekrar Edenler</h4>
@@ -1299,26 +1476,35 @@
         text.innerText = `${val} 3D logosu algılandı`;
     }
 
-    // --- 4. 3D INTERACTIVE TILT PHYSICS ENGINE ---
-    function attach3DTiltPhysics() {
-        const cards = document.querySelectorAll(".card-vault-3d, .stat-tile-3d");
-        cards.forEach(card => {
-            card.addEventListener("mousemove", (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -10;
-                const rotateY = ((x - centerX) / centerX) * 10;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale3d(1.02, 1.02, 1.02)`;
-            });
+    // --- 4. 120 FPS GPU-OPTIMIZED 3D TILT ENGINE ---
+    let isTicking = false;
 
-            card.addEventListener("mouseleave", () => {
-                card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale3d(1, 1, 1)";
+    function attach3DTiltPhysics() {
+        const elements = document.querySelectorAll(".card-vault-3d, .stat-tile-3d, .auth-card-3d");
+        
+        elements.forEach(el => {
+            el.addEventListener("mousemove", (e) => {
+                if (!isTicking) {
+                    window.requestAnimationFrame(() => {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = ((y - centerY) / centerY) * -8;
+                        const rotateY = ((x - centerX) / centerX) * 8;
+                        
+                        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translate3d(0, -6px, 12px)`;
+                        isTicking = false;
+                    });
+                    isTicking = true;
+                }
+            }, { passive: true });
+
+            el.addEventListener("mouseleave", () => {
+                el.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)";
             });
         });
     }
@@ -1497,7 +1683,7 @@
         document.getElementById('loginPassword').value = "";
         document.getElementById('navUserSection').style.display = 'none';
         document.getElementById('dashboardScreen').style.display = 'none';
-        document.getElementById('authScreen').style.display = 'block';
+        document.getElementById('authScreen').style.display = 'grid';
 
         const savedEmail = localStorage.getItem('siber_kasa_saved_email');
         if (savedEmail) document.getElementById('loginEmail').value = savedEmail;
@@ -1662,7 +1848,7 @@
 
         if (filtered.length === 0) {
             container.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 70px 20px; background: var(--bg-card); border: 2px dashed var(--border-soft); border-radius: 32px; backdrop-filter: blur(28px);">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 70px 20px; background: var(--bg-card); border: 2px dashed var(--border-soft); border-radius: 32px; backdrop-filter: blur(24px);">
                     <div style="font-size: 52px; color: var(--pastel-lavender); margin-bottom: 18px; opacity: 0.85;"><i class="fa-solid fa-vault"></i></div>
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Kasanızda Parola Bulunamadı</h3>
                     <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Yeni bir parola ekleyerek kasanızı doldurmaya başlayabilirsiniz.</p>
@@ -1756,7 +1942,7 @@
             container.appendChild(card);
         });
 
-        // Re-attach 3D tilt tracking for cards
+        // Re-attach 3D tilt tracking
         attach3DTiltPhysics();
     }
 
@@ -1765,7 +1951,7 @@
         if (!textEl) return;
 
         if (textEl.innerText === "••••••••••••") {
-            // Smooth reveal animation
+            // Smooth reveal
             let chars = "!@#$%^&*()_+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             let iterations = 0;
             const interval = setInterval(() => {
@@ -1945,7 +2131,7 @@
         const dataStr = JSON.stringify({
             exportedAt: new Date().toISOString(),
             user: currentUserEmail,
-            version: "3.5",
+            version: "3.6",
             vault: vaultData
         }, null, 2);
 
