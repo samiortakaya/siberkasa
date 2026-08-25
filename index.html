@@ -3,73 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SİBER KASA • Quantum Security Vault</title>
+    <title>Siber Kasa • 3D Aurora Vault</title>
     
-    <!-- Google Fonts: Space Grotesk, Outfit & JetBrains Mono -->
+    <!-- Google Fonts: Plus Jakarta Sans, Outfit & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome 6 Pro & CryptoJS -->
+    <!-- FontAwesome & CryptoJS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 
     <style>
         :root {
-            --font-display: 'Space Grotesk', sans-serif;
-            --font-body: 'Outfit', sans-serif;
+            --font-sans: 'Plus Jakarta Sans', 'Outfit', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
 
-            /* Futuristic Obsidian Cyber Palette (Default Dark) */
-            --bg-deep: #030712;
-            --bg-surface: rgba(11, 17, 32, 0.7);
-            --bg-surface-hover: rgba(17, 27, 49, 0.85);
-            --bg-card: rgba(15, 23, 42, 0.65);
-            --bg-card-border: rgba(255, 255, 255, 0.08);
-            --bg-input: rgba(3, 7, 18, 0.6);
-            --modal-backdrop: rgba(2, 6, 23, 0.82);
+            /* 🌸 Soft Aurora Luxury Palette (Dark Mode - Apple/Linear inspired) */
+            --bg-canvas: #090d16;
+            --bg-card: rgba(22, 30, 49, 0.55);
+            --bg-card-hover: rgba(30, 41, 67, 0.75);
+            --bg-surface: rgba(15, 23, 42, 0.75);
+            --bg-input: rgba(10, 15, 29, 0.65);
+            --border-soft: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(167, 139, 250, 0.4);
+            --border-highlight: rgba(255, 255, 255, 0.15);
 
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
 
-            --neon-cyan: #00f2fe;
-            --neon-blue: #38bdf8;
-            --neon-purple: #a855f7;
-            --neon-emerald: #10b981;
-            --neon-rose: #f43f5e;
-            --neon-amber: #fbbf24;
+            /* Soft Pastel Aurora Accents */
+            --pastel-lavender: #a78bfa;
+            --pastel-mint: #34d399;
+            --pastel-sky: #38bdf8;
+            --pastel-rose: #fb7185;
+            --pastel-amber: #fbbf24;
+            --pastel-indigo: #818cf8;
 
-            --gradient-cyber: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7000ff 100%);
-            --gradient-emerald: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            --gradient-purple: linear-gradient(135deg, #c084fc 0%, #6366f1 100%);
-            --gradient-rose: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
-            --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            --grad-aurora: linear-gradient(135deg, #a78bfa 0%, #38bdf8 50%, #34d399 100%);
+            --grad-lavender: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+            --grad-mint: linear-gradient(135deg, #34d399 0%, #2dd4bf 100%);
+            --grad-rose: linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
 
-            --glow-cyan: 0 0 25px rgba(0, 242, 254, 0.35);
-            --glow-emerald: 0 0 25px rgba(16, 185, 129, 0.35);
-            --glow-purple: 0 0 25px rgba(168, 85, 247, 0.35);
-            --shadow-subtle: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
-            --radius-card: 20px;
-            --radius-pill: 9999px;
+            --shadow-3d: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px rgba(167, 139, 250, 0.08);
+            --shadow-icon-3d: 0 12px 24px -6px rgba(0, 0, 0, 0.4);
+            --shadow-modal: 0 30px 70px -20px rgba(0, 0, 0, 0.7);
         }
 
         [data-theme="light"] {
-            --bg-deep: #f8fafc;
+            --bg-canvas: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.75);
+            --bg-card-hover: rgba(255, 255, 255, 0.95);
             --bg-surface: rgba(255, 255, 255, 0.85);
-            --bg-surface-hover: #ffffff;
-            --bg-card: rgba(255, 255, 255, 0.9);
-            --bg-card-border: rgba(0, 0, 0, 0.08);
-            --bg-input: rgba(241, 245, 249, 0.8);
-            --modal-backdrop: rgba(15, 23, 42, 0.4);
+            --bg-input: rgba(241, 245, 249, 0.9);
+            --border-soft: rgba(0, 0, 0, 0.06);
+            --border-hover: rgba(129, 140, 248, 0.4);
+            --border-highlight: rgba(255, 255, 255, 0.8);
 
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-dim: #94a3b8;
 
-            --neon-cyan: #0284c7;
-            --neon-emerald: #059669;
-            --shadow-subtle: 0 12px 30px -5px rgba(0, 0, 0, 0.06);
+            --shadow-3d: 0 20px 40px -15px rgba(0, 0, 0, 0.06), 0 0 20px rgba(129, 140, 248, 0.1);
+            --shadow-icon-3d: 0 10px 20px -5px rgba(0, 0, 0, 0.12);
         }
 
         * {
@@ -80,679 +77,647 @@
         }
 
         body {
-            font-family: var(--font-body);
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
+            font-family: var(--font-sans);
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            position: relative;
+            perspective: 1200px;
         }
 
-        /* 🌌 Futuristic Cyber Matrix & Nebula Canvas Background */
-        .cyber-bg {
+        /* 🌌 Soft Ambient Aurora Mesh Background */
+        .aurora-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
-            background: 
-                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.07) 0%, transparent 40%),
-                radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
-                linear-gradient(to bottom, transparent, var(--bg-deep));
         }
-
-        .cyber-grid {
-            position: absolute;
-            width: 100%; height: 100%;
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-        }
-
-        /* 🔮 Glowing Quantum Orbs */
-        .orb {
+        .aurora-blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.5;
-            animation: floatOrb 18s ease-in-out infinite alternate;
+            filter: blur(120px);
+            opacity: 0.38;
+            will-change: transform;
+            animation: floatAurora 22s ease-in-out infinite alternate;
         }
-        .orb-1 { width: 450px; height: 450px; background: #00f2fe; top: -100px; left: -100px; animation-duration: 20s; }
-        .orb-2 { width: 500px; height: 500px; background: #7c3aed; top: 30%; right: -150px; animation-duration: 25s; }
-        .orb-3 { width: 400px; height: 400px; background: #10b981; bottom: -100px; left: 30%; animation-duration: 22s; }
+        .blob-1 { width: 550px; height: 550px; background: #818cf8; top: -120px; left: 10%; animation-duration: 24s; }
+        .blob-2 { width: 600px; height: 600px; background: #a78bfa; top: 35%; right: -100px; animation-duration: 28s; }
+        .blob-3 { width: 500px; height: 500px; background: #34d399; bottom: -150px; left: 25%; animation-duration: 20s; }
+        .blob-4 { width: 400px; height: 400px; background: #38bdf8; top: 15%; right: 30%; animation-duration: 26s; }
 
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(60px, 40px) scale(1.15); }
-            100% { transform: translate(-40px, 80px) scale(0.95); }
+        @keyframes floatAurora {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(70px, 50px) scale(1.12) rotate(15deg); }
+            100% { transform: translate(-50px, 90px) scale(0.92) rotate(-10deg); }
         }
 
-        /* 🚀 TOP NAVIGATION */
-        .cyber-nav {
+        /* 💎 SOFT GLASS NAVBAR */
+        .aurora-nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            background: rgba(3, 7, 18, 0.7);
-            border-bottom: 1px solid var(--bg-card-border);
-            padding: 14px 28px;
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            background: rgba(9, 13, 22, 0.65);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 16px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        [data-theme="light"] .cyber-nav {
-            background: rgba(255, 255, 255, 0.75);
+        [data-theme="light"] .aurora-nav {
+            background: rgba(255, 255, 255, 0.7);
         }
 
-        .brand-container {
+        .nav-brand-box {
             display: flex;
             align-items: center;
             gap: 14px;
             text-decoration: none;
-            color: var(--text-primary);
+            color: var(--text-main);
         }
-        .brand-logo-hex {
+        .brand-3d-badge {
             width: 44px;
             height: 44px;
-            background: var(--gradient-cyber);
             border-radius: 14px;
+            background: var(--grad-aurora);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #030712;
             font-size: 20px;
-            box-shadow: var(--glow-cyan);
-            position: relative;
-            transform: rotate(-4deg);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #090d16;
+            box-shadow: 0 8px 20px rgba(167, 139, 250, 0.35);
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .brand-container:hover .brand-logo-hex {
-            transform: rotate(0deg) scale(1.08);
+        .nav-brand-box:hover .brand-3d-badge {
+            transform: rotateY(20deg) rotateX(-10deg) scale(1.1);
         }
-        .brand-title {
-            font-family: var(--font-display);
-            font-size: 22px;
+
+        .brand-text-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        .brand-title-main {
+            font-size: 20px;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 100%);
+            letter-spacing: -0.4px;
+            background: linear-gradient(135deg, var(--text-main) 40%, var(--pastel-lavender) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        [data-theme="light"] .brand-title {
-            background: linear-gradient(135deg, #0f172a 30%, #0284c7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .brand-chip {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: var(--radius-pill);
-            background: rgba(0, 242, 254, 0.12);
-            color: var(--neon-cyan);
-            border: 1px solid rgba(0, 242, 254, 0.3);
+        .brand-subtitle {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--pastel-mint);
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
-        .nav-right-tools {
+        .nav-actions {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .btn-icon {
+        .btn-soft-icon {
             width: 40px;
             height: 40px;
-            border-radius: 12px;
-            background: var(--bg-surface);
-            border: 1px solid var(--bg-card-border);
-            color: var(--text-secondary);
+            border-radius: 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-size: 15px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
         }
-        .btn-icon:hover {
-            color: var(--neon-cyan);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-            transform: translateY(-2px);
+        .btn-soft-icon:hover {
+            color: var(--pastel-lavender);
+            border-color: var(--pastel-lavender);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(167, 139, 250, 0.2);
         }
 
-        .user-hud-badge {
+        .user-soft-pill {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 6px 14px 6px 8px;
-            border-radius: var(--radius-pill);
-            background: var(--bg-surface);
-            border: 1px solid var(--bg-card-border);
+            border-radius: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
             backdrop-filter: blur(12px);
         }
-        .user-hud-avatar {
+        .user-avatar-dot {
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: var(--gradient-purple);
+            background: var(--grad-lavender);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
             font-size: 12px;
             color: #fff;
-        }
-        .user-hud-name {
-            font-size: 13.5px;
-            font-weight: 600;
-            max-width: 140px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.3);
         }
 
-        /* 📦 MAIN CONTENT CONTAINER */
-        .app-container {
+        /* 📦 MAIN CONTAINER */
+        .viewport-wrapper {
             position: relative;
             z-index: 10;
             max-width: 1240px;
             width: 100%;
             margin: 0 auto;
-            padding: 30px 24px 80px;
+            padding: 35px 24px 80px;
             flex: 1;
         }
 
-        /* 🔐 AUTHENTICATION PORTAL */
-        .auth-portal {
-            max-width: 460px;
+        /* 🔐 3D AUTHENTICATION CARD */
+        .auth-card-3d {
+            max-width: 450px;
             margin: 50px auto;
-            background: var(--bg-surface);
-            backdrop-filter: blur(32px) saturate(200%);
-            -webkit-backdrop-filter: blur(32px) saturate(200%);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 28px;
-            padding: 40px 36px;
-            box-shadow: var(--shadow-subtle), 0 0 40px rgba(0, 242, 254, 0.08);
+            background: var(--bg-card);
+            backdrop-filter: blur(36px) saturate(190%);
+            -webkit-backdrop-filter: blur(36px) saturate(190%);
+            border: 1px solid var(--border-soft);
+            border-radius: 32px;
+            padding: 42px 36px;
+            box-shadow: var(--shadow-3d);
             position: relative;
-            overflow: hidden;
-            animation: portalEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            animation: authEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .auth-portal::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-            background: var(--gradient-cyber);
-        }
-        @keyframes portalEntrance {
-            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+        @keyframes authEntrance {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .auth-segmented-switch {
+        .auth-tab-switch {
             display: flex;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
             padding: 5px;
             margin-bottom: 28px;
         }
-        .auth-switch-btn {
+        .auth-tab-btn {
             flex: 1;
             padding: 12px;
             border: none;
             background: transparent;
-            color: var(--text-secondary);
-            font-family: var(--font-display);
+            color: var(--text-muted);
             font-size: 14px;
             font-weight: 700;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .auth-switch-btn.active {
-            background: var(--gradient-cyber);
-            color: #030712;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.35);
+        .auth-tab-btn.active {
+            background: var(--grad-lavender);
+            color: #ffffff;
+            box-shadow: 0 6px 18px rgba(167, 139, 250, 0.35);
+            transform: scale(1.02);
         }
 
-        /* INPUTS & CONTROLS */
-        .hud-input-group {
+        /* INPUTS */
+        .input-group-3d {
             margin-bottom: 20px;
         }
-        .hud-label {
+        .input-label-soft {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             margin-bottom: 8px;
             padding-left: 2px;
         }
-        .hud-input-box {
+        .input-box-3d {
             position: relative;
             display: flex;
             align-items: center;
         }
-        .hud-input-icon {
+        .input-icon-soft {
             position: absolute;
             left: 16px;
-            color: var(--text-muted);
-            font-size: 16px;
+            color: var(--text-dim);
+            font-size: 15px;
             pointer-events: none;
             transition: color 0.2s ease;
         }
-        .hud-input {
+        .input-soft {
             width: 100%;
             padding: 14px 16px 14px 44px;
             background: var(--bg-input);
-            border: 1px solid var(--bg-card-border);
+            border: 1px solid var(--border-soft);
             border-radius: 16px;
-            color: var(--text-primary);
-            font-family: var(--font-body);
+            color: var(--text-main);
+            font-family: var(--font-sans);
             font-size: 14.5px;
             font-weight: 500;
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .hud-input:focus {
+        .input-soft:focus {
             outline: none;
-            border-color: var(--neon-cyan);
-            background: rgba(0, 242, 254, 0.04);
-            box-shadow: 0 0 18px rgba(0, 242, 254, 0.25);
+            border-color: var(--pastel-lavender);
+            background: rgba(167, 139, 250, 0.04);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
+            transform: translateY(-1px);
         }
-        .hud-input:focus + .hud-input-icon {
-            color: var(--neon-cyan);
+        .input-soft:focus + .input-icon-soft {
+            color: var(--pastel-lavender);
         }
-        .hud-input.mono {
+        .input-soft.mono {
             font-family: var(--font-mono);
             letter-spacing: 0.5px;
         }
 
-        .hud-eye-btn {
-            position: absolute;
-            right: 12px;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 6px 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: all 0.2s ease;
-        }
-        .hud-eye-btn:hover {
-            color: var(--neon-cyan);
-        }
-
-        .btn-cyber-primary {
+        .btn-aurora-primary {
             width: 100%;
-            padding: 15px 24px;
-            border-radius: 16px;
+            padding: 16px 24px;
+            border-radius: 18px;
             border: none;
-            background: var(--gradient-cyber);
-            color: #030712;
-            font-family: var(--font-display);
+            background: var(--grad-lavender);
+            color: #ffffff;
+            font-family: var(--font-sans);
             font-size: 15px;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: var(--glow-cyan);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(167, 139, 250, 0.35);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
         }
-        .btn-cyber-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
+        .btn-aurora-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(167, 139, 250, 0.5);
         }
-        .btn-cyber-primary:active {
-            transform: translateY(0);
+        .btn-aurora-primary:active {
+            transform: translateY(0) scale(0.98);
         }
 
-        .btn-cyber-secondary {
-            background: var(--bg-surface);
-            border: 1px solid var(--bg-card-border);
-            color: var(--text-primary);
-            padding: 11px 20px;
-            border-radius: 14px;
-            font-family: var(--font-display);
+        .btn-aurora-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            color: var(--text-main);
+            padding: 12px 22px;
+            border-radius: 16px;
+            font-family: var(--font-sans);
             font-size: 13.5px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(12px);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(14px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
         }
-        .btn-cyber-secondary:hover {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        .btn-aurora-secondary:hover {
+            border-color: var(--pastel-lavender);
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(167, 139, 250, 0.15);
         }
 
-        /* 📊 METRIC HUD CARDS */
-        .metrics-grid {
+        /* 📊 3D FLOATING STAT CARDS */
+        .stats-deck-3d {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 18px;
-            margin-bottom: 28px;
+            gap: 20px;
+            margin-bottom: 30px;
+            perspective: 1000px;
         }
-        .metric-card {
+        .stat-tile-3d {
             background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 22px;
-            padding: 22px;
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid var(--border-soft);
+            border-radius: 24px;
+            padding: 24px;
             display: flex;
             align-items: center;
             gap: 18px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-3d);
+            cursor: pointer;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
         }
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--neon-cyan);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .stat-tile-3d:hover {
+            transform: translateY(-6px) rotateX(4deg) scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-3d), 0 15px 30px rgba(167, 139, 250, 0.15);
         }
-        .metric-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0, 242, 254, 0.3);
-            box-shadow: var(--shadow-subtle), 0 0 25px rgba(0, 242, 254, 0.1);
-        }
-        .metric-card:hover::before { opacity: 1; }
 
-        .metric-icon-pod {
+        .stat-orb-badge {
             width: 52px;
             height: 52px;
-            border-radius: 16px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
             flex-shrink: 0;
+            transform: translateZ(20px);
+            transition: transform 0.3s ease;
         }
-        .pod-total { background: rgba(0, 242, 254, 0.12); color: var(--neon-cyan); }
-        .pod-health { background: rgba(16, 185, 129, 0.12); color: var(--neon-emerald); }
-        .pod-weak { background: rgba(251, 191, 36, 0.12); color: var(--neon-amber); }
-        .pod-dup { background: rgba(244, 63, 94, 0.12); color: var(--neon-rose); }
+        .stat-tile-3d:hover .stat-orb-badge {
+            transform: translateZ(30px) scale(1.1);
+        }
+        .orb-total { background: rgba(167, 139, 250, 0.15); color: var(--pastel-lavender); }
+        .orb-health { background: rgba(52, 211, 153, 0.15); color: var(--pastel-mint); }
+        .orb-weak { background: rgba(251, 191, 36, 0.15); color: var(--pastel-amber); }
+        .orb-dup { background: rgba(251, 113, 133, 0.15); color: var(--pastel-rose); }
 
-        .metric-detail h4 {
+        .stat-text-meta h4 {
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             margin-bottom: 4px;
         }
-        .metric-detail .metric-num {
-            font-family: var(--font-display);
+        .stat-text-meta .stat-val {
             font-size: 28px;
             font-weight: 800;
-            color: var(--text-primary);
+            color: var(--text-main);
             line-height: 1.1;
         }
 
-        /* 🎛️ HUD COMMAND & FILTER DECK */
-        .hud-command-deck {
+        /* 🎛️ CONTROLS & FILTER BAR */
+        .controls-glass-bar {
             background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 24px;
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid var(--border-soft);
+            border-radius: 26px;
             padding: 18px 24px;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
+            box-shadow: var(--shadow-3d);
         }
-        .search-quantum-box {
+        .search-box-soft {
             position: relative;
             flex: 1;
             min-width: 280px;
         }
-        .search-quantum-input {
+        .search-input-soft {
             width: 100%;
             padding: 13px 18px 13px 44px;
             background: var(--bg-input);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 16px;
-            color: var(--text-primary);
+            border: 1px solid var(--border-soft);
+            border-radius: 18px;
+            color: var(--text-main);
             font-size: 14.5px;
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
         }
-        .search-quantum-input:focus {
+        .search-input-soft:focus {
             outline: none;
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+            border-color: var(--pastel-lavender);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
         }
 
-        .category-filter-bar {
+        .category-scroll-pills {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 24px;
+            margin-bottom: 26px;
         }
-        .cat-chip {
-            background: var(--bg-surface);
-            border: 1px solid var(--bg-card-border);
-            color: var(--text-secondary);
+        .pill-category-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            color: var(--text-muted);
             padding: 9px 18px;
-            border-radius: var(--radius-pill);
+            border-radius: 30px;
             font-size: 13.5px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(10px);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(14px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .cat-chip:hover, .cat-chip.active {
-            background: rgba(0, 242, 254, 0.12);
-            color: var(--neon-cyan);
-            border-color: rgba(0, 242, 254, 0.4);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-            transform: translateY(-2px);
+        .pill-category-btn:hover, .pill-category-btn.active {
+            background: rgba(167, 139, 250, 0.15);
+            color: var(--pastel-lavender);
+            border-color: var(--pastel-lavender);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 16px rgba(167, 139, 250, 0.2);
         }
 
-        /* 💎 QUANTUM VAULT GRID & CARDS */
-        .vault-quantum-grid {
+        /* 💎 3D FLOATING VAULT CARDS (HERO FEATURE) */
+        .vault-grid-3d {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 20px;
+            gap: 22px;
+            perspective: 1200px;
         }
 
-        .vault-item-card {
+        .card-vault-3d {
             background: var(--bg-card);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 24px;
-            padding: 22px;
+            backdrop-filter: blur(32px) saturate(180%);
+            -webkit-backdrop-filter: blur(32px) saturate(180%);
+            border: 1px solid var(--border-soft);
+            border-radius: 26px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            box-shadow: var(--shadow-subtle);
+            box-shadow: var(--shadow-3d);
             position: relative;
-            overflow: hidden;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+            cursor: default;
         }
-        .vault-item-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 242, 254, 0.35);
-            box-shadow: var(--shadow-subtle), 0 0 30px rgba(0, 242, 254, 0.15);
+        .card-vault-3d:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-3d), 0 20px 45px -10px rgba(167, 139, 250, 0.2);
         }
 
-        /* REAL APP LOGO EMBED */
-        .app-badge-header {
+        /* 🌟 3D ICON POP & FLOAT EFFECT */
+        .app-header-3d {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transform: translateZ(15px);
         }
-        .app-identity {
+        .app-meta-3d {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
-        .app-logo-frame {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--bg-card-border);
+        
+        .app-icon-pod-3d {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-highlight);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease;
+            box-shadow: var(--shadow-icon-3d);
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translateZ(20px);
         }
-        .vault-item-card:hover .app-logo-frame {
-            transform: scale(1.08);
+        /* ✨ When hovering the card, the logo pops out in 3D with realistic depth */
+        .card-vault-3d:hover .app-icon-pod-3d {
+            transform: translateZ(45px) rotateY(15deg) rotateX(-8deg) scale(1.18);
+            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.5), 0 0 25px rgba(167, 139, 250, 0.4);
+            border-color: var(--pastel-lavender);
         }
-        .app-logo-img {
+
+        .app-icon-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 14px;
         }
-        .app-logo-fallback {
-            font-size: 20px;
+        .app-icon-monogram {
+            font-size: 22px;
             font-weight: 800;
-            color: var(--neon-cyan);
+            background: var(--grad-lavender);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .app-text-info .app-name {
-            font-family: var(--font-display);
+        .app-info-3d .app-title {
             font-size: 17px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text-main);
+            transform: translateZ(10px);
         }
-        .app-text-info .app-category-badge {
+        .app-info-3d .app-tag {
             font-size: 11px;
             font-weight: 700;
-            padding: 2px 8px;
-            border-radius: var(--radius-pill);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            border: 1px solid var(--bg-card-border);
+            padding: 2px 9px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            border: 1px solid var(--border-soft);
             display: inline-block;
             margin-top: 3px;
         }
 
-        .vault-field-strip {
+        .card-field-box {
             background: var(--bg-input);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 14px;
-            padding: 11px 14px;
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
+            transform: translateZ(10px);
+            transition: border-color 0.2s ease;
         }
-        .field-label-tiny {
-            font-size: 10.5px;
+        .card-field-box:hover {
+            border-color: rgba(167, 139, 250, 0.3);
+        }
+        .field-sub-label {
+            font-size: 11px;
             font-weight: 700;
-            color: var(--text-muted);
+            color: var(--text-dim);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
         }
-        .field-val-text {
+        .field-main-val {
             font-size: 14px;
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--text-main);
             word-break: break-all;
         }
-        .field-val-text.mono {
+        .field-main-val.mono {
             font-family: var(--font-mono);
             letter-spacing: 1px;
         }
 
-        .card-footer-strip {
+        .card-footer-3d {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 8px;
+            border-top: 1px solid var(--border-soft);
+            transform: translateZ(5px);
         }
 
-        /* 🪟 QUANTUM GLASS MODALS */
-        .quantum-modal-backdrop {
+        /* 🪟 3D FROSTED GLASS MODAL */
+        .modal-overlay-3d {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--modal-backdrop);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(5, 8, 15, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             z-index: 200;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            animation: modalFadeIn 0.25s ease;
+            animation: fadeIn 0.25s ease;
         }
-        .quantum-modal-dialog {
-            background: var(--bg-surface);
-            backdrop-filter: blur(36px) saturate(200%);
-            -webkit-backdrop-filter: blur(36px) saturate(200%);
-            border: 1px solid var(--bg-card-border);
-            border-radius: 28px;
+        .modal-body-3d {
+            background: var(--bg-card);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid var(--border-soft);
+            border-radius: 32px;
             width: 100%;
             max-width: 520px;
             max-height: 90vh;
             overflow-y: auto;
-            padding: 32px;
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.1);
+            padding: 34px;
+            box-shadow: var(--shadow-modal), 0 0 40px rgba(167, 139, 250, 0.12);
             position: relative;
-            animation: modalPopUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            animation: modalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes modalPopUp { from { transform: scale(0.94) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPop { from { transform: scale(0.92) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
-        .modal-top-bar {
+        .modal-nav-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 22px;
             padding-bottom: 14px;
-            border-bottom: 1px solid var(--bg-card-border);
+            border-bottom: 1px solid var(--border-soft);
         }
-        .modal-top-bar h3 {
-            font-family: var(--font-display);
-            font-size: 20px;
+        .modal-nav-bar h3 {
+            font-size: 19px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* 🔔 TOAST FLOATING HUD */
-        #toastDock {
+        /* 🔔 SOFT TOAST FLOATING DOCK */
+        #softToastDock {
             position: fixed;
             bottom: 28px;
             right: 28px;
@@ -762,283 +727,283 @@
             gap: 12px;
             pointer-events: none;
         }
-        .hud-toast {
+        .soft-toast {
             pointer-events: auto;
             min-width: 300px;
             max-width: 420px;
             background: var(--bg-surface);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--bg-card-border);
-            border-left: 4px solid var(--neon-cyan);
-            border-radius: 16px;
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid var(--border-soft);
+            border-left: 4px solid var(--pastel-lavender);
+            border-radius: 18px;
             padding: 16px 20px;
-            color: var(--text-primary);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.2);
+            color: var(--text-main);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(167, 139, 250, 0.15);
             display: flex;
             align-items: center;
             gap: 14px;
             font-size: 14px;
             font-weight: 600;
-            animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
-        .hud-toast.success { border-left-color: var(--neon-emerald); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), var(--glow-emerald); }
-        .hud-toast.error { border-left-color: var(--neon-rose); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(244, 63, 94, 0.3); }
-        .hud-toast.info { border-left-color: var(--neon-purple); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), var(--glow-purple); }
+        .soft-toast.success { border-left-color: var(--pastel-mint); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(52, 211, 153, 0.2); }
+        .soft-toast.error { border-left-color: var(--pastel-rose); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(251, 113, 133, 0.2); }
+        .soft-toast.info { border-left-color: var(--pastel-sky); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2); }
 
-        @keyframes toastSlideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes toastSlideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+        @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .cyber-nav { padding: 12px 18px; }
-            .brand-title { font-size: 18px; }
-            .app-container { padding: 18px 14px 60px; }
-            .metrics-grid { grid-template-columns: 1fr 1fr; }
-            .vault-quantum-grid { grid-template-columns: 1fr; }
-            .hud-command-deck { flex-direction: column; align-items: stretch; }
+            .aurora-nav { padding: 12px 18px; }
+            .brand-title-main { font-size: 17px; }
+            .viewport-wrapper { padding: 18px 14px 60px; }
+            .stats-deck-3d { grid-template-columns: 1fr 1fr; }
+            .vault-grid-3d { grid-template-columns: 1fr; }
+            .controls-glass-bar { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
 <body>
 
-<!-- Ambient Particles & Nebula Background -->
-<div class="cyber-bg">
-    <div class="cyber-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+<!-- 🌌 Soft Ambient Aurora Mesh -->
+<div class="aurora-bg">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+    <div class="aurora-blob blob-3"></div>
+    <div class="aurora-blob blob-4"></div>
 </div>
 
-<!-- 🚀 TOP NAVIGATION -->
-<header class="cyber-nav">
-    <a href="#" class="brand-container">
-        <div class="brand-logo-hex">
+<!-- 🚀 TOP GLASS NAVBAR -->
+<header class="aurora-nav">
+    <a href="#" class="nav-brand-box">
+        <div class="brand-3d-badge">
             <i class="fa-solid fa-shield-halved"></i>
         </div>
-        <div>
-            <div class="brand-title">SİBER KASA</div>
+        <div class="brand-text-wrapper">
+            <div class="brand-title-main">SİBER KASA</div>
+            <div class="brand-subtitle">3D Aurora Vault</div>
         </div>
-        <span class="brand-chip">QUANTUM v3.0</span>
     </a>
 
-    <div class="nav-right-tools">
+    <div class="nav-actions">
         <!-- Theme Toggle -->
-        <button class="btn-icon" onclick="toggleTheme()" id="themeToggleBtn" title="Temayı Değiştir">
+        <button class="btn-soft-icon" onclick="toggleTheme()" id="themeToggleBtn" title="Temayı Değiştir">
             <i class="fa-solid fa-moon"></i>
         </button>
 
         <!-- User Controls (When Logged In) -->
         <div id="navUserSection" style="display: none; align-items: center; gap: 10px;">
-            <div class="user-hud-badge">
-                <div class="user-hud-avatar" id="navUserAvatar">U</div>
-                <span class="user-hud-name" id="navUserEmail">kullanici@mail.com</span>
+            <div class="user-soft-pill">
+                <div class="user-avatar-dot" id="navUserAvatar">U</div>
+                <span id="navUserEmail" style="font-size: 13px; font-weight: 600; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">kullanici@mail.com</span>
             </div>
-            <button class="btn-icon" onclick="openAuditModal()" title="Kasa Güvenlik Analizi">
-                <i class="fa-solid fa-heart-pulse" style="color: var(--neon-emerald)"></i>
+            <button class="btn-soft-icon" onclick="openAuditModal()" title="Kasa Sağlık Analizi">
+                <i class="fa-solid fa-heart-pulse" style="color: var(--pastel-mint)"></i>
             </button>
-            <button class="btn-icon" onclick="logout()" title="Kasayı Kilitle ve Çık" style="color: var(--neon-rose)">
+            <button class="btn-soft-icon" onclick="logout()" title="Kasayı Kilitle ve Çık" style="color: var(--pastel-rose)">
                 <i class="fa-solid fa-lock"></i>
             </button>
         </div>
     </div>
 </header>
 
-<!-- 📦 APP MAIN CONTAINER -->
-<main class="app-container">
+<!-- 📦 VIEWPORT MAIN WRAPPER -->
+<main class="viewport-wrapper">
 
-    <!-- 1. AUTHENTICATION PORTAL -->
-    <div id="authScreen" class="auth-portal">
-        <div class="auth-segmented-switch">
-            <button class="auth-switch-btn active" id="tabLogin" onclick="switchAuthTab('login')">
+    <!-- 1. AUTH SCREEN (Giriş & Kayıt) -->
+    <div id="authScreen" class="auth-card-3d">
+        <div class="auth-tab-switch">
+            <button class="auth-tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">
                 <i class="fa-solid fa-unlock-keyhole"></i> Giriş Yap
             </button>
-            <button class="auth-switch-btn" id="tabRegister" onclick="switchAuthTab('register')">
+            <button class="auth-tab-btn" id="tabRegister" onclick="switchAuthTab('register')">
                 <i class="fa-solid fa-user-plus"></i> Hesap Aç
             </button>
         </div>
 
         <!-- Login Form -->
         <div id="loginSection">
-            <div class="hud-input-group">
-                <label class="hud-label">E-Posta Adresiniz</label>
-                <div class="hud-input-box">
-                    <i class="fa-solid fa-envelope hud-input-icon"></i>
-                    <input type="email" id="loginEmail" class="hud-input" placeholder="adiniz@ornek.com" onkeydown="if(event.key==='Enter') login()">
+            <div class="input-group-3d">
+                <label class="input-label-soft">E-Posta Adresiniz</label>
+                <div class="input-box-3d">
+                    <i class="fa-solid fa-envelope input-icon-soft"></i>
+                    <input type="email" id="loginEmail" class="input-soft" placeholder="adiniz@ornek.com" onkeydown="if(event.key==='Enter') login()">
                 </div>
             </div>
 
-            <div class="hud-input-group">
-                <label class="hud-label">Master Anahtar Şifresi</label>
-                <div class="hud-input-box">
-                    <i class="fa-solid fa-key hud-input-icon"></i>
-                    <input type="password" id="loginPassword" class="hud-input mono" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') login()">
-                    <button class="hud-eye-btn" type="button" onclick="togglePasswordVisibility('loginPassword', this)">
+            <div class="input-group-3d">
+                <label class="input-label-soft">Ana Kilit (Master Şifre)</label>
+                <div class="input-box-3d">
+                    <i class="fa-solid fa-key input-icon-soft"></i>
+                    <input type="password" id="loginPassword" class="input-soft mono" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') login()">
+                    <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('loginPassword', this)">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 10px; margin: 12px 0 24px 2px;">
-                <input type="checkbox" id="rememberMe" style="accent-color: var(--neon-cyan); width: 18px; height: 18px; cursor: pointer;" checked>
-                <label for="rememberMe" style="font-size: 13.5px; color: var(--text-secondary); cursor: pointer; user-select: none;">Beni Hatırla (Oturumu Koru)</label>
+                <input type="checkbox" id="rememberMe" style="accent-color: var(--pastel-lavender); width: 18px; height: 18px; cursor: pointer;" checked>
+                <label for="rememberMe" style="font-size: 13.5px; color: var(--text-muted); cursor: pointer; user-select: none;">Beni Hatırla (Oturumu Koru)</label>
             </div>
 
-            <button class="btn-cyber-primary" onclick="login()" id="btnLoginSubmit">
+            <button class="btn-aurora-primary" onclick="login()" id="btnLoginSubmit">
                 <span>KASAYI AÇ</span> <i class="fa-solid fa-shield-halved"></i>
             </button>
         </div>
 
         <!-- Register Form -->
         <div id="registerSection" style="display: none;">
-            <div class="hud-input-group">
-                <label class="hud-label">E-Posta Adresiniz</label>
-                <div class="hud-input-box">
-                    <i class="fa-solid fa-envelope hud-input-icon"></i>
-                    <input type="email" id="regEmail" class="hud-input" placeholder="adiniz@ornek.com">
+            <div class="input-group-3d">
+                <label class="input-label-soft">E-Posta Adresiniz</label>
+                <div class="input-box-3d">
+                    <i class="fa-solid fa-envelope input-icon-soft"></i>
+                    <input type="email" id="regEmail" class="input-soft" placeholder="adiniz@ornek.com">
                 </div>
             </div>
 
-            <div class="hud-input-group">
-                <label class="hud-label">
+            <div class="input-group-3d">
+                <label class="input-label-soft">
                     <span>Güçlü Bir Anahtar Şifre Belirleyin</span>
-                    <span id="pwdStrengthText" style="font-size: 11.5px; font-weight: 700; color: var(--text-muted);">Zayıf</span>
+                    <span id="pwdStrengthText" style="font-size: 11.5px; font-weight: 700; color: var(--text-dim);">Zayıf</span>
                 </label>
-                <div class="hud-input-box">
-                    <i class="fa-solid fa-shield-halved hud-input-icon"></i>
-                    <input type="password" id="regPassword" class="hud-input mono" placeholder="Kasanızı kilitleyecek şifre" oninput="checkStrength()">
-                    <button class="hud-eye-btn" type="button" onclick="togglePasswordVisibility('regPassword', this)">
+                <div class="input-box-3d">
+                    <i class="fa-solid fa-shield-halved input-icon-soft"></i>
+                    <input type="password" id="regPassword" class="input-soft mono" placeholder="Kasanızı kilitleyecek şifre" oninput="checkStrength()">
+                    <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('regPassword', this)">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
                 <!-- Strength Line -->
                 <div style="height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; margin-top: 8px; overflow: hidden;">
-                    <div id="strengthBarFill" style="height: 100%; width: 0%; background: var(--neon-rose); transition: width 0.3s ease, background 0.3s ease;"></div>
+                    <div id="strengthBarFill" style="height: 100%; width: 0%; background: var(--pastel-rose); transition: width 0.3s ease, background 0.3s ease;"></div>
                 </div>
             </div>
 
-            <div class="hud-input-group">
-                <label class="hud-label">Şifre Tekrar</label>
-                <div class="hud-input-box">
-                    <i class="fa-solid fa-check-double hud-input-icon"></i>
-                    <input type="password" id="regPasswordConf" class="hud-input mono" placeholder="Şifrenizi onaylayın">
+            <div class="input-group-3d">
+                <label class="input-label-soft">Şifre Tekrar</label>
+                <div class="input-box-3d">
+                    <i class="fa-solid fa-check-double input-icon-soft"></i>
+                    <input type="password" id="regPasswordConf" class="input-soft mono" placeholder="Şifrenizi onaylayın">
                 </div>
             </div>
 
-            <button class="btn-cyber-primary" onclick="requestRegistration()" id="btnRegisterSubmit">
+            <button class="btn-aurora-primary" onclick="requestRegistration()" id="btnRegisterSubmit">
                 <span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>
             </button>
         </div>
     </div>
 
-    <!-- 2. QUANTUM DASHBOARD (Kasa Yönetim Ekranı) -->
+    <!-- 2. DASHBOARD (3D Kasa Yönetim Ekranı) -->
     <div id="dashboardScreen" style="display: none;">
 
-        <!-- 📊 Metrics HUD Overview -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-icon-pod pod-total"><i class="fa-solid fa-key"></i></div>
-                <div class="metric-detail">
+        <!-- 📊 3D Floating Stat Cards -->
+        <div class="stats-deck-3d">
+            <div class="stat-tile-3d" data-tilt>
+                <div class="stat-orb-badge orb-total"><i class="fa-solid fa-key"></i></div>
+                <div class="stat-text-meta">
                     <h4>Toplam Parola</h4>
-                    <div class="metric-num" id="statTotalCount">0</div>
+                    <div class="stat-val" id="statTotalCount">0</div>
                 </div>
             </div>
-            <div class="metric-card" style="cursor: pointer;" onclick="openAuditModal()">
-                <div class="metric-icon-pod pod-health"><i class="fa-solid fa-shield-check"></i></div>
-                <div class="metric-detail">
+            <div class="stat-tile-3d" data-tilt onclick="openAuditModal()">
+                <div class="stat-orb-badge orb-health"><i class="fa-solid fa-shield-check"></i></div>
+                <div class="stat-text-meta">
                     <h4>Kasa Sağlığı</h4>
-                    <div class="metric-num" id="statHealthScore">%100</div>
+                    <div class="stat-val" id="statHealthScore">%100</div>
                 </div>
             </div>
-            <div class="metric-card" style="cursor: pointer;" onclick="filterWeakPasswords()">
-                <div class="metric-icon-pod pod-weak"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div class="metric-detail">
+            <div class="stat-tile-3d" data-tilt onclick="filterWeakPasswords()">
+                <div class="stat-orb-badge orb-weak"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="stat-text-meta">
                     <h4>Zayıf Parolalar</h4>
-                    <div class="metric-num" id="statWeakCount">0</div>
+                    <div class="stat-val" id="statWeakCount">0</div>
                 </div>
             </div>
-            <div class="metric-card" style="cursor: pointer;" onclick="filterDuplicatePasswords()">
-                <div class="metric-icon-pod pod-dup"><i class="fa-solid fa-clone"></i></div>
-                <div class="metric-detail">
+            <div class="stat-tile-3d" data-tilt onclick="filterDuplicatePasswords()">
+                <div class="stat-orb-badge orb-dup"><i class="fa-solid fa-clone"></i></div>
+                <div class="stat-text-meta">
                     <h4>Tekrar Edenler</h4>
-                    <div class="metric-num" id="statDupCount">0</div>
+                    <div class="stat-val" id="statDupCount">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- 🎛️ HUD Command Deck (Search & Action Buttons) -->
-        <div class="hud-command-deck">
-            <div class="search-quantum-box">
-                <i class="fa-solid fa-magnifying-glass hud-input-icon" style="top: 15px; left: 16px;"></i>
-                <input type="text" class="search-quantum-input" id="searchBox" placeholder="Platform, e-posta veya notlarda anlık ara..." oninput="handleSearch()">
+        <!-- 🎛️ Glass Controls Bar (Search + Action Buttons) -->
+        <div class="controls-glass-bar">
+            <div class="search-box-soft">
+                <i class="fa-solid fa-magnifying-glass input-icon-soft" style="top: 15px; left: 16px;"></i>
+                <input type="text" class="search-input-soft" id="searchBox" placeholder="Platform, kullanıcı adı veya notlarda anlık ara..." oninput="handleSearch()">
             </div>
 
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <button class="btn-cyber-secondary" onclick="openGeneratorModal()">
-                    <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-cyan)"></i> Parola Üret
+                <button class="btn-aurora-secondary" onclick="openGeneratorModal()">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--pastel-lavender)"></i> Parola Üret
                 </button>
-                <button class="btn-cyber-secondary" onclick="openBackupModal()">
-                    <i class="fa-solid fa-file-export" style="color: var(--neon-purple)"></i> Yedekle / Aktar
+                <button class="btn-aurora-secondary" onclick="openBackupModal()">
+                    <i class="fa-solid fa-file-export" style="color: var(--pastel-sky)"></i> Yedekle / Aktar
                 </button>
-                <button class="btn-cyber-primary" style="width: auto; padding: 12px 24px;" onclick="openAddVaultModal()">
+                <button class="btn-aurora-primary" style="width: auto; padding: 12px 24px;" onclick="openAddVaultModal()">
                     <i class="fa-solid fa-plus"></i> Yeni Ekle
                 </button>
             </div>
         </div>
 
-        <!-- Category Chips Bar -->
-        <div class="category-filter-bar" id="categoryFilterBar">
-            <button class="cat-chip active" onclick="setCategoryFilter('all')"><i class="fa-solid fa-border-all"></i> Tümü</button>
-            <button class="cat-chip" onclick="setCategoryFilter('social')"><i class="fa-solid fa-globe"></i> Sosyal Medya</button>
-            <button class="cat-chip" onclick="setCategoryFilter('finance')"><i class="fa-solid fa-credit-card"></i> Finans & Banka</button>
-            <button class="cat-chip" onclick="setCategoryFilter('work')"><i class="fa-solid fa-briefcase"></i> İş & Yazılım</button>
-            <button class="cat-chip" onclick="setCategoryFilter('email')"><i class="fa-solid fa-envelope"></i> E-Posta</button>
-            <button class="cat-chip" onclick="setCategoryFilter('general')"><i class="fa-solid fa-cube"></i> Genel</button>
+        <!-- Category Filter Pills -->
+        <div class="category-scroll-pills" id="categoryFilterBar">
+            <button class="pill-category-btn active" onclick="setCategoryFilter('all')"><i class="fa-solid fa-border-all"></i> Tümü</button>
+            <button class="pill-category-btn" onclick="setCategoryFilter('social')"><i class="fa-solid fa-globe"></i> Sosyal Medya</button>
+            <button class="pill-category-btn" onclick="setCategoryFilter('finance')"><i class="fa-solid fa-credit-card"></i> Finans & Banka</button>
+            <button class="pill-category-btn" onclick="setCategoryFilter('work')"><i class="fa-solid fa-briefcase"></i> İş & Yazılım</button>
+            <button class="pill-category-btn" onclick="setCategoryFilter('email')"><i class="fa-solid fa-envelope"></i> E-Posta</button>
+            <button class="pill-category-btn" onclick="setCategoryFilter('general')"><i class="fa-solid fa-cube"></i> Genel</button>
         </div>
 
-        <!-- 💎 Quantum Vault Items Grid -->
-        <div class="vault-quantum-grid" id="vaultContainer">
-            <!-- Dynamic Vault Cards Injected Here -->
+        <!-- 💎 3D Vault Grid with Floating Icons -->
+        <div class="vault-grid-3d" id="vaultContainer">
+            <!-- Dynamic 3D Vault Cards with interactive tilt injected here -->
         </div>
 
     </div>
 
 </main>
 
-<!-- ==================== MODALS ==================== -->
+<!-- ==================== 3D MODALS ==================== -->
 
 <!-- 1. ADD / EDIT VAULT ITEM MODAL -->
-<div class="quantum-modal-backdrop" id="vaultModal">
-    <div class="quantum-modal-dialog">
-        <div class="modal-top-bar">
+<div class="modal-overlay-3d" id="vaultModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
             <h3 id="vaultModalTitle">
-                <i class="fa-solid fa-key" style="color: var(--neon-cyan)"></i> Yeni Parola Kaydı
+                <i class="fa-solid fa-key" style="color: var(--pastel-lavender)"></i> Yeni Parola Kaydı
             </h3>
-            <button class="btn-icon" onclick="closeModal('vaultModal')">&times;</button>
+            <button class="btn-soft-icon" onclick="closeModal('vaultModal')">&times;</button>
         </div>
 
         <input type="hidden" id="editItemIndex" value="-1">
 
-        <div class="hud-input-group">
-            <label class="hud-label">Platform / Uygulama Adı</label>
-            <div class="hud-input-box">
-                <i class="fa-solid fa-tag hud-input-icon"></i>
-                <input type="text" id="vaultPlatform" class="hud-input" placeholder="Örn: Instagram, Facebook, GitHub, Google..." oninput="previewAppLogoOnType(this.value)">
+        <div class="input-group-3d">
+            <label class="input-label-soft">Platform / Uygulama Adı</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-tag input-icon-soft"></i>
+                <input type="text" id="vaultPlatform" class="input-soft" placeholder="Örn: Instagram, Facebook, GitHub, Google..." oninput="previewAppLogoOnType(this.value)">
             </div>
-            <!-- Live Logo Preview Pill -->
-            <div id="liveLogoPreviewContainer" style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 6px 12px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--bg-card-border);">
-                <div class="app-logo-frame" id="liveLogoFrame" style="width: 32px; height: 32px; border-radius: 8px;">
-                    <i class="fa-solid fa-cube" style="color: var(--neon-cyan); font-size: 14px;"></i>
+            <!-- Live 3D Logo Preview Pill -->
+            <div id="liveLogoPreviewContainer" style="display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 8px 14px; background: rgba(255,255,255,0.03); border-radius: 16px; border: 1px solid var(--border-soft);">
+                <div class="app-icon-pod-3d" id="liveLogoFrame" style="width: 38px; height: 38px; border-radius: 12px;">
+                    <i class="fa-solid fa-cube" style="color: var(--pastel-lavender); font-size: 16px;"></i>
                 </div>
-                <span id="liveLogoText" style="font-size: 12.5px; color: var(--text-secondary); font-weight: 600;">Otomatik logo algılayıcı aktif</span>
+                <span id="liveLogoText" style="font-size: 13px; color: var(--text-muted); font-weight: 600;">3D Logo algılayıcı aktif</span>
             </div>
         </div>
 
-        <div class="hud-input-group">
-            <label class="hud-label">Kategori</label>
-            <div class="hud-input-box">
-                <i class="fa-solid fa-layer-group hud-input-icon"></i>
-                <select id="vaultCategory" class="hud-input" style="appearance: none; cursor: pointer;">
+        <div class="input-group-3d">
+            <label class="input-label-soft">Kategori</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-layer-group input-icon-soft"></i>
+                <select id="vaultCategory" class="input-soft" style="appearance: none; cursor: pointer;">
                     <option value="general">🔑 Genel</option>
                     <option value="social">🌐 Sosyal Medya</option>
                     <option value="finance">💳 Finans & Bankacılık</option>
@@ -1048,71 +1013,71 @@
             </div>
         </div>
 
-        <div class="hud-input-group">
-            <label class="hud-label">Kullanıcı Adı veya E-Posta</label>
-            <div class="hud-input-box">
-                <i class="fa-solid fa-user hud-input-icon"></i>
-                <input type="text" id="vaultUsername" class="hud-input" placeholder="kullanici_adi veya ornek@mail.com">
+        <div class="input-group-3d">
+            <label class="input-label-soft">Kullanıcı Adı veya E-Posta</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-user input-icon-soft"></i>
+                <input type="text" id="vaultUsername" class="input-soft" placeholder="kullanici_adi veya ornek@mail.com">
             </div>
         </div>
 
-        <div class="hud-input-group">
-            <div class="hud-label">
+        <div class="input-group-3d">
+            <div class="input-label-soft">
                 <span>Parola</span>
-                <button type="button" style="background: none; border: none; color: var(--neon-cyan); font-size: 12.5px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 4px;" onclick="quickGeneratePasswordForModal()">
+                <button type="button" style="background: none; border: none; color: var(--pastel-lavender); font-size: 12.5px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 4px;" onclick="quickGeneratePasswordForModal()">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Güçlü Üret
                 </button>
             </div>
-            <div class="hud-input-box">
-                <i class="fa-solid fa-lock hud-input-icon"></i>
-                <input type="password" id="vaultPassword" class="hud-input mono" placeholder="Parolanızı girin">
-                <button class="hud-eye-btn" type="button" onclick="togglePasswordVisibility('vaultPassword', this)">
+            <div class="input-box-3d">
+                <i class="fa-solid fa-lock input-icon-soft"></i>
+                <input type="password" id="vaultPassword" class="input-soft mono" placeholder="Parolanızı girin">
+                <button class="btn-soft-icon" type="button" style="position: absolute; right: 8px; width: 32px; height: 32px;" onclick="togglePasswordVisibility('vaultPassword', this)">
                     <i class="fa-solid fa-eye"></i>
                 </button>
             </div>
         </div>
 
-        <div class="hud-input-group">
-            <label class="hud-label">Web Sitesi Adresi (Opsiyonel)</label>
-            <div class="hud-input-box">
-                <i class="fa-solid fa-link hud-input-icon"></i>
-                <input type="url" id="vaultUrl" class="hud-input" placeholder="https://instagram.com">
+        <div class="input-group-3d">
+            <label class="input-label-soft">Web Sitesi Adresi (Opsiyonel)</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-link input-icon-soft"></i>
+                <input type="url" id="vaultUrl" class="input-soft" placeholder="https://instagram.com">
             </div>
         </div>
 
-        <div class="hud-input-group">
-            <label class="hud-label">Özel Notlar (Opsiyonel)</label>
-            <div class="hud-input-box">
-                <i class="fa-solid fa-comment-dots hud-input-icon"></i>
-                <input type="text" id="vaultNotes" class="hud-input" placeholder="Kurtarma kodları, PIN vb.">
+        <div class="input-group-3d">
+            <label class="input-label-soft">Özel Notlar (Opsiyonel)</label>
+            <div class="input-box-3d">
+                <i class="fa-solid fa-comment-dots input-icon-soft"></i>
+                <input type="text" id="vaultNotes" class="input-soft" placeholder="Kurtarma kodları, PIN vb.">
             </div>
         </div>
 
         <div style="display: flex; gap: 12px; margin-top: 26px;">
-            <button class="btn-cyber-secondary" style="flex: 1; justify-content: center;" onclick="closeModal('vaultModal')">İptal</button>
-            <button class="btn-cyber-primary" style="flex: 2;" onclick="saveVaultItem()">KAYDET 💾</button>
+            <button class="btn-aurora-secondary" style="flex: 1; justify-content: center;" onclick="closeModal('vaultModal')">İptal</button>
+            <button class="btn-aurora-primary" style="flex: 2;" onclick="saveVaultItem()">KAYDET 💾</button>
         </div>
     </div>
 </div>
 
 <!-- 2. ADVANCED PASSWORD GENERATOR MODAL -->
-<div class="quantum-modal-backdrop" id="genModal">
-    <div class="quantum-modal-dialog">
-        <div class="modal-top-bar">
+<div class="modal-overlay-3d" id="genModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
             <h3>
-                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--neon-cyan)"></i> Kuantum Parola Üretici
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--pastel-lavender)"></i> Parola Oluşturucu
             </h3>
-            <button class="btn-icon" onclick="closeModal('genModal')">&times;</button>
+            <button class="btn-soft-icon" onclick="closeModal('genModal')">&times;</button>
         </div>
 
         <!-- Generated Display Box -->
-        <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--neon-cyan); border-radius: 18px; padding: 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--glow-cyan);">
-            <span id="genResultText" style="font-family: var(--font-mono); font-size: 19px; font-weight: 700; color: var(--neon-cyan); word-break: break-all; user-select: all;">Parola Üretiliyor...</span>
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-hover); border-radius: 20px; padding: 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(167, 139, 250, 0.15);">
+            <span id="genResultText" style="font-family: var(--font-mono); font-size: 19px; font-weight: 700; color: var(--pastel-lavender); word-break: break-all; user-select: all;">Parola Üretiliyor...</span>
             <div style="display: flex; gap: 6px;">
-                <button class="btn-icon" onclick="generateAdvancedPassword()" title="Yeniden Üret">
+                <button class="btn-soft-icon" onclick="generateAdvancedPassword()" title="Yeniden Üret">
                     <i class="fa-solid fa-rotate-right"></i>
                 </button>
-                <button class="btn-icon" onclick="copyGeneratedPassword()" title="Kopyala">
+                <button class="btn-soft-icon" onclick="copyGeneratedPassword()" title="Kopyala">
                     <i class="fa-solid fa-copy"></i>
                 </button>
             </div>
@@ -1120,31 +1085,31 @@
 
         <!-- Slider -->
         <div style="margin: 20px 0;">
-            <div class="hud-label">
+            <div class="input-label-soft">
                 <span>Parola Uzunluğu</span>
-                <span id="genLengthDisplay" style="font-family: var(--font-mono); font-weight: 700; color: var(--neon-cyan);">16 Karakter</span>
+                <span id="genLengthDisplay" style="font-family: var(--font-mono); font-weight: 700; color: var(--pastel-lavender);">16 Karakter</span>
             </div>
-            <input type="range" min="8" max="48" value="16" style="width: 100%; height: 6px; border-radius: 5px; accent-color: var(--neon-cyan); cursor: pointer;" id="genLengthSlider" oninput="updateGenLength(this.value)">
+            <input type="range" min="8" max="48" value="16" style="width: 100%; height: 6px; border-radius: 5px; accent-color: var(--pastel-lavender); cursor: pointer;" id="genLengthSlider" oninput="updateGenLength(this.value)">
         </div>
 
         <!-- Checkboxes -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0;">
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
-                <input type="checkbox" id="genUpper" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Büyük Harf (A-Z)
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-muted); cursor: pointer;">
+                <input type="checkbox" id="genUpper" checked onchange="generateAdvancedPassword()" style="accent-color: var(--pastel-lavender); width: 16px; height: 16px;"> Büyük Harf (A-Z)
             </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
-                <input type="checkbox" id="genLower" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Küçük Harf (a-z)
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-muted); cursor: pointer;">
+                <input type="checkbox" id="genLower" checked onchange="generateAdvancedPassword()" style="accent-color: var(--pastel-lavender); width: 16px; height: 16px;"> Küçük Harf (a-z)
             </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
-                <input type="checkbox" id="genNumbers" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Rakamlar (0-9)
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-muted); cursor: pointer;">
+                <input type="checkbox" id="genNumbers" checked onchange="generateAdvancedPassword()" style="accent-color: var(--pastel-lavender); width: 16px; height: 16px;"> Rakamlar (0-9)
             </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-secondary); cursor: pointer;">
-                <input type="checkbox" id="genSymbols" checked onchange="generateAdvancedPassword()" style="accent-color: var(--neon-cyan); width: 16px; height: 16px;"> Semboller (!@#$%)
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-muted); cursor: pointer;">
+                <input type="checkbox" id="genSymbols" checked onchange="generateAdvancedPassword()" style="accent-color: var(--pastel-lavender); width: 16px; height: 16px;"> Semboller (!@#$%)
             </label>
         </div>
 
         <div style="margin-top: 24px;">
-            <button class="btn-cyber-primary" onclick="useGeneratedInAddModal()">
+            <button class="btn-aurora-primary" onclick="useGeneratedInAddModal()">
                 <span>BU PAROLAYI KASAYA AKTAR</span> <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
@@ -1152,13 +1117,13 @@
 </div>
 
 <!-- 3. VAULT HEALTH AUDIT MODAL -->
-<div class="quantum-modal-backdrop" id="auditModal">
-    <div class="quantum-modal-dialog">
-        <div class="modal-top-bar">
+<div class="modal-overlay-3d" id="auditModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
             <h3>
-                <i class="fa-solid fa-shield-halved" style="color: var(--neon-emerald)"></i> Kasa Sağlık Denetimi
+                <i class="fa-solid fa-shield-halved" style="color: var(--pastel-mint)"></i> Kasa Güvenlik Analizi
             </h3>
-            <button class="btn-icon" onclick="closeModal('auditModal')">&times;</button>
+            <button class="btn-soft-icon" onclick="closeModal('auditModal')">&times;</button>
         </div>
 
         <div id="auditContent">
@@ -1166,33 +1131,33 @@
         </div>
 
         <div style="margin-top: 24px;">
-            <button class="btn-cyber-primary" onclick="closeModal('auditModal')">Kapat</button>
+            <button class="btn-aurora-primary" onclick="closeModal('auditModal')">Tamam</button>
         </div>
     </div>
 </div>
 
-<!-- 4. BACKUP & EXPORT/IMPORT MODAL -->
-<div class="quantum-modal-backdrop" id="backupModal">
-    <div class="quantum-modal-dialog">
-        <div class="modal-top-bar">
+<!-- 4. BACKUP MODAL -->
+<div class="modal-overlay-3d" id="backupModal">
+    <div class="modal-body-3d">
+        <div class="modal-nav-bar">
             <h3>
-                <i class="fa-solid fa-database" style="color: var(--neon-purple)"></i> Kasa Yedekleme & Aktarım
+                <i class="fa-solid fa-database" style="color: var(--pastel-sky)"></i> Kasa Yedekleme & Aktarım
             </h3>
-            <button class="btn-icon" onclick="closeModal('backupModal')">&times;</button>
+            <button class="btn-soft-icon" onclick="closeModal('backupModal')">&times;</button>
         </div>
 
-        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 22px;">
-            Kasanızı şifreli veya taşınabilir JSON dosyası olarak tek tıkla cihazınıza indirebilir veya mevcut bir yedeği kasanıza geri yükleyebilirsiniz.
+        <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 22px;">
+            Parolalarınızı güvenle cihazınıza indirebilir veya başka bir Siber Kasa yedeğini içe aktarabilirsiniz.
         </p>
 
         <div style="display: flex; flex-direction: column; gap: 14px;">
-            <button class="btn-cyber-secondary" style="justify-content: center; padding: 15px;" onclick="exportVaultBackup()">
-                <i class="fa-solid fa-file-arrow-down" style="color: var(--neon-emerald); font-size: 18px;"></i>
+            <button class="btn-aurora-secondary" style="justify-content: center; padding: 15px;" onclick="exportVaultBackup()">
+                <i class="fa-solid fa-file-arrow-down" style="color: var(--pastel-mint); font-size: 18px;"></i>
                 <span>Şifreli Kasa Yedeğini İndir (.json)</span>
             </button>
 
-            <label class="btn-cyber-secondary" style="justify-content: center; padding: 15px; cursor: pointer;">
-                <i class="fa-solid fa-file-arrow-up" style="color: var(--neon-cyan); font-size: 18px;"></i>
+            <label class="btn-aurora-secondary" style="justify-content: center; padding: 15px; cursor: pointer;">
+                <i class="fa-solid fa-file-arrow-up" style="color: var(--pastel-sky); font-size: 18px;"></i>
                 <span>Yedekten Geri Yükle (İçe Aktar)</span>
                 <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importVaultBackup(event)">
             </label>
@@ -1200,8 +1165,8 @@
     </div>
 </div>
 
-<!-- 🔔 FLOATING TOAST DOCK -->
-<div id="toastDock"></div>
+<!-- 🔔 FLOATING SOFT TOAST DOCK -->
+<div id="softToastDock"></div>
 
 <!-- ==================== JAVASCRIPT LOGIC ==================== -->
 <script>
@@ -1216,9 +1181,9 @@
 
     // --- 1. TOAST NOTIFICATION SYSTEM ---
     function showToast(message, type = "success") {
-        const dock = document.getElementById("toastDock");
+        const dock = document.getElementById("softToastDock");
         const toast = document.createElement("div");
-        toast.className = `hud-toast ${type}`;
+        toast.className = `soft-toast ${type}`;
         
         let icon = "fa-circle-check";
         if (type === "error") icon = "fa-circle-xmark";
@@ -1229,8 +1194,8 @@
         dock.appendChild(toast);
 
         setTimeout(() => {
-            toast.style.animation = "toastSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards";
-            setTimeout(() => toast.remove(), 300);
+            toast.style.animation = "toastOut 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards";
+            setTimeout(() => toast.remove(), 350);
         }, 3500);
     }
 
@@ -1242,21 +1207,21 @@
         localStorage.setItem("siber_theme", newTheme);
         
         const btn = document.getElementById("themeToggleBtn");
-        btn.innerHTML = newTheme === "dark" ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun" style="color:#f59e0b"></i>';
+        btn.innerHTML = newTheme === "dark" ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun" style="color:#fbbf24"></i>';
     }
 
     function initTheme() {
         const savedTheme = localStorage.getItem("siber_theme") || "dark";
         document.documentElement.setAttribute("data-theme", savedTheme);
         const btn = document.getElementById("themeToggleBtn");
-        btn.innerHTML = savedTheme === "dark" ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun" style="color:#f59e0b"></i>';
+        btn.innerHTML = savedTheme === "dark" ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun" style="color:#fbbf24"></i>';
     }
 
-    // --- 3. ADVANCED LOGO DETECTOR (Direct High-Res CDN & Favicon) ---
+    // --- 3. HIGH-RES 3D LOGO FETCHER ---
     function getApplicationLogo(platformName, websiteUrl = "") {
         const name = (platformName || "").toLowerCase().trim();
         
-        // 1. Check direct popular high-res logos (Vector / SVG / High-Res PNG)
+        // Direct Vector / High-Res Brand Icons
         const brandMap = {
             instagram: { url: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg", name: "Instagram" },
             facebook: { url: "https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg", name: "Facebook" },
@@ -1289,56 +1254,76 @@
             yapikredi: { url: "https://www.google.com/s2/favicons?domain=yapikredi.com.tr&sz=128", name: "Yapı Kredi" },
             akbank: { url: "https://www.google.com/s2/favicons?domain=akbank.com&sz=128", name: "Akbank" },
             ziraat: { url: "https://www.google.com/s2/favicons?domain=ziraatbank.com.tr&sz=128", name: "Ziraat Bankası" },
-            enpara: { url: "https://www.google.com/s2/favicons?domain=qnb.com.tr&sz=128", name: "Enpara" },
             trendyol: { url: "https://www.google.com/s2/favicons?domain=trendyol.com&sz=128", name: "Trendyol" },
             hepsiburada: { url: "https://www.google.com/s2/favicons?domain=hepsiburada.com&sz=128", name: "Hepsiburada" },
             notion: { url: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png", name: "Notion" },
             figma: { url: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg", name: "Figma" },
-            canva: { url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg", name: "Canva" },
-            zoom: { url: "https://www.google.com/s2/favicons?domain=zoom.us&sz=128", name: "Zoom" }
+            canva: { url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg", name: "Canva" }
         };
 
         for (let key in brandMap) {
             if (name.includes(key)) {
-                return `<img src="${brandMap[key].url}" class="app-logo-img" alt="${platformName}" onerror="this.parentElement.innerHTML='<span class=\\'app-logo-fallback\\'>${(platformName||'K').charAt(0).toUpperCase()}</span>'">`;
+                return `<img src="${brandMap[key].url}" class="app-icon-img" alt="${platformName}" onerror="this.parentElement.innerHTML='<span class=\\'app-icon-monogram\\'>${(platformName||'K').charAt(0).toUpperCase()}</span>'">`;
             }
         }
 
-        // 2. If website URL or domain is provided, fetch high-res favicon
+        // Domain Favicon fallback
         let domain = "";
         if (websiteUrl) {
             try {
                 domain = new URL(websiteUrl.startsWith("http") ? websiteUrl : "https://" + websiteUrl).hostname;
-            } catch (e) {
-                domain = "";
-            }
+            } catch (e) { domain = ""; }
         } else if (name.includes(".")) {
             domain = name;
         }
 
         if (domain) {
-            return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" class="app-logo-img" alt="${platformName}" onerror="this.parentElement.innerHTML='<span class=\\'app-logo-fallback\\'>${(platformName||'K').charAt(0).toUpperCase()}</span>'">`;
+            return `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" class="app-icon-img" alt="${platformName}" onerror="this.parentElement.innerHTML='<span class=\\'app-icon-monogram\\'>${(platformName||'K').charAt(0).toUpperCase()}</span>'">`;
         }
 
-        // 3. Fallback: Cyber Monogram Letter
+        // Monogram fallback
         const initial = (platformName || "K").charAt(0).toUpperCase();
-        return `<span class="app-logo-fallback">${initial}</span>`;
+        return `<span class="app-icon-monogram">${initial}</span>`;
     }
 
     function previewAppLogoOnType(val) {
         const frame = document.getElementById("liveLogoFrame");
         const text = document.getElementById("liveLogoText");
         if (!val.trim()) {
-            frame.innerHTML = '<i class="fa-solid fa-cube" style="color: var(--neon-cyan); font-size: 14px;"></i>';
-            text.innerText = "Otomatik logo algılayıcı aktif";
+            frame.innerHTML = '<i class="fa-solid fa-cube" style="color: var(--pastel-lavender); font-size: 16px;"></i>';
+            text.innerText = "3D Logo algılayıcı aktif";
             return;
         }
 
         frame.innerHTML = getApplicationLogo(val);
-        text.innerText = `${val} logosu algılandı`;
+        text.innerText = `${val} 3D logosu algılandı`;
     }
 
-    // --- 4. AUTH FLOW ---
+    // --- 4. 3D INTERACTIVE TILT PHYSICS ENGINE ---
+    function attach3DTiltPhysics() {
+        const cards = document.querySelectorAll(".card-vault-3d, .stat-tile-3d");
+        cards.forEach(card => {
+            card.addEventListener("mousemove", (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener("mouseleave", () => {
+                card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale3d(1, 1, 1)";
+            });
+        });
+    }
+
+    // --- 5. AUTH FLOW ---
     function switchAuthTab(tab) {
         const isLogin = tab === 'login';
         document.getElementById('tabLogin').classList.toggle('active', isLogin);
@@ -1367,17 +1352,17 @@
         fill.style.width = score + "%";
 
         if (score <= 25) {
-            fill.style.background = "var(--neon-rose)";
+            fill.style.background = "var(--pastel-rose)";
             text.innerText = "Zayıf";
-            text.style.color = "var(--neon-rose)";
+            text.style.color = "var(--pastel-rose)";
         } else if (score <= 75) {
-            fill.style.background = "var(--neon-amber)";
-            text.innerText = "Orta";
-            text.style.color = "var(--neon-amber)";
+            fill.style.background = "var(--pastel-amber)";
+            text.innerText = "Orta Seviye";
+            text.style.color = "var(--pastel-amber)";
         } else {
-            fill.style.background = "var(--neon-emerald)";
-            text.innerText = "Mükemmel";
-            text.style.color = "var(--neon-emerald)";
+            fill.style.background = "var(--pastel-mint)";
+            text.innerText = "Kusursuz Güçlü";
+            text.style.color = "var(--pastel-mint)";
         }
     }
 
@@ -1388,11 +1373,11 @@
         const btn = document.getElementById('btnRegisterSubmit');
 
         if (!email || !pwd || !pwdConf) {
-            showToast("Lütfen tüm alanları eksiksiz doldurun!", "warning");
+            showToast("Lütfen tüm alanları doldurun!", "warning");
             return;
         }
         if (pwd !== pwdConf) {
-            showToast("Şifreler birbirleriyle eşleşmiyor!", "error");
+            showToast("Şifreler birbirleriyle uyuşmuyor!", "error");
             return;
         }
 
@@ -1408,15 +1393,15 @@
             const data = await res.json();
 
             if (data.success) {
-                showToast("Hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.", "success");
+                showToast("Hesabınız başarıyla açıldı! Giriş yapabilirsiniz.", "success");
                 document.getElementById('loginEmail').value = email;
                 document.getElementById('loginPassword').value = pwd;
                 switchAuthTab('login');
             } else {
-                showToast(data.message || "Kayıt işlemi başarısız oldu!", "error");
+                showToast(data.message || "Kayıt sırasında hata oluştu!", "error");
             }
         } catch (err) {
-            showToast("Sunucuya bağlanılamadı. Lütfen sunucunun açık olduğundan emin olun.", "error");
+            showToast("Sunucuya bağlanılamadı. Lütfen sunucunuzu kontrol edin.", "error");
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<span>HESABI OLUŞTUR</span> <i class="fa-solid fa-user-check"></i>';
@@ -1483,7 +1468,7 @@
 
                 renderVault();
                 updateStats();
-                if (!isAuto) showToast(`Hoş geldiniz! Kasanız başarıyla açıldı. 🛡️`, "success");
+                if (!isAuto) showToast(`Hoş geldiniz! 3D Kasanız açıldı. 🛡️`, "success");
             } else {
                 if (!isAuto) {
                     showToast(data.message || "E-posta veya şifre yanlış!", "error");
@@ -1517,10 +1502,10 @@
         const savedEmail = localStorage.getItem('siber_kasa_saved_email');
         if (savedEmail) document.getElementById('loginEmail').value = savedEmail;
 
-        showToast("Kasanız kilitlendi ve oturum kapatıldı.", "info");
+        showToast("Kasanız güvenle kilitlendi.", "info");
     }
 
-    // --- 5. VAULT CRUD OPERATIONS ---
+    // --- 6. VAULT CRUD OPERATIONS ---
     async function saveVaultToBackend() {
         try {
             const dataStr = JSON.stringify(vaultData);
@@ -1533,13 +1518,13 @@
             });
             updateStats();
         } catch (err) {
-            showToast("Veriler veritabanına eşitlenemedi!", "error");
+            showToast("Veriler veritabanına kaydedilemedi!", "error");
         }
     }
 
     function openAddVaultModal() {
         document.getElementById('editItemIndex').value = "-1";
-        document.getElementById('vaultModalTitle').innerHTML = '<i class="fa-solid fa-plus" style="color: var(--neon-cyan)"></i> Yeni Parola Kaydı';
+        document.getElementById('vaultModalTitle').innerHTML = '<i class="fa-solid fa-plus" style="color: var(--pastel-lavender)"></i> Yeni Parola Kaydı';
         document.getElementById('vaultPlatform').value = "";
         document.getElementById('vaultCategory').value = "general";
         document.getElementById('vaultUsername').value = "";
@@ -1555,7 +1540,7 @@
         if (!item) return;
 
         document.getElementById('editItemIndex').value = index;
-        document.getElementById('vaultModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--neon-cyan)"></i> Parolayı Düzenle';
+        document.getElementById('vaultModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square" style="color: var(--pastel-lavender)"></i> Parolayı Düzenle';
         document.getElementById('vaultPlatform').value = item.platform || "";
         document.getElementById('vaultCategory').value = item.category || "general";
         document.getElementById('vaultUsername').value = item.username || "";
@@ -1593,10 +1578,10 @@
 
         if (index >= 0) {
             vaultData[index] = newItem;
-            showToast("Kayıt başarıyla güncellendi! ✅", "success");
+            showToast("Kayıt başarıyla güncellendi! ✨", "success");
         } else {
             vaultData.unshift(newItem);
-            showToast(`${platform} kasanıza logosuyla eklendi! 🛡️`, "success");
+            showToast(`${platform} kasanıza 3D logosuyla eklendi! 🛡️`, "success");
         }
 
         closeModal('vaultModal');
@@ -1622,10 +1607,10 @@
         });
     }
 
-    // --- 6. RENDER VAULT & QUANTUM CARDS ---
+    // --- 7. RENDER 3D VAULT CARDS ---
     function setCategoryFilter(cat) {
         currentCategoryFilter = cat;
-        document.querySelectorAll('.cat-chip').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.pill-category-btn').forEach(btn => btn.classList.remove('active'));
         if (event && event.currentTarget) event.currentTarget.classList.add('active');
         renderVault();
     }
@@ -1677,11 +1662,11 @@
 
         if (filtered.length === 0) {
             container.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 70px 20px; background: var(--bg-card); border: 2px dashed var(--bg-card-border); border-radius: 28px; backdrop-filter: blur(20px);">
-                    <div style="font-size: 52px; color: var(--neon-cyan); margin-bottom: 18px; opacity: 0.8;"><i class="fa-solid fa-vault"></i></div>
-                    <h3 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 8px;">Kasanızda Eşleşen Parola Bulunamadı</h3>
-                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px;">Yeni bir parola ekleyerek kasanızı doldurmaya başlayabilirsiniz.</p>
-                    <button class="btn-cyber-primary" style="width: auto; margin: 0 auto;" onclick="openAddVaultModal()">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 70px 20px; background: var(--bg-card); border: 2px dashed var(--border-soft); border-radius: 32px; backdrop-filter: blur(28px);">
+                    <div style="font-size: 52px; color: var(--pastel-lavender); margin-bottom: 18px; opacity: 0.85;"><i class="fa-solid fa-vault"></i></div>
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Kasanızda Parola Bulunamadı</h3>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Yeni bir parola ekleyerek kasanızı doldurmaya başlayabilirsiniz.</p>
+                    <button class="btn-aurora-primary" style="width: auto; margin: 0 auto;" onclick="openAddVaultModal()">
                         <i class="fa-solid fa-plus"></i> Yeni Parola Ekle
                     </button>
                 </div>
@@ -1702,67 +1687,67 @@
             };
 
             const card = document.createElement('div');
-            card.className = "vault-item-card";
+            card.className = "card-vault-3d";
             card.innerHTML = `
-                <div class="app-badge-header">
-                    <div class="app-identity">
-                        <div class="app-logo-frame">
+                <div class="app-header-3d">
+                    <div class="app-meta-3d">
+                        <div class="app-icon-pod-3d">
                             ${logoHtml}
                         </div>
-                        <div class="app-text-info">
-                            <div class="app-name">${item.platform}</div>
-                            <span class="app-category-badge">${categoryNames[item.category] || "🔑 Genel"}</span>
+                        <div class="app-info-3d">
+                            <div class="app-title">${item.platform}</div>
+                            <span class="app-tag">${categoryNames[item.category] || "🔑 Genel"}</span>
                         </div>
                     </div>
                     ${item.url ? `
-                        <a href="${item.url.startsWith('http') ? item.url : 'https://' + item.url}" target="_blank" class="btn-icon" style="width:34px; height:34px;" title="Web Sitesine Git">
+                        <a href="${item.url.startsWith('http') ? item.url : 'https://' + item.url}" target="_blank" class="btn-soft-icon" style="width:34px; height:34px;" title="Web Sitesine Git">
                             <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 13px;"></i>
                         </a>
                     ` : ''}
                 </div>
 
                 ${item.username ? `
-                    <div class="vault-field-strip">
+                    <div class="card-field-box">
                         <div style="overflow: hidden; flex: 1;">
-                            <div class="field-label-tiny">Kullanıcı Adı / E-Posta</div>
-                            <div class="field-val-text">${item.username}</div>
+                            <div class="field-sub-label">Kullanıcı Adı / E-Posta</div>
+                            <div class="field-main-val">${item.username}</div>
                         </div>
-                        <button class="btn-icon" style="width:32px; height:32px;" onclick="copyToClipboard('${item.username.replace(/'/g, "\\'")}', 'Kullanıcı adı')" title="Kullanıcı Adını Kopyala">
+                        <button class="btn-soft-icon" style="width:32px; height:32px;" onclick="copyToClipboard('${item.username.replace(/'/g, "\\'")}', 'Kullanıcı adı')" title="Kopyala">
                             <i class="fa-solid fa-copy"></i>
                         </button>
                     </div>
                 ` : ''}
 
-                <div class="vault-field-strip">
+                <div class="card-field-box">
                     <div style="overflow: hidden; flex: 1;">
-                        <div class="field-label-tiny">Parola ${isWeak ? '<span style="color: var(--neon-rose);">(Zayıf)</span>' : ''}</div>
-                        <div class="field-val-text mono" id="passText_${originalIndex}">••••••••••••</div>
+                        <div class="field-sub-label">Parola ${isWeak ? '<span style="color: var(--pastel-rose);">(Zayıf)</span>' : ''}</div>
+                        <div class="field-main-val mono" id="passText_${originalIndex}">••••••••••••</div>
                     </div>
                     <div style="display: flex; gap: 6px;">
-                        <button class="btn-icon" style="width:32px; height:32px;" onclick="toggleCardPassword(${originalIndex}, '${item.password.replace(/'/g, "\\'")}', this)" title="Şifreyi Göster/Gizle">
+                        <button class="btn-soft-icon" style="width:32px; height:32px;" onclick="toggleCardPassword(${originalIndex}, '${item.password.replace(/'/g, "\\'")}', this)" title="Şifreyi Göster/Gizle">
                             <i class="fa-solid fa-eye"></i>
                         </button>
-                        <button class="btn-icon" style="width:32px; height:32px;" onclick="copyToClipboard('${item.password.replace(/'/g, "\\'")}', 'Parola')" title="Parolayı Kopyala">
+                        <button class="btn-soft-icon" style="width:32px; height:32px;" onclick="copyToClipboard('${item.password.replace(/'/g, "\\'")}', 'Parola')" title="Parolayı Kopyala">
                             <i class="fa-solid fa-copy"></i>
                         </button>
                     </div>
                 </div>
 
                 ${item.notes ? `
-                    <div style="font-size: 12.5px; color: var(--text-secondary); background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 10px; border: 1px dashed var(--bg-card-border);">
-                        <i class="fa-regular fa-note-sticky" style="color: var(--neon-cyan); margin-right: 5px;"></i> ${item.notes}
+                    <div style="font-size: 12.5px; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 12px; border: 1px dashed var(--border-soft);">
+                        <i class="fa-regular fa-note-sticky" style="color: var(--pastel-lavender); margin-right: 5px;"></i> ${item.notes}
                     </div>
                 ` : ''}
 
-                <div class="card-footer-strip">
-                    <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+                <div class="card-footer-3d">
+                    <span style="font-size: 11px; color: var(--text-dim); font-family: var(--font-mono);">
                         ${item.updatedAt ? new Date(item.updatedAt).toLocaleDateString('tr-TR') : 'Kayıtlı'}
                     </span>
                     <div style="display: flex; gap: 6px;">
-                        <button class="btn-icon" style="width:32px; height:32px;" onclick="openEditVaultModal(${originalIndex})" title="Düzenle">
+                        <button class="btn-soft-icon" style="width:32px; height:32px;" onclick="openEditVaultModal(${originalIndex})" title="Düzenle">
                             <i class="fa-solid fa-pen"></i>
                         </button>
-                        <button class="btn-icon" style="width:32px; height:32px; color: var(--neon-rose);" onclick="deleteVaultItem(${originalIndex})" title="Sil">
+                        <button class="btn-soft-icon" style="width:32px; height:32px; color: var(--pastel-rose);" onclick="deleteVaultItem(${originalIndex})" title="Sil">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
@@ -1770,6 +1755,9 @@
             `;
             container.appendChild(card);
         });
+
+        // Re-attach 3D tilt tracking for cards
+        attach3DTiltPhysics();
     }
 
     function toggleCardPassword(index, realPassword, btn) {
@@ -1777,8 +1765,8 @@
         if (!textEl) return;
 
         if (textEl.innerText === "••••••••••••") {
-            // Decrypt Glitch Animation Effect
-            let chars = "!@#$%^&*()_+~|}{[]:;?><,.-=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            // Smooth reveal animation
+            let chars = "!@#$%^&*()_+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             let iterations = 0;
             const interval = setInterval(() => {
                 textEl.innerText = realPassword
@@ -1800,7 +1788,7 @@
         }
     }
 
-    // --- 7. STATS & HEALTH AUDIT ---
+    // --- 8. STATS & AUDIT ---
     function updateStats() {
         const total = vaultData.length;
         document.getElementById('statTotalCount').innerText = total;
@@ -1851,27 +1839,27 @@
 
         vaultData.forEach(item => {
             if (passMap[item.password] > 1) {
-                issues.push({ type: 'dup', title: item.platform, desc: 'Bu parola başka bir hesapla aynı (Tekrar eden şifre tehlikesi).' });
+                issues.push({ type: 'dup', title: item.platform, desc: 'Bu parola başka bir platformla aynı (Tekrar eden şifre tehlikesi).' });
             }
         });
 
         if (issues.length === 0) {
             content.innerHTML = `
                 <div style="text-align: center; padding: 30px 10px;">
-                    <i class="fa-solid fa-circle-check" style="font-size: 52px; color: var(--neon-emerald); margin-bottom: 14px;"></i>
-                    <h4 style="font-family: var(--font-display); font-size: 18px; margin-bottom: 6px;">Kasanız Kusursuz ve Güvenli!</h4>
-                    <p style="font-size: 14px; color: var(--text-secondary);">Hiçbir zayıf veya tekrar eden şifre tespit edilmedi.</p>
+                    <i class="fa-solid fa-circle-check" style="font-size: 52px; color: var(--pastel-mint); margin-bottom: 14px;"></i>
+                    <h4 style="font-size: 18px; margin-bottom: 6px; font-weight: 700;">Kasanız Kusursuz ve Güvenli!</h4>
+                    <p style="font-size: 14px; color: var(--text-muted);">Hiçbir zayıf veya tekrar eden şifre tespit edilmedi.</p>
                 </div>
             `;
         } else {
             let html = `<div style="display: flex; flex-direction: column; gap: 12px; max-height: 380px; overflow-y: auto;">`;
             issues.forEach(iss => {
                 html += `
-                    <div style="display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--bg-card-border); border-radius: 16px;">
-                        <i class="fa-solid ${iss.type === 'weak' ? 'fa-triangle-exclamation' : 'fa-clone'}" style="color: ${iss.type === 'weak' ? 'var(--neon-amber)' : 'var(--neon-rose)'}; font-size: 20px;"></i>
+                    <div style="display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-soft); border-radius: 18px;">
+                        <i class="fa-solid ${iss.type === 'weak' ? 'fa-triangle-exclamation' : 'fa-clone'}" style="color: ${iss.type === 'weak' ? 'var(--pastel-amber)' : 'var(--pastel-rose)'}; font-size: 20px;"></i>
                         <div>
                             <div style="font-weight: 700; font-size: 15px;">${iss.title}</div>
-                            <div style="font-size: 12.5px; color: var(--text-secondary);">${iss.desc}</div>
+                            <div style="font-size: 12.5px; color: var(--text-muted);">${iss.desc}</div>
                         </div>
                     </div>
                 `;
@@ -1883,7 +1871,7 @@
         openModal('auditModal');
     }
 
-    // --- 8. QUANTUM PASSWORD GENERATOR ---
+    // --- 9. ADVANCED PASSWORD GENERATOR ---
     function openGeneratorModal() {
         generateAdvancedPassword();
         openModal('genModal');
@@ -1940,10 +1928,10 @@
         const pwdInput = document.getElementById('vaultPassword');
         pwdInput.value = password;
         pwdInput.type = "text";
-        showToast("Kuantum seviyesinde güçlü parola oluşturuldu! ✨", "success");
+        showToast("Güçlü parola oluşturuldu! ✨", "success");
     }
 
-    // --- 9. BACKUP & RESTORE ---
+    // --- 10. BACKUP & RESTORE ---
     function openBackupModal() {
         openModal('backupModal');
     }
@@ -1957,7 +1945,7 @@
         const dataStr = JSON.stringify({
             exportedAt: new Date().toISOString(),
             user: currentUserEmail,
-            version: "3.0",
+            version: "3.5",
             vault: vaultData
         }, null, 2);
 
@@ -1965,7 +1953,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `SiberKasa_Kuantum_Yedek_${currentUserEmail.split('@')[0]}_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = `SiberKasa_3D_Yedek_${currentUserEmail.split('@')[0]}_${new Date().toISOString().slice(0,10)}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -1994,7 +1982,7 @@
                     vaultData = [...vaultData, ...importedList];
                     saveVaultToBackend();
                     renderVault();
-                    showToast(`${importedList.length} adet parola başarıyla içe aktarıldı! 🎉`, "success");
+                    showToast(`${importedList.length} adet parola içe aktarıldı! 🎉`, "success");
                     closeModal('backupModal');
                 }
             } catch (err) {
@@ -2004,7 +1992,7 @@
         reader.readAsText(file);
     }
 
-    // --- 10. MODAL HELPERS ---
+    // --- 11. MODAL HELPERS ---
     function openModal(id) {
         const el = document.getElementById(id);
         if (el) el.style.display = 'flex';
@@ -2016,12 +2004,12 @@
     }
 
     window.onclick = function(event) {
-        if (event.target.classList.contains('quantum-modal-backdrop')) {
+        if (event.target.classList.contains('modal-overlay-3d')) {
             event.target.style.display = 'none';
         }
     };
 
-    // --- 11. INITIALIZATION ---
+    // --- 12. INITIALIZATION ---
     async function initApp() {
         initTheme();
 
@@ -2047,6 +2035,8 @@
         if (savedEmail) {
             document.getElementById('loginEmail').value = savedEmail;
         }
+
+        attach3DTiltPhysics();
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
